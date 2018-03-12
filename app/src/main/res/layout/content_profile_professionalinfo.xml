@@ -53,24 +53,20 @@
                 android:textCursorDrawable="@drawable/bg_input_cursor"
                 android:paddingBottom="2dp" />
         </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                android:textColorHint="@color/colorBlack"
-                android:theme="@style/TextLabel"
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-                <EditText
+
+                <TextView
                     android:textSize="16sp"
                     android:hint="Valid"
+                    android:layout_marginTop="35dp"
+                    android:textColorHint="#000"
+
                     android:textColor="#000"
                     android:id="@+id/et_prof_valid"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textEmailAddress"
                     android:background="@drawable/selector_bg_edit"
-                    android:textCursorDrawable="@drawable/bg_input_cursor"
-                    android:paddingBottom="2dp" />
-        </android.support.design.widget.TextInputLayout>
+                    android:paddingBottom="7dp" />
          <TextView
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"

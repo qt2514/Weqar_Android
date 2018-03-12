@@ -31,23 +31,18 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:src= "@drawable/professional_image_upload"/>
-            <android.support.design.widget.TextInputLayout
-                android:textColorHint="@color/colorBlack"
-                android:theme="@style/TextLabel"
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-                <EditText
+
+                <TextView
                     android:textSize="16sp"
-                    android:hint="Category"
+                    android:text="Category"
                     android:textColor="#000"
+                    android:layout_marginTop="20dp"
+
                     android:id="@+id/vendor_professional_category"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textEmailAddress"
                     android:background="@drawable/selector_bg_edit"
-                    android:textCursorDrawable="@drawable/bg_input_cursor"
-                    android:paddingBottom="2dp" />
-            </android.support.design.widget.TextInputLayout>
+                    android:paddingBottom="5dp" />
             <android.support.design.widget.TextInputLayout
                 android:textColorHint="@color/colorBlack"
                 android:theme="@style/TextLabel"
@@ -61,7 +56,8 @@
                     android:id="@+id/vendor_professional_buscontact"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textEmailAddress"
+                    android:inputType="number"
+                    android:maxLength="10"
                     android:background="@drawable/selector_bg_edit"
                     android:textCursorDrawable="@drawable/bg_input_cursor"
                     android:paddingBottom="2dp" />

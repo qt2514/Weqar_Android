@@ -37,8 +37,9 @@ public class LoginActivity extends AppCompatActivity {
     EditText ET_username,ET_password;
     Button But_newaxccount;
     CircleButton But_login;
-    String sweetmessage,S_username,S_password;
+    String S_username,S_password;
     String s_ln_userid,s_ln_username,s_ln_usermail,s_ln_usertype,s_ln_usertoken;
+    Boolean s_ln_tab1,s_ln_tab2,s_ln_tab3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,17 +88,33 @@ public class LoginActivity extends AppCompatActivity {
                 if (isConnectedToNetwork()) {
                     if(ET_username.getText().toString().equals(""))
                     {
-                        sweetmessage="Please Enter Username";
-                    }
+                        new PromptDialog(LoginActivity.this)
+                                .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                                .setAnimationEnable(true)
+                                .setTitleText("Please Enter Username")
+                                .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                    @Override
+                                    public void onClick(PromptDialog dialog) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();                    }
                     else
                     {
                         if(ET_password.getText().toString().equals(""))
                         {
-                            sweetmessage="Please Enter Password";
+                            new PromptDialog(LoginActivity.this)
+                                    .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                                    .setAnimationEnable(true)
+                                    .setTitleText("Please Enter Password")
+                                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                        @Override
+                                        public void onClick(PromptDialog dialog) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
                         }
                         else
                         {
-                            sweetmessage="Thank You! Weqar Welcome You";
                             S_username=ET_username.getText().toString();
                             S_password=ET_password.getText().toString();
                             signin_verif(S_username,S_password);
@@ -110,18 +127,19 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    sweetmessage="Please Check Your Network Connection";
-                }
-                new PromptDialog(LoginActivity.this)
+                    new PromptDialog(LoginActivity.this)
                         .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
                         .setAnimationEnable(true)
-                        .setTitleText(sweetmessage)
+                        .setTitleText("Please Check Your Network Connection")
                         .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
                             @Override
                             public void onClick(PromptDialog dialog) {
                                 dialog.dismiss();
                             }
                         }).show();
+
+                }
+
             }
         });
     }
@@ -160,13 +178,19 @@ public class LoginActivity extends AppCompatActivity {
                         s_ln_usermail=verification.getString("Email");
                         s_ln_usertype=verification.getString("UserType");
                         s_ln_usertoken=verification.getString("APIKey");
+                        s_ln_tab1=verification.getBoolean("Tab1");
+                        s_ln_tab2=verification.getBoolean("Tab2");
+                        s_ln_tab3=verification.getBoolean("Tab3");
 
-//
+
                         Intent intent=new Intent(LoginActivity.this, ProfileInfo.class);
                         intent.putExtra("w_userid",s_ln_userid);
                         intent.putExtra("w_useremail",s_ln_usermail);
                         intent.putExtra("w_usertype",s_ln_usertype);
                         intent.putExtra("APIKey",s_ln_usertoken);
+                        intent.putExtra("login_tab1",s_ln_tab1);
+                        intent.putExtra("login_tab2",s_ln_tab2);
+                        intent.putExtra("login_tab3",s_ln_tab3);
 
                         startActivity(intent);
                         //finish();

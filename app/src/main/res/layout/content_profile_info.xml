@@ -3,8 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
 
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.weqar.weqar.ProfileInfo"
     tools:showIn="@layout/activity_profile_info">
@@ -67,7 +70,7 @@
     <ScrollView
         android:id="@+id/scrollview_personal"
         android:layout_width="match_parent"
-        android:visibility="visible"
+        android:visibility="invisible"
 
         android:layout_below="@+id/profile_linear"
         android:layout_height="match_parent">
@@ -101,6 +104,16 @@
         android:layout_below="@+id/profile_linear"
         android:layout_height="match_parent">
         <include layout="@layout/content_profile_completeinfo" />
+
+    </ScrollView>
+    <ScrollView
+        android:id="@+id/scrollview_vendor_complete"
+        android:layout_width="match_parent"
+        android:visibility="invisible"
+
+        android:layout_below="@+id/profile_linear"
+        android:layout_height="match_parent">
+        <include layout="@layout/content_vendor_completeinfo" />
 
     </ScrollView>
     <Button

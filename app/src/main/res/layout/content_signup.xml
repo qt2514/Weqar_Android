@@ -101,7 +101,7 @@
         android:ems="10"
         android:layout_marginTop="10dp"
         android:hint="@string/confirm_password"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:padding="10dp"
         android:singleLine="true"
         android:textColor="@color/colorHint"

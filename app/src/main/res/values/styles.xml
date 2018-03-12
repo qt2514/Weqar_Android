@@ -26,11 +26,13 @@
         <!--<item name="android:fontFamily">@font/nunito_semibold</item>-->
         <item name="android:textSize">12sp</item>
     </style>
+
     <style name="TextAppearance.BotFonts" parent="android:TextAppearance">
 
         <!--<item name="android:fontFamily">@font/nunito_semibold</item>-->
         <item name="android:textSize">19sp</item>
     </style>
+
     <style name="ToolbarStyle" parent="@style/ThemeOverlay.AppCompat.ActionBar">
         <!-- Customize color of navigation drawer icon and back arrow -->
         <item name="colorControlNormal">@color/colorWhite</item>

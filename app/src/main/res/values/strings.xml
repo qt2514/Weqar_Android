@@ -25,4 +25,6 @@
     <string name="title_activity_settings__profile">Settings_ProfileActivity</string>
     <string name="title_activity_settings__account">Settings_AccountActivity</string>
     <string name="title_activity_job_details">JobDetails</string>
+    <string name="title_activity_multi_spinner__vendor__category">MultiSpinner_Vendor_Category
+    </string>
 </resources>

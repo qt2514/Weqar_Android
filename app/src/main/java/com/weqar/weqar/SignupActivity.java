@@ -246,7 +246,7 @@ public class SignupActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.User_signup, new Response.Listener<String>() {
 
                 public void onResponse(String response) {
-                    startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                   // startActivity(new Intent(SignupActivity.this, LoginActivity.class));
 
 
 
