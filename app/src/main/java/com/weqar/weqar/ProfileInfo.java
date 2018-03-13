@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,19 +51,23 @@ import java.util.Map;
 import java.util.UUID;
 
 
+import javax.microedition.khronos.opengles.GL;
+
 import cn.refactor.lib.colordialog.PromptDialog;
 
 
 public class ProfileInfo extends AppCompatActivity implements com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener{
     EditText ET_fname,ET_mname,ET_lname,ET_emailid,ET_mobile,ET_address,ET_country,
-    ET_Prof_cidno,ET_Prof_memno,ET_vprof_businescontect,ET_vprof_businesemail,ET_vprof_websitel;
-    TextView ET_vprof_category,ET_Prof_valid;
-    SearchableSpinner SP_mobilepin,SP_vendor_com_planchoose;
+    ET_Prof_cidno,ET_Prof_memno,ET_vprof_businescontect,ET_vprof_businesemail,ET_vprof_websitel,ET_vcomplete_percentage,
+    ET_vcomplete_disctitle,ET_vcomplete_discdesc;
+    TextView ET_vprof_category,ET_Prof_valid,TV_vcomplete_skip;
+    SearchableSpinner SP_mobilepin,SP_vendor_com_planchoose,SP_vendor_com_offertype;
     ScrollView scrollView_personal,scrollView_professional,scrollview_vendor_professional,scrollView_complete,scrollView_vendor_complete;
     Button B_saveandcontinue_personal,B_professional_next,B_vendorprofessional_next;
-    ImageView IV_basic_image,IV_personal,IV_professional,IV_complete,IV_prof_uploadfile,IV_vendor_professional_companylogo;
+    ImageView IV_basic_image,IV_personal,IV_professional,IV_complete,IV_prof_uploadfile,IV_vendor_professional_companylogo,
+    IV_vcomplete_imageupload;
     View view1,view2,view3,view4;
-    Button but_complete;
+    Button but_complete,B_vcomplete_complete;
     Toolbar toolbar;
     String s_fname,s_mname,s_lname,s_mobilepin,s_mobile,s_address,s_emailid,s_country,
     s_prof_cidno,s_prof_memno,s_prof_valid,s_vprof_category,s_vprof_buscontact,s_vprof_busemail,s_vprof_websitelink,
@@ -74,14 +79,12 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     List<String> L_user_planamount ;
     List<String> L_user_desc ;
     RecyclerView Rec_usersubs;
-
+    TextInputLayout TIL_vcomplete_percentage;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     RecyclerViewAdapter RecyclerViewHorizontalAdapter;
     LinearLayoutManager HorizontalLayout ;
-    String s_uplan_plantype,s_uplan_amount,s_uplan_desc,selec;
-
-    final ArrayList<MultiSelectModel> AScategory_vendor= new ArrayList<>();
-    ArrayList sel_vendorcateg=new ArrayList();
+    String s_uplan_plantype,s_uplan_amount,s_uplan_desc,S_vcomple_plantype_sel,S_vcomple_offertype_sel,S_vcomplete_percentage,S_vcomplete_title,
+    s_vcomplete_description,s_vcomplete_image_response;
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
     Context context;
     List<String> subjectnamelist;
@@ -89,6 +92,8 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     String Ssubjectkind;
     private JSONArray result;
     ArrayList<String> vendor_plan = new ArrayList<String>();
+    String compl_vendor_offertype[] = {"Discount","Offer"},count_on_skip_forvendor="0";
+    String serviceuid="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +119,9 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         ET_vprof_businescontect=findViewById(R.id.vendor_professional_buscontact);
         ET_vprof_businesemail=findViewById(R.id.vendor_professional_busemail);
         ET_vprof_websitel=findViewById(R.id.vendor_professional_websitelink);
+        ET_vcomplete_percentage=findViewById(R.id.et_vcomplete_percentage);
+        ET_vcomplete_disctitle=findViewById(R.id.et_vcomplete_disctitle);
+        ET_vcomplete_discdesc=findViewById(R.id.et_vcomplete_discdesc);
 
         scrollView_personal=findViewById(R.id.scrollview_personal);
         scrollView_professional=findViewById(R.id.scrollview_professional);
@@ -123,6 +131,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         B_saveandcontinue_personal=findViewById(R.id.saveandcontinue_personal);
         B_professional_next=findViewById(R.id.professional_but_next);
         B_vendorprofessional_next=findViewById(R.id.vendorprofessional_but_next);
+        B_vcomplete_complete=findViewById(R.id.B_vcomplete_complete);
 
         IV_basic_image=findViewById(R.id.profile_edit);
         IV_personal=findViewById(R.id.IV_personaL);
@@ -130,7 +139,11 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         IV_complete=findViewById(R.id.IV_complete);
         IV_prof_uploadfile=findViewById(R.id.IV_prof_uploadfile);
         IV_vendor_professional_companylogo=findViewById(R.id.vendor_professional_companylogo);
+        IV_vcomplete_imageupload=findViewById(R.id.IV_vcomplefileupload);
+        TV_vcomplete_skip=findViewById(R.id.TV_vcomplete_skipnow);
         SP_vendor_com_planchoose=findViewById(R.id.vendor_complete_plan);
+        SP_vendor_com_offertype=findViewById(R.id.SP_vcomplete_offertype);
+        TIL_vcomplete_percentage=findViewById(R.id.TIV_vcomplete_percentage);
         view1=findViewById(R.id.profile_view1);
         view2=findViewById(R.id.profile_view2);
         view3=findViewById(R.id.profile_view3);
@@ -165,7 +178,10 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         s_ln_tab1= getuserdet.getBooleanExtra("login_tab1",false);
         s_ln_tab2= getuserdet.getBooleanExtra("login_tab2",false);
         s_ln_tab3= getuserdet.getBooleanExtra("login_tab3",false);
-
+        getVendorplan();
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, compl_vendor_offertype);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        SP_vendor_com_offertype.setAdapter(spinnerArrayAdapter);
         if(s_ln_tab1)
         {
 
@@ -307,7 +323,14 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             }
         });
 
+        IV_vcomplete_imageupload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, 1005);
+            }
+        });
         B_saveandcontinue_personal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -343,11 +366,45 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         SP_vendor_com_planchoose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                selec = parent.getItemAtPosition(position).toString();
+                S_vcomple_plantype_sel = parent.getItemAtPosition(position).toString();
+getvendor_plannameid(position);
 
             }
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+        SP_vendor_com_offertype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                 S_vcomple_offertype_sel = parent.getItemAtPosition(position).toString();
+                if(S_vcomple_offertype_sel.equals("Discount")||S_vcomple_offertype_sel.matches("Discount"))
+                {
+                    ET_vcomplete_percentage.setVisibility(View.VISIBLE);
+                    TIL_vcomplete_percentage.setVisibility(View.VISIBLE);
+                } else if(S_vcomple_offertype_sel.equals("Offer")||S_vcomple_offertype_sel.matches("Offer"))
+                {
+                    ET_vcomplete_percentage.setVisibility(View.INVISIBLE);
+                    TIL_vcomplete_percentage.setVisibility(View.INVISIBLE);
+                }
+
+
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        TV_vcomplete_skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                count_on_skip_forvendor="1";
+                startActivity(new Intent(ProfileInfo.this,HomeScreen.class));
+            }
+        });
+        B_vcomplete_complete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             callmetouploadvendorcomplete();
             }
         });
     }
@@ -384,6 +441,18 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                 IV_vendor_professional_companylogo.setImageBitmap(bitmap);
                 upload_vendor_companylogo(bitmap);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (requestCode == 1005 && resultCode == RESULT_OK && data != null) {
+
+            Uri imageUri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                IV_vcomplete_imageupload.setImageBitmap(bitmap);
+                upload_vendor_complete_image(bitmap);
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -617,7 +686,74 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             e.printStackTrace();
         }
 
+    }   private void upload_vendor_complete_image(final Bitmap bitmap)
+    {
+        final String base64String = ImageUtil.convert(bitmap);
+        String strOut = base64String.substring(0, 8);
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            JSONArray jsonArray= new JSONArray();
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("extension", "JPG");
+            jsonBody.put("content", strOut);
+            final String requestBody = jsonBody.toString();
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.User_uploadprofessionalimage, new Response.Listener<String>() {
+                public void onResponse(String response) {
+
+                    try
+                    {
+                        JSONObject jObj = new JSONObject(response);
+                        s_vcomplete_image_response=jObj.getString("Response");
+                    }
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("VOLLEY", error.toString());
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+
+                    return "application/json; charset=utf-8";
+                }
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("x-api-type", "Android");
+                    //  headers.put("content-Type", "application/json");
+                    headers.put("x-api-key",s_lnw_usertoken);
+                    return headers;
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+
+
+
+
+            };
+
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
+
+
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
@@ -1268,11 +1404,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     }
     private void getVendorplan() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JSONArray jsonArray = new JSONArray();
-        JSONObject jsonBody = new JSONObject();
-        final String requestBody = jsonBody.toString();
-        StringRequest stringRequest = new StringRequest("http://weqar.co/webapi/api/vendor/discountplan",
-                new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Global_URL.Vendor_complete_chooseplan, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         JSONObject j = null;
@@ -1297,32 +1429,15 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
 
                 return "application/json; charset=utf-8";
             }
-
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                     headers.put("x-api-type", "Android");
-                    //  headers.put("content-Type", "application/json");
+                    //headers.put("content-Type", "application/json");
                     headers.put("x-api-key",s_lnw_usertoken);
                 return headers;
-
-            }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
-                }
-
-
-
             }
         };
-   //     RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
 
@@ -1339,7 +1454,148 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         }
         SP_vendor_com_planchoose.setAdapter(new ArrayAdapter<String>(ProfileInfo.this, android.R.layout.simple_dropdown_item_1line, vendor_plan));
     }
+    public void callmetouploadvendorcomplete()
+    {
+        try {
+            if(S_vcomple_plantype_sel.equals(""))
+            {
+                new PromptDialog(ProfileInfo.this)
+                        .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                        .setAnimationEnable(true)
+                        .setTitleText("Please Choose Plan")
+                        .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                            @Override
+                            public void onClick(PromptDialog dialog) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+            }
+            else {
+                if (S_vcomple_offertype_sel.equals("")) {
+                    new PromptDialog(ProfileInfo.this)
+                            .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                            .setAnimationEnable(true)
+                            .setTitleText("Please Choose Offer type")
+                            .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                @Override
+                                public void onClick(PromptDialog dialog) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                } else {
+                    if (ET_vcomplete_disctitle.getText().toString().equals("")) {
+                        new PromptDialog(ProfileInfo.this)
+                                .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                                .setAnimationEnable(true)
+                                .setTitleText("Please Enter Title Name")
+                                .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                    @Override
+                                    public void onClick(PromptDialog dialog) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                    } else {
+                        if (ET_vcomplete_discdesc.getText().toString().equals("")) {
+                            new PromptDialog(ProfileInfo.this)
+                                    .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                                    .setAnimationEnable(true)
+                                    .setTitleText("Please Enter Description")
+                                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                        @Override
+                                        public void onClick(PromptDialog dialog) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                        } else {
+                            S_vcomplete_percentage = ET_vcomplete_percentage.getText().toString();
+                            S_vcomplete_title = ET_vcomplete_disctitle.getText().toString();
+                            s_vcomplete_description = ET_vcomplete_discdesc.getText().toString();
+                            callmetouploadvendorcomplete_url(s_vcomplete_description, s_vcomplete_image_response, s_lnw_userid
+                                    , S_vcomplete_title, S_vcomplete_percentage, serviceuid, S_vcomple_offertype_sel);
 
+                        }
+                    }
+                }
+            }
+        }catch (Exception e){}
+
+
+
+    }
+        private String getvendor_plannameid(int position){
+
+        try {
+            JSONObject json = result.getJSONObject(position);
+            serviceuid = json.getString("Id");
+           // Toast.makeText(PartnerSerSel.this,serviceuid , Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return serviceuid;
+    }
+    public void callmetouploadvendorcomplete_url(String v_discdesc,String image,String id,String title,String percentage,
+                                                 String plantype,String ofertype)
+    {
+        try {
+
+
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            JSONArray jsonArray = new JSONArray();
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("Description", v_discdesc);
+            jsonBody.put("Images", image);
+            jsonBody.put("VendorId", id);
+            jsonBody.put("Title", title);
+            jsonBody.put("Percentage", percentage);
+            jsonBody.put("DiscountPlan", plantype);
+            jsonBody.put("DiscountType", ofertype);
+
+            final String requestBody = jsonBody.toString();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.vendor_insert_completedetails, new Response.Listener<String>() {
+
+                public void onResponse(String response) {
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("VOLLEY", error.toString());
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    // headers.put("content-Type", "application/json");
+                    //   headers.put("X-API-TYPE", "Android");
+                    return headers;
+
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+
+
+            };
+
+            requestQueue.add(stringRequest);
+        }catch (JSONException e){
+
+        }
+    }
     public void focuschange()
     {
         ET_fname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -1510,6 +1766,48 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 else
                 {
                     ET_vprof_websitel.setTextColor((getResources().getColor(R.color.colorBlack)));
+                }
+            }
+        });
+        ET_vcomplete_percentage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus)
+            {
+                if (hasFocus)
+                {
+                    ET_vcomplete_percentage.setTextColor((getResources().getColor(R.color.colorPrimary)));
+                }
+                else
+                {
+                    ET_vcomplete_percentage.setTextColor((getResources().getColor(R.color.colorBlack)));
+                }
+            }
+         });
+        ET_vcomplete_disctitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus)
+            {
+                if (hasFocus)
+                {
+                    ET_vcomplete_disctitle.setTextColor((getResources().getColor(R.color.colorPrimary)));
+                }
+                else
+                {
+                    ET_vcomplete_disctitle.setTextColor((getResources().getColor(R.color.colorBlack)));
+                }
+            }
+        });
+        ET_vcomplete_discdesc.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus)
+            {
+                if (hasFocus)
+                {
+                    ET_vcomplete_discdesc.setTextColor((getResources().getColor(R.color.colorPrimary)));
+                }
+                else
+                {
+                    ET_vcomplete_discdesc.setTextColor((getResources().getColor(R.color.colorBlack)));
                 }
             }
         });
