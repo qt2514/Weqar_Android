@@ -24,9 +24,6 @@ import com.roughike.bottombar.OnTabSelectListener;
 
 public class HomeScreen extends AppCompatActivity {
     BottomBar bottomBar;
-    ImageView IV_filter,IV_notification;
-    EditText ET_search,ET_searchs;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,20 +32,7 @@ public class HomeScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
         bottomBar = findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.botnav_event);
-//        IV_filter=findViewById(R.id.homescreen_filter);
-//        IV_notification=findViewById(R.id.homescreen_notification);
-//        ET_search=findViewById(R.id.homescreen_search);
-//        ET_search.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//
-//                ET_search.setWidth(400);
-//
-//                IV_filter.setVisibility(View.INVISIBLE);
-//                IV_notification.setVisibility(View.INVISIBLE);
-//            }
-//        });
+
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
@@ -84,12 +68,8 @@ public class HomeScreen extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

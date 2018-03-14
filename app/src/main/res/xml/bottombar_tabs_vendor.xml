@@ -1,0 +1,19 @@
+<tabs>
+    <tab
+        id="@+id/botnav_event_vendor"
+        icon="@drawable/botnav_event"
+        title="Events"/>
+    <tab
+        id="@+id/botnav_discount_vendor"
+        icon="@drawable/botnav_discount"
+        title="Discounts" />
+    <tab
+        id="@+id/botnav_jobs_vendor"
+        icon="@drawable/botnav_jobs"
+        title="Jobs" />
+    <tab
+        id="@+id/botnav_settings_vendor"
+        icon="@drawable/botnav_setting"
+        title="Settings"
+        barColor="#000"/>
+</tabs>

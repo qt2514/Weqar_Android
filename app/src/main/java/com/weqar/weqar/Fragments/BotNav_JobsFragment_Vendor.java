@@ -1,9 +1,9 @@
 package com.weqar.weqar.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -26,14 +25,14 @@ import com.weqar.weqar.R;
 import java.util.List;
 
 
-public class BotNav_JobsFragment extends Fragment {
-SwipeMenuListView swipeMenuListView_jobs;
-    public static BotNav_JobsFragment newInstance() {
-        BotNav_JobsFragment fragment= new BotNav_JobsFragment();
+public class BotNav_JobsFragment_Vendor extends Fragment {
+    SwipeMenuListView swipeMenuListView_jobs;
+    public static BotNav_JobsFragment_Vendor newInstance() {
+        BotNav_JobsFragment_Vendor fragment= new BotNav_JobsFragment_Vendor();
         return fragment;
     }
     private List<ApplicationInfo> mAppList;
-    private AppAdapter mAdapter;
+    private BotNav_JobsFragment_Vendor.AppAdapter mAdapter;
     CardView card_jobs;
 
 
@@ -46,7 +45,7 @@ SwipeMenuListView swipeMenuListView_jobs;
         mAppList = getActivity().getPackageManager().getInstalledApplications(0);
 
         SwipeMenuListView listView = (SwipeMenuListView) view.findViewById(R.id.weqar_jobs);
-        mAdapter = new AppAdapter();
+        mAdapter = new BotNav_JobsFragment_Vendor.AppAdapter();
         listView.setAdapter(mAdapter);
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -144,7 +143,7 @@ SwipeMenuListView swipeMenuListView_jobs;
                 return false;
             }
         });
-return view;
+        return view;
     }
 
     class AppAdapter extends BaseAdapter {
@@ -181,16 +180,16 @@ return view;
             if (convertView == null) {
                 convertView = View.inflate(getActivity(),
                         R.layout.item_list_app, null);
-                new ViewHolder(convertView);
+                new  BotNav_JobsFragment_Vendor.AppAdapter.ViewHolder(convertView);
             }
-            ViewHolder holder = (ViewHolder) convertView.getTag();
+            BotNav_JobsFragment.AppAdapter.ViewHolder holder = (BotNav_JobsFragment.AppAdapter.ViewHolder) convertView.getTag();
             ApplicationInfo item = getItem(position);
             holder.tv_name.setText(item.loadLabel(getActivity().getPackageManager()));
 
             card_jobs.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                startActivity(new Intent(getActivity(),JobDetails.class));
+                    startActivity(new Intent(getActivity(),JobDetails.class));
                 }
             });
             return convertView;

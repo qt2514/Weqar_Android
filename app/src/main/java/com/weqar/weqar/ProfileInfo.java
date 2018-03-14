@@ -3,9 +3,12 @@ package com.weqar.weqar;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -71,10 +74,12 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     Toolbar toolbar;
     String s_fname,s_mname,s_lname,s_mobilepin,s_mobile,s_address,s_emailid,s_country,
     s_prof_cidno,s_prof_memno,s_prof_valid,s_vprof_category,s_vprof_buscontact,s_vprof_busemail,s_vprof_websitelink,
-    s_prof_sweetmessage,svendor_busimail;
-    String s_lnw_userid,s_lnw_useremail,s_lnw_usertype,s_res_userprofimg,s_lnw_usertoken,s_lnw_getcompany,s_basic_image;
+    svendor_busimail;
+    String s_lnw_userid,s_lnw_useremail,s_lnw_usertype,s_res_userprofimg,s_lnw_usertoken,s_lnw_getcompany,s_basic_image,
+    s_fromadp_getuser_plantype_id,s_fromadp_getuser_plantype;
     Boolean s_ln_tab1,s_ln_tab2,s_ln_tab3;
     com.wdullaer.materialdatetimepicker.date.DatePickerDialog dpd;
+    List<String> L_user_planid ;
     List<String> L_user_plantype ;
     List<String> L_user_planamount ;
     List<String> L_user_desc ;
@@ -83,7 +88,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     RecyclerViewAdapter RecyclerViewHorizontalAdapter;
     LinearLayoutManager HorizontalLayout ;
-    String s_uplan_plantype,s_uplan_amount,s_uplan_desc,S_vcomple_plantype_sel,S_vcomple_offertype_sel,S_vcomplete_percentage,S_vcomplete_title,
+    String s_uplan_planid,s_uplan_plantype,s_uplan_amount,s_uplan_desc,S_vcomple_plantype_sel,S_vcomple_offertype_sel,S_vcomplete_percentage,S_vcomplete_title,
     s_vcomplete_description,s_vcomplete_image_response;
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
     Context context;
@@ -150,6 +155,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         view4=findViewById(R.id.profile_view4);
         but_complete=findViewById(R.id.complete_but);
         Rec_usersubs = findViewById(R.id.recyclerview1);
+        L_user_planid= new ArrayList<String>();
         L_user_plantype= new ArrayList<String>();
         L_user_planamount= new ArrayList<String>();
         L_user_desc= new ArrayList<String>();
@@ -164,7 +170,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
 
         Rec_usersubs.setLayoutManager(RecyclerViewLayoutManager);
 
-        RecyclerViewHorizontalAdapter = new RecyclerViewAdapter(L_user_plantype,L_user_planamount,L_user_desc,getApplicationContext());
+        RecyclerViewHorizontalAdapter = new RecyclerViewAdapter(L_user_planid,L_user_plantype,L_user_planamount,L_user_desc,getApplicationContext());
 
         HorizontalLayout = new LinearLayoutManager(ProfileInfo.this, LinearLayoutManager.HORIZONTAL, false);
         Rec_usersubs.setLayoutManager(HorizontalLayout);
@@ -182,21 +188,20 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, compl_vendor_offertype);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         SP_vendor_com_offertype.setAdapter(spinnerArrayAdapter);
-        if(s_ln_tab1)
-        {
 
-            if(s_ln_tab2)
+        if(s_lnw_usertype.equals("user")||s_lnw_usertype.matches("user"))
+        {
+            if(s_ln_tab1)
             {
 
-                if(s_ln_tab3)
+                if (s_ln_tab2)
                 {
-                    startActivity(new Intent(ProfileInfo.this,HomeScreen.class));
-                }
-                else
-                {
-
-
-                    if(s_lnw_usertype.equals("user")||s_lnw_usertype.matches("user")) {
+                    if (s_ln_tab3)
+                    {
+                        startActivity(new Intent(ProfileInfo.this, HomeScreen.class));
+                    }
+                    else
+                    {
                         toolbar.setTitle("Subscription");
                         getUserCompletesubscription();
                         scrollView_personal.setVisibility(View.INVISIBLE);
@@ -210,29 +215,9 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                         view1.setBackgroundResource(R.color.colorAccent);
                         view2.setBackgroundResource(R.color.colorAccent);
                         view3.setBackgroundResource(R.color.colorAccent);
-
-                    }
-                    else if(s_lnw_usertype.equals("vendor")||s_lnw_usertype.matches("vendor")) {
-                        toolbar.setTitle("Add Discount");    getUserCompletesubscription();
-                        scrollView_personal.setVisibility(View.INVISIBLE);
-                        scrollView_professional.setVisibility(View.INVISIBLE);
-                        but_complete.setVisibility(View.INVISIBLE);
-                        scrollView_complete.setVisibility(View.INVISIBLE);
-
-                      scrollView_vendor_complete.setVisibility(View.VISIBLE);
-                        IV_personal.setImageResource(R.drawable.profile_basic_three);
-                        IV_professional.setImageResource(R.drawable.profile_professional_three);
-                        IV_complete.setImageResource(R.drawable.profile_complete_two);
-                        view1.setBackgroundResource(R.color.colorAccent);
-                        view2.setBackgroundResource(R.color.colorAccent);
-                        view3.setBackgroundResource(R.color.colorAccent);
                     }
                 }
-
-            }
-            else
-            {
-                if(s_lnw_usertype.equals("user")||s_lnw_usertype.matches("user"))
+                else
                 {
                     toolbar.setTitle("Professional");
 
@@ -245,10 +230,42 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                     view1.setBackgroundResource(R.color.colorAccent);
                     view2.setBackgroundResource(R.color.colorAccent);
                 }
-                else if(s_lnw_usertype.equals("vendor")||s_lnw_usertype.matches("vendor"))
+            }
+            else
+            {
+                toolbar.setTitle("Basic Info");
+                scrollView_personal.setVisibility(View.VISIBLE);
+                scrollView_professional.setVisibility(View.INVISIBLE);
+                scrollView_complete.setVisibility(View.INVISIBLE);
+                view1.setBackgroundResource(R.color.colorAccent);
+            }
+        }
+
+        else  if(s_lnw_usertype.equals("vendor")||s_lnw_usertype.matches("vendor"))
+        {
+            if(s_ln_tab1 && s_ln_tab2)
+            {
+                Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("weqar_uid",s_lnw_userid);
+
+                editor.apply();
+                startActivity(intent);
+            }
+            else
+            {
+                if(!s_ln_tab1)
+                {
+                    toolbar.setTitle("Basic Info");
+                    scrollView_personal.setVisibility(View.VISIBLE);
+                    scrollView_professional.setVisibility(View.INVISIBLE);
+                    scrollView_complete.setVisibility(View.INVISIBLE);
+                    view1.setBackgroundResource(R.color.colorAccent);
+                }
+                else if(!s_ln_tab2)
                 {
                     toolbar.setTitle("Verification");
-
                     scrollview_vendor_professional.setVisibility(View.VISIBLE);
                     scrollView_personal.setVisibility(View.INVISIBLE);
                     scrollView_professional.setVisibility(View.INVISIBLE);
@@ -260,17 +277,11 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                     view2.setBackgroundResource(R.color.colorAccent);
 
                 }
-
             }
         }
-        else
-        {
-            toolbar.setTitle("Basic Info");
-            scrollView_personal.setVisibility(View.VISIBLE);
-            scrollView_professional.setVisibility(View.INVISIBLE);
-            scrollView_complete.setVisibility(View.INVISIBLE);
-            view1.setBackgroundResource(R.color.colorAccent);
-        }
+
+
+
         Calendar now = Calendar.getInstance();
         dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
                 ProfileInfo.this,
@@ -360,7 +371,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(ProfileInfo.this,HomeScreen.class));
+             callmetouploadusercomplete();
             }
         });
         SP_vendor_com_planchoose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -398,7 +409,13 @@ getvendor_plannameid(position);
             @Override
             public void onClick(View v) {
                 count_on_skip_forvendor="1";
-                startActivity(new Intent(ProfileInfo.this,HomeScreen.class));
+                Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("weqar_uid",s_lnw_userid);
+
+                editor.apply();
+                startActivity(intent);
             }
         });
         B_vcomplete_complete.setOnClickListener(new View.OnClickListener() {
@@ -1108,58 +1125,96 @@ getvendor_plannameid(position);
 
         }
     }
-//    public void get_vendor_categ() {
-//
-//
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET,"http://weqar.co/webapi/api/vendor/category", new Response.Listener<String>() {
-//
-//            public void onResponse(String response) {
-//                try {
-//                    JSONObject jObj = new JSONObject(response);
-//                    JSONArray jsonArray = jObj.getJSONArray("Response");
-//                    for (int i = 0; i < jsonArray.length(); i++) {
-//                        JSONObject object = jsonArray.getJSONObject(i);
-//                        String s_uplan_plantypes = object.getString("Name");
-//
-//                        AScategory_vendor.add(new MultiSelectModel(i,s_uplan_plantypes));
-//                    }
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        }) {
-//            @Override
-//            public String getBodyContentType() {
-//
-//                return "application/json; charset=utf-8";
-//            }
-//
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                HashMap<String, String> headers = new HashMap<String, String>();
-//                //   headers.put("content-Type", "application/json");
-//
-//
-//
-//                return headers;
-//
-//            }
-//
-//
-//
-//        };
-//
-//        requestQueue.add(stringRequest);
-//    }
+
+    public void callmetouploadusercomplete()
+    {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+       String  categid_book = preferences.getString("sel_user_plantype", "");
+        TinyDB tinydb = new TinyDB(context);
+        s_fromadp_getuser_plantype_id=tinydb.getString("check_userplantype_id");
+        s_fromadp_getuser_plantype=tinydb.getString("check_userplantype_type");
+        if(categid_book.equals("")||categid_book.equals(null))
+        {
+            new PromptDialog(ProfileInfo.this)
+                    .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                    .setAnimationEnable(true)
+                    .setTitleText("Please Choose Subscription Plan")
+                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                        @Override
+                        public void onClick(PromptDialog dialog) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+        }
+        else
+        {
+            IV_complete.setImageResource(R.drawable.profile_complete_three);
+            view4.setBackgroundResource(R.color.colorAccent);
+            callmetouploadusercomplete_url(s_fromadp_getuser_plantype,s_fromadp_getuser_plantype_id,s_lnw_userid);
+            startActivity(new Intent(ProfileInfo.this,HomeScreen.class));
+        }
+
+    }
+    public void callmetouploadusercomplete_url(String user_comple_plantype,String user_comple_plantype_id,String user_compl_userid)
+    {
+        try {
+
+
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            JSONArray jsonArray = new JSONArray();
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("PlanType", user_comple_plantype);
+            jsonBody.put("PlanTypeId", user_comple_plantype_id);
+            jsonBody.put("UserId", user_compl_userid);
+
+            final String requestBody = jsonBody.toString();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.user_insert_completedetails, new Response.Listener<String>() {
+
+                public void onResponse(String response) {
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("VOLLEY", error.toString());
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    // headers.put("content-Type", "application/json");
+                  headers.put("X-API-TYPE", "Android");
+                    headers.put("x-api-key",s_lnw_usertoken);
+                    return headers;
+
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+
+
+            };
+
+            requestQueue.add(stringRequest);
+        }catch (JSONException e){
+
+        }
+    }
     public void callmetouploadprofessional_vendor()
     {
         if(ET_vprof_category.getText().toString().equals(""))
@@ -1235,20 +1290,20 @@ getvendor_plannameid(position);
                             scrollView_personal.setVisibility(View.INVISIBLE);
                             scrollView_professional.setVisibility(View.INVISIBLE);
                             scrollview_vendor_professional.setVisibility(View.INVISIBLE);
-                            scrollView_complete.setVisibility(View.VISIBLE);
+                            scrollView_complete.setVisibility(View.INVISIBLE);
                             view3.setBackgroundResource(R.color.colorAccent);
                             toolbar.setTitle("Subscription");
                             IV_personal.setImageResource(R.drawable.profile_basic_three);
                             IV_professional.setImageResource(R.drawable.profile_professional_three);
                             IV_complete.setImageResource(R.drawable.profile_complete_two);
-                            but_complete.setVisibility(View.VISIBLE);
-
+                            but_complete.setVisibility(View.INVISIBLE);
+                            scrollView_vendor_complete.setVisibility(View.VISIBLE);
                             callmetouploadprofessionalurl_vendor(s_vprof_buscontact, s_vprof_busemail, s_lnw_getcompany, s_lnw_userid, s_vprof_category);
                             getUserCompletesubscription();
                             IV_personal.setImageResource(R.drawable.profile_basic_three);
                             IV_professional.setImageResource(R.drawable.profile_professional_three);
-                            IV_complete.setImageResource(R.drawable.profile_complete_three);
-                            view4.setBackgroundResource(R.color.colorAccent);
+                            IV_complete.setImageResource(R.drawable.profile_complete_two);
+                            //view4.setBackgroundResource(R.color.colorAccent);
 
                         }
                     }
@@ -1360,22 +1415,19 @@ getvendor_plannameid(position);
                         s_uplan_plantype=s_uplan_plantypes.trim();
                         s_uplan_amount = object.getString("Amount");
                         s_uplan_desc= object.getString("Description");
+                        s_uplan_planid=object.getString("Id");
+                        L_user_planid.add(String.valueOf(s_uplan_planid));
                         L_user_plantype.add(String.valueOf(s_uplan_plantype));
                         L_user_planamount.add(String.valueOf(s_uplan_amount));
                         L_user_desc.add(String.valueOf(s_uplan_desc));
 
                     }
                     Rec_usersubs.setAdapter(RecyclerViewHorizontalAdapter);
-
-
-
-
                 }
 
                 catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -1393,11 +1445,7 @@ getvendor_plannameid(position);
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 return headers;
-
             }
-
-
-
         };
 
         requestQueue.add(stringRequest);
@@ -1512,7 +1560,13 @@ getvendor_plannameid(position);
                             s_vcomplete_description = ET_vcomplete_discdesc.getText().toString();
                             callmetouploadvendorcomplete_url(s_vcomplete_description, s_vcomplete_image_response, s_lnw_userid
                                     , S_vcomplete_title, S_vcomplete_percentage, serviceuid, S_vcomple_offertype_sel);
+                           Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("weqar_uid",s_lnw_userid);
 
+                            editor.apply();
+                            startActivity(intent);
                         }
                     }
                 }
@@ -1571,8 +1625,8 @@ getvendor_plannameid(position);
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
-                    // headers.put("content-Type", "application/json");
-                    //   headers.put("X-API-TYPE", "Android");
+                    headers.put("X-API-TYPE", "Android");
+                    headers.put("x-api-key",s_lnw_usertoken);
                     return headers;
 
                 }

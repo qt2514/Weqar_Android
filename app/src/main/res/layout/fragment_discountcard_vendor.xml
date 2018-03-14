@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ScrollView
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginBottom="50dp"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/relative_discountone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/roundimg_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/rounded_two"
+                    app:riv_border_color="@color/colorHints"
+                    app:riv_border_width="2dip"
+                    app:riv_corner_radius="13dp"/>
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/roundimg_one"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignTop="@+id/roundimg_one"
+                    android:padding="8dp"
+                    android:layout_marginLeft="1dp"
+                    android:src="@drawable/vgv" />
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/roundedImageView"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignStart="@+id/textView2"
+                    android:layout_alignTop="@+id/roundimg_one"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/rounded"
+                    app:riv_border_color="@color/colorPrimary"
+                    app:riv_border_width="2dip"
+                    app:riv_oval="true" />
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_below="@+id/roundedImageView"
+                    android:text="75% Discount in KFC"
+                    android:focusableInTouchMode="false"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    android:layout_marginTop="17dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textViewu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="2dp"
+                    android:focusableInTouchMode="false"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:layout_below="@+id/textView2"
+                    android:text="Percide January 7 2018 Dont miss it"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="11sp"
+                    />
+
+                <RatingBar
+                    android:id="@+id/mappage_rating"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewu"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="3dp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+
+                    android:max="5"
+                    android:progressBackgroundTint="@color/coloryellow"
+
+                    android:progressTint="@color/coloryellow"
+                    android:rating="5"
+                    android:scaleX=".5"
+                    android:scaleY=".5"
+                    android:transformPivotX="0dp"
+                    android:transformPivotY="0dp" />
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp"
+                    android:layout_above="@+id/textView2"
+                    android:layout_marginBottom="29dp"
+                    android:layout_marginStart="29dp"
+                    android:layout_toEndOf="@+id/imageView2"
+                    android:background="@drawable/but_selected"
+
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:text="Unfollow"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/button"
+                    android:layout_below="@+id/textView2"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:src="@drawable/ic_location_on_black_24dp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:id="@+id/relative_discounttwo"
+
+                android:layout_height="wrap_content">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/roundimg_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/rounded_two"
+                    app:riv_border_color="@color/colorHints"
+                    app:riv_border_width="2dip"
+                    app:riv_corner_radius="13dp"/>
+
+                <ImageView
+                    android:id="@+id/imageView21"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/roundimg_two"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignTop="@+id/roundimg_two"
+                    android:padding="8dp"
+                    android:layout_marginLeft="1dp"
+                    android:src="@drawable/kdjbvsd" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/roundedImageView1"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignStart="@+id/textView21"
+                    android:layout_alignTop="@+id/imageView21"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="16dp"
+
+                    android:src="@drawable/rounded"
+                    app:riv_border_color="@color/colorPrimary"
+                    app:riv_border_width="2dip"
+                    app:riv_oval="true" />
+                <TextView
+                    android:id="@+id/textView21"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_below="@+id/roundedImageView1"
+                    android:text="75% Discount in KFC"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    android:layout_marginTop="17dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textViewu1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_below="@+id/textView21"
+                    android:text="Percide January 7 2018 Dont miss it"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="11sp"
+                    />
+                <RatingBar
+                    android:id="@+id/mappage_rating1"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewu1"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:layout_marginLeft="20dp"
+                    android:progressBackgroundTint="@color/coloryellow"
+                    android:progressTint="@color/coloryellow"
+                    android:layout_marginTop="3dp"
+                    android:secondaryProgressTint="@color/coloryellow"
+                    android:max="5"
+                    android:rating="5"
+                    android:scaleX=".5"
+                    android:scaleY=".5"
+                    android:transformPivotX="0dp"
+                    android:transformPivotY="0dp" />
+
+                <Button
+                    android:id="@+id/button1"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp"
+
+                    android:layout_alignEnd="@+id/roundimg_two"
+                    android:layout_alignTop="@+id/roundedImageView1"
+                    android:layout_marginEnd="17dp"
+                    android:layout_marginTop="11dp"
+                    android:background="@drawable/but_unselected"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:text="Follow"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/button1"
+                    android:layout_below="@+id/textView21"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:src="@drawable/ic_location_on_black_24dp" />
+            </RelativeLayout>
+
+
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="100dp"
+                android:id="@+id/relative_discountthree"
+
+                android:layout_height="wrap_content">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/roundimg_three"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginRight="15dp"
+
+                    android:src="@drawable/rounded_two"
+                    app:riv_border_color="@color/colorHints"
+                    app:riv_border_width="2dip"
+                    android:padding="3dp"
+                    app:riv_corner_radius="13dp"/>
+
+                <ImageView
+                    android:id="@+id/imageView21z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/roundimg_three"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignTop="@+id/roundimg_three"
+                    android:padding="8dp"
+
+                    android:layout_marginLeft="1dp"
+                    android:src="@drawable/vgv" />
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/roundedImageView1z"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignStart="@+id/textView21z"
+                    android:layout_alignTop="@+id/imageView21z"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="16dp"
+
+                    android:src="@drawable/rounded"
+                    app:riv_border_color="@color/colorPrimary"
+                    app:riv_border_width="2dip"
+                    app:riv_oval="true" />
+                <TextView
+                    android:id="@+id/textView21z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_below="@+id/roundedImageView1z"
+                    android:text="75% Discount in KFC"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    android:layout_marginTop="12dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textViewu1z"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_below="@+id/textView21z"
+                    android:text="Percide January 7 2018 Dont miss it"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="11sp"
+                    />
+                <RatingBar
+                    android:id="@+id/mappage_rating1z"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewu1z"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:layout_marginLeft="20dp"
+
+                    android:layout_marginTop="3dp"
+                    android:progressTint="@color/coloryellow"
+
+                    android:max="5"
+                    android:rating="5"
+                    android:scaleX=".5"
+                    android:scaleY=".5"
+                    android:transformPivotX="0dp"
+                    android:transformPivotY="0dp" />
+
+                <Button
+                    android:id="@+id/button1z"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp"
+                    android:layout_alignEnd="@+id/roundimg_three"
+                    android:layout_alignTop="@+id/roundedImageView1z"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/but_selected"
+                    android:text="Unfollow"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/button1z"
+                    android:layout_below="@+id/textView21z"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:src="@drawable/ic_location_on_black_24dp" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>
