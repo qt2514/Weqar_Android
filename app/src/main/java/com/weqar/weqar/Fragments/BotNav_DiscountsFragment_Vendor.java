@@ -253,7 +253,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment {
     }
     public void getUserCompletesubscription()
     {
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, Global_URL.User_subscriptiondet_get, new Response.Listener<String>() {
 
             public void onResponse(String response) {
