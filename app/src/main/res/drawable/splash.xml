@@ -6,7 +6,7 @@
     <item>
         <bitmap
 
-           android:src="@drawable/weqar_logo"/>
+           android:src="@drawable/splashk"/>
     </item>
 
 

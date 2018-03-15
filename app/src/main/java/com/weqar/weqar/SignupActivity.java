@@ -2,10 +2,12 @@ package com.weqar.weqar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -35,7 +37,7 @@ import cn.refactor.lib.colordialog.PromptDialog;
 
 public class SignupActivity extends AppCompatActivity {
     EditText ET_username,ET_emailid,ET_password,ET_confirmpassword;
-    String S_username,S_emailid,S_password,S_confirmpassword,sweetmessage,SemailPattern,SemailInput,S_user_type;
+    String S_username,S_emailid,S_password,S_confirmpassword,SemailPattern,SemailInput,S_user_type;
     Button B_signup,B_sel_user,B_sel_vendor;
     Context context;
     @Override
@@ -51,7 +53,6 @@ public class SignupActivity extends AppCompatActivity {
         B_sel_vendor=findViewById(R.id.Signup_But_vendor);
         context=this;
         S_user_type="user";
-
         ET_username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -135,13 +136,31 @@ public class SignupActivity extends AppCompatActivity {
                 if (isConnectedToNetwork()) {
                     if(ET_username.getText().toString().equals(""))
                     {
-                        sweetmessage="Please Enter Username";
+                        new PromptDialog(SignupActivity.this)
+                                .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                                .setAnimationEnable(true)
+                                .setTitleText("Please Enter Username")
+                                .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                    @Override
+                                    public void onClick(PromptDialog dialog) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
                     }
                     else
                     {
                         if(ET_emailid.getText().toString().equals(""))
                         {
-                            sweetmessage="Please Enter Your Email Id";
+                            new PromptDialog(SignupActivity.this)
+                                    .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                                    .setAnimationEnable(true)
+                                    .setTitleText("Please Enter Your Email Id")
+                                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                        @Override
+                                        public void onClick(PromptDialog dialog) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
                         }
                         else
                         {
@@ -150,13 +169,31 @@ public class SignupActivity extends AppCompatActivity {
                             {
                                 if(ET_password.getText().toString().equals(""))
                                 {
-                                    sweetmessage="Please Enter Password";
+                                    new PromptDialog(SignupActivity.this)
+                                            .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                                            .setAnimationEnable(true)
+                                            .setTitleText("Please Enter Password")
+                                            .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                                @Override
+                                                public void onClick(PromptDialog dialog) {
+                                                    dialog.dismiss();
+                                                }
+                                            }).show();
                                 }
                                 else
                                 {
                                     if(ET_confirmpassword.getText().toString().equals(""))
                                     {
-                                        sweetmessage="Please Enter Confirm Password";
+                                        new PromptDialog(SignupActivity.this)
+                                                .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                                                .setAnimationEnable(true)
+                                                .setTitleText("Please Enter Confirm Password")
+                                                .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                                    @Override
+                                                    public void onClick(PromptDialog dialog) {
+                                                        dialog.dismiss();
+                                                    }
+                                                }).show();
                                     }
                                     else
                                     {
@@ -166,61 +203,54 @@ public class SignupActivity extends AppCompatActivity {
                                         S_confirmpassword=ET_confirmpassword.getText().toString();
                                         if (!S_password.equals(S_confirmpassword))
                                         {
-                                            sweetmessage = "Password Mismatch";
-
+                                            new PromptDialog(SignupActivity.this)
+                                                    .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                                                    .setAnimationEnable(true)
+                                                    .setTitleText("Password Mismatc")
+                                                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                                        @Override
+                                                        public void onClick(PromptDialog dialog) {
+                                                            dialog.dismiss();
+                                                        }
+                                                    }).show();
                                         }
                                         else
                                         {
-                                            sweetmessage="Weqar Welcomes You!";
-                                            startActivity(new Intent(SignupActivity.this,LoginActivity.class));
+
                                             signup_twotr(S_user_type,S_username, S_emailid, S_password);
-
                                         }
-
                                     }
                                 }
-
                             }
                             else
                             {
-                                sweetmessage="Please Check Your Email Id";
+                                new PromptDialog(SignupActivity.this)
+                                        .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                                        .setAnimationEnable(true)
+                                        .setTitleText("Please Check Your Email Id")
+                                        .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                            @Override
+                                            public void onClick(PromptDialog dialog) {
+                                                dialog.dismiss();
+                                            }
+                                        }).show();
                             }
-
                         }
-
                     }
                 }
                 else
                 {
-                    sweetmessage="Please Check Your Internet";
+                    new PromptDialog(SignupActivity.this)
+                            .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                            .setAnimationEnable(true)
+                            .setTitleText("Please Check Your Internet")
+                            .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                @Override
+                                public void onClick(PromptDialog dialog) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
                 }
-//                ColorDialog dialog = new ColorDialog(SignupActivity.this);
-//                dialog.setTitle(sweetmessage);
-////                dialog.setContentText(getString(R.string.content_text));
-//                dialog.setContentImage(getResources().getDrawable(R.drawable.ic_back));
-//                dialog.setPositiveListener(("OK"), new ColorDialog.OnPositiveListener() {
-//                    @Override
-//                    public void onClick(ColorDialog dialog) {
-                        new PromptDialog(SignupActivity.this)
-                                .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
-                                .setAnimationEnable(true)
-                                .setTitleText(sweetmessage)
-                                .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                                    @Override
-                                    public void onClick(PromptDialog dialog) {
-                                        dialog.dismiss();
-                                    }
-                                }).show();
-//                    }
-//                })
-//                        .setNegativeListener(("cancel"), new ColorDialog.OnNegativeListener() {
-//                            @Override
-//                            public void onClick(ColorDialog dialog) {
-//                                Toast.makeText(SignupActivity.this, dialog.getNegativeText().toString(), Toast.LENGTH_SHORT).show();
-//                                dialog.dismiss();
-//                            }
-//                        }).show();
-
             }
         });
     }
@@ -232,7 +262,16 @@ public class SignupActivity extends AppCompatActivity {
     public void signup_twotr(String s_user_type,String s_username,String s_emailid,String s_password) {
 
         try {
-
+            new PromptDialog(SignupActivity.this)
+                    .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                    .setAnimationEnable(true)
+                    .setTitleText("Weqar Welcomes You!")
+                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                        @Override
+                        public void onClick(PromptDialog dialog) {
+                            startActivity(new Intent(SignupActivity.this,LoginActivity.class));
+                        }
+                    }).show();
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONArray jsonArray= new JSONArray();
             JSONObject jsonBody = new JSONObject();
@@ -240,6 +279,13 @@ public class SignupActivity extends AppCompatActivity {
             jsonBody.put("UserName", s_username);
             jsonBody.put("Email", s_emailid);
             jsonBody.put("Password", s_password);
+
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("weqar_emailid",s_emailid);
+
+            editor.apply();
 
             final String requestBody = jsonBody.toString();
 

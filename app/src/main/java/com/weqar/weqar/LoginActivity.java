@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(ET_username.getText().toString().equals(""))
                     {
                         new PromptDialog(LoginActivity.this)
-                                .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                                .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
                                 .setAnimationEnable(true)
                                 .setTitleText("Please Enter Username")
                                 .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                         if(ET_password.getText().toString().equals(""))
                         {
                             new PromptDialog(LoginActivity.this)
-                                    .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                                    .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
                                     .setAnimationEnable(true)
                                     .setTitleText("Please Enter Password")
                                     .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
@@ -117,7 +117,9 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             S_username=ET_username.getText().toString();
                             S_password=ET_password.getText().toString();
+
                             signin_verif(S_username,S_password);
+
 //                            startActivity(new Intent(LoginActivity.this,ProfileInfo.class));
 
                         }
@@ -168,7 +170,27 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(String response) {
                     try {
 
+                        new PromptDialog(LoginActivity.this)
+                                .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                                .setAnimationEnable(true)
+                                .setTitleText("Welcome to Weqar")
+                                .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                    @Override
+                                    public void onClick(PromptDialog dialog) {
 
+
+                                        Intent intent=new Intent(LoginActivity.this, ProfileInfo.class);
+                                        intent.putExtra("w_userid",s_ln_userid);
+                                        intent.putExtra("w_useremail",s_ln_usermail);
+                                        intent.putExtra("w_usertype",s_ln_usertype);
+                                        intent.putExtra("APIKey",s_ln_usertoken);
+                                        intent.putExtra("login_tab1",s_ln_tab1);
+                                        intent.putExtra("login_tab2",s_ln_tab2);
+                                        intent.putExtra("login_tab3",s_ln_tab3);
+
+                                        startActivity(intent);
+                                    }
+                                }).show();
                         JSONObject jObj = new JSONObject(response);
 
                         JSONObject verification = jObj.getJSONObject("Response");
@@ -183,16 +205,6 @@ public class LoginActivity extends AppCompatActivity {
                         s_ln_tab3=verification.getBoolean("Tab3");
 
 
-                        Intent intent=new Intent(LoginActivity.this, ProfileInfo.class);
-                        intent.putExtra("w_userid",s_ln_userid);
-                        intent.putExtra("w_useremail",s_ln_usermail);
-                        intent.putExtra("w_usertype",s_ln_usertype);
-                        intent.putExtra("APIKey",s_ln_usertoken);
-                        intent.putExtra("login_tab1",s_ln_tab1);
-                        intent.putExtra("login_tab2",s_ln_tab2);
-                        intent.putExtra("login_tab3",s_ln_tab3);
-
-                        startActivity(intent);
                         //finish();
                     }
                     catch (JSONException e) {

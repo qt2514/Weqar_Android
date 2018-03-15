@@ -20,6 +20,13 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.weqar.weqar.DBJavaClasses.discountcard_list_vendor;
@@ -39,7 +46,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -62,6 +71,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment {
         s_vendor_token = preferences.getString("weqar_token", "");
         GV_vendor_view=view.findViewById(R.id.disc_vendor_gv);
         new kilomilo().execute(Global_URL.Vendor_showown_discounts);
+        getUserCompletesubscription();
         return view;
     }
 
@@ -241,5 +251,55 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment {
             }
         }
     }
+    public void getUserCompletesubscription()
+    {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Global_URL.User_subscriptiondet_get, new Response.Listener<String>() {
 
+            public void onResponse(String response) {
+                try {
+
+                    JSONObject jObj = new JSONObject(response);
+                    JSONArray jsonArray = jObj.getJSONArray("Response");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        String s_uplan_plantypes = object.getString("PlanType");
+//                        s_uplan_plantype=s_uplan_plantypes.trim();
+//                        s_uplan_amount = object.getString("Amount");
+//                        s_uplan_desc= object.getString("Description");
+//                        s_uplan_planid=object.getString("Id");
+//                        L_user_planid.add(String.valueOf(s_uplan_planid));
+//                        L_user_plantype.add(String.valueOf(s_uplan_plantype));
+//                        L_user_planamount.add(String.valueOf(s_uplan_amount));
+//                        L_user_desc.add(String.valueOf(s_uplan_desc));
+
+                    }
+                 //   Rec_usersubs.setAdapter(RecyclerViewHorizontalAdapter);
+                }
+
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                return headers;
+            }
+        };
+
+        requestQueue.add(stringRequest);
+    }
 }

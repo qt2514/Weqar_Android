@@ -167,7 +167,7 @@
                 android:theme="@style/TextLabel"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="150dp">
+                android:layout_height="100dp">
             <EditText
                 android:id="@+id/et_address"
                 android:textSize="16sp"
@@ -176,10 +176,11 @@
                 android:gravity="start"
                 android:padding="10dp"
                 android:textColor="#000"
+                android:maxLength="21"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textEmailAddress"
-                android:background="@drawable/selector_bg_edit"
+                android:inputType="text|textMultiLine|textCapSentences"                 android:background="@drawable/selector_bg_edit"
                 android:textCursorDrawable="@drawable/bg_input_cursor"
                 android:paddingBottom="2dp" />
             </android.support.design.widget.TextInputLayout>

@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -55,6 +56,7 @@ public class MultiSpinner_Vendor_Category extends AppCompatActivity {
     List<String> subjectnamelist;
     List<String> subjectnameid;
     Context context;
+    ImageView IV_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,13 @@ public class MultiSpinner_Vendor_Category extends AppCompatActivity {
         subjectnamelist=new ArrayList<>();
         subjectnameid=new ArrayList<>();
         listViewItems = new ArrayList<MultispinnerList>();
-
+IV_back=findViewById(R.id.back_ima_scedule);
+IV_back.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        finish();
+    }
+});
         listViewWithCheckBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

@@ -98,7 +98,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     private JSONArray result;
     ArrayList<String> vendor_plan = new ArrayList<String>();
     String compl_vendor_offertype[] = {"Discount","Offer"},count_on_skip_forvendor="0";
-    String serviceuid="";
+    String serviceuid="",s_lnw_usermailid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,6 +184,10 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         s_ln_tab1= getuserdet.getBooleanExtra("login_tab1",false);
         s_ln_tab2= getuserdet.getBooleanExtra("login_tab2",false);
         s_ln_tab3= getuserdet.getBooleanExtra("login_tab3",false);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        s_lnw_usermailid = preferences.getString("weqar_emailid", "");
+        ET_emailid.setText(s_lnw_usermailid);
         getVendorplan();
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, compl_vendor_offertype);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
@@ -246,8 +250,8 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             if(s_ln_tab1 && s_ln_tab2)
             {
                 Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor editor = preferences.edit();
+                SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(context);
+                SharedPreferences.Editor editor = preferencess.edit();
                 editor.putString("weqar_uid",s_lnw_userid);
                 editor.putString("weqar_token",s_lnw_usertoken);
                 editor.apply();
