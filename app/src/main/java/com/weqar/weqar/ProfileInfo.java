@@ -249,7 +249,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("weqar_uid",s_lnw_userid);
-
+                editor.putString("weqar_token",s_lnw_usertoken);
                 editor.apply();
                 startActivity(intent);
             }
@@ -413,7 +413,7 @@ getvendor_plannameid(position);
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("weqar_uid",s_lnw_userid);
-
+                editor.putString("weqar_token",s_lnw_usertoken);
                 editor.apply();
                 startActivity(intent);
             }
@@ -692,10 +692,6 @@ getvendor_plannameid(position);
                         return null;
                     }
                 }
-
-
-
-
             };
 
             requestQueue.add(stringRequest);
@@ -703,7 +699,8 @@ getvendor_plannameid(position);
             e.printStackTrace();
         }
 
-    }   private void upload_vendor_complete_image(final Bitmap bitmap)
+    }
+    private void upload_vendor_complete_image(final Bitmap bitmap)
     {
         final String base64String = ImageUtil.convert(bitmap);
         String strOut = base64String.substring(0, 8);
@@ -716,7 +713,6 @@ getvendor_plannameid(position);
             final String requestBody = jsonBody.toString();
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.User_uploadprofessionalimage, new Response.Listener<String>() {
                 public void onResponse(String response) {
-
                     try
                     {
                         JSONObject jObj = new JSONObject(response);
@@ -725,7 +721,6 @@ getvendor_plannameid(position);
                     catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -746,7 +741,6 @@ getvendor_plannameid(position);
                     headers.put("x-api-key",s_lnw_usertoken);
                     return headers;
                 }
-
                 @Override
                 public byte[] getBody() throws AuthFailureError {
                     try {
@@ -757,26 +751,17 @@ getvendor_plannameid(position);
                         return null;
                     }
                 }
-
-
-
-
             };
-
             requestQueue.add(stringRequest);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
-
-
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
-
     public void callmetouploadbasic()
     {
         if(ET_fname.getText().toString().equals(""))
@@ -791,7 +776,6 @@ getvendor_plannameid(position);
                             dialog.dismiss();
                         }
                     }).show();
-
         }
         else
         {
@@ -807,7 +791,6 @@ getvendor_plannameid(position);
                                 dialog.dismiss();
                             }
                         }).show();
-
             }
             else
             {
@@ -823,7 +806,6 @@ getvendor_plannameid(position);
                                     dialog.dismiss();
                                 }
                             }).show();
-
                 }
                 else
                 {
@@ -839,7 +821,6 @@ getvendor_plannameid(position);
                                         dialog.dismiss();
                                     }
                                 }).show();
-
                     }
                     else
                     {
@@ -855,7 +836,6 @@ getvendor_plannameid(position);
                                             dialog.dismiss();
                                         }
                                     }).show();
-
                         }
                         else
                         {
@@ -871,7 +851,6 @@ getvendor_plannameid(position);
                                                 dialog.dismiss();
                                             }
                                         }).show();
-
                             }
                             else
                             {
@@ -891,23 +870,18 @@ getvendor_plannameid(position);
                                 {
                                     scrollView_professional.setVisibility(View.VISIBLE);
                                     toolbar.setTitle("Professional");
-
                                 }
                                 else if(s_lnw_usertype.equals("vendor")||s_lnw_usertype.matches("vendor"))
                                 {
                                     scrollview_vendor_professional.setVisibility(View.VISIBLE);
                                     toolbar.setTitle("Verification");
-
                                 }
                                 scrollView_complete.setVisibility(View.INVISIBLE);
                                 view2.setBackgroundResource(R.color.colorAccent);
-
                                 IV_personal.setImageResource(R.drawable.profile_basic_three);
                                 IV_professional.setImageResource(R.drawable.profile_professional_two);
                                 IV_complete.setImageResource(R.drawable.profile_complete_one);
                                 callmetouploadbasicurl(s_lnw_userid,s_emailid,s_fname,s_mname,s_lname,s_mobile,s_address,s_country);
-
-
                             }
                         }
                     }
@@ -1558,13 +1532,13 @@ getvendor_plannameid(position);
                             S_vcomplete_percentage = ET_vcomplete_percentage.getText().toString();
                             S_vcomplete_title = ET_vcomplete_disctitle.getText().toString();
                             s_vcomplete_description = ET_vcomplete_discdesc.getText().toString();
-                            callmetouploadvendorcomplete_url(s_vcomplete_description, s_vcomplete_image_response, s_lnw_userid
+                            callmetouploadvendorcomplete_url(s_vcomplete_description,s_vcomplete_image_response,s_lnw_userid
                                     , S_vcomplete_title, S_vcomplete_percentage, serviceuid, S_vcomple_offertype_sel);
                            Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putString("weqar_uid",s_lnw_userid);
-
+                            editor.putString("weqar_token",s_lnw_usertoken);
                             editor.apply();
                             startActivity(intent);
                         }

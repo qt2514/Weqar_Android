@@ -17,12 +17,12 @@ public class Global_URL {
     public static String User_uploadprofessionalimage=Base_url+"api/file/upload";
     public static String User_subscriptiondet_get=Base_url+"api/userplan/get";
     public static String user_insert_completedetails=Base_url+"api/usersubscription";
-public static String user_show_discount=Base_url+"api/Discounts/viewall";
+    public static String user_show_discount=Base_url+"api/Discounts/viewall";
 
     public static String Vendor_insertprofessionalinfo=Base_url+"api/vendor/professional";
-public static String Vendor_complete_chooseplan=Base_url+"api/vendor/discountplan";
- public static String vendor_insert_completedetails=Base_url+"api/Discounts/add";
-    public static String Vendor_showown_discounts=Base_url+"api/Discounts/vendordiscountdetail";
+    public static String Vendor_complete_chooseplan=Base_url+"api/vendor/discountplan";
+    public static String vendor_insert_completedetails=Base_url+"api/Discounts/add";
+    public static String Vendor_showown_discounts=Base_url+"api/discounts/get";
 
 
 }
