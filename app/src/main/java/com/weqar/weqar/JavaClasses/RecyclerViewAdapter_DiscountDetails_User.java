@@ -1,0 +1,105 @@
+package com.weqar.weqar.JavaClasses;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.media.Rating;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RatingBar;
+import android.widget.TextView;
+
+import com.weqar.weqar.R;
+
+import java.util.List;
+
+/**
+ * Created by andriod on 16/3/18.
+ */
+
+public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapter<RecyclerViewAdapter_DiscountDetails_User.MyView>{
+    Context context;
+
+
+    private List<String> u_list_id;
+    private List<String> u_list_desc;
+    private List<String> u_list_img;
+    private List<String> u_list_per;
+    private List<String> u_list_title;
+    private List<String> u_list_logo;
+
+    public class MyView extends RecyclerView.ViewHolder {
+
+        TextView TV_descdet_title,TV_disc_desc;
+        RatingBar RB_rating_userisc;
+
+        public MyView(View view) {
+            super(view);
+
+            TV_descdet_title = view.findViewById(R.id.disc_desc_title);
+            TV_disc_desc = view.findViewById(R.id.disc_dec_det);
+            RB_rating_userisc = view.findViewById(R.id.disc_desc_rating);
+
+
+        }
+
+    }
+
+
+    public RecyclerViewAdapter_DiscountDetails_User(List<String> horizontalList_id,
+                                                    List<String> horizontalList_desc,
+                                                    List<String> horizontalList_img,
+                                                    List<String> horizontalList_per,
+                                                    List<String> horizontalList_title,
+                                                    List<String> horizontalList_logo,
+
+
+                                                    Context context) {
+        this.u_list_id = horizontalList_id;
+        this.u_list_desc = horizontalList_desc;
+        this.u_list_img = horizontalList_img;
+        this.u_list_per = horizontalList_per;
+        this.u_list_title = horizontalList_title;
+        this.u_list_logo = horizontalList_logo;
+
+
+        this.context=context;
+
+    }
+
+    @Override
+    public MyView onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.content_discountdesc_user, parent, false);
+        return new MyView(itemView);
+    }
+
+
+    @Override
+    public void onBindViewHolder(final MyView holder, final int position) {
+        //   Picasso.with(context).load(list.get(position)).fit().into(holder.textView);
+     context = holder.TV_descdet_title.getContext();
+        holder.TV_descdet_title.setText(u_list_per.get(position)+"% "+u_list_title.get(position));
+        holder.TV_disc_desc.setText(u_list_desc.get(position));
+        String gg=u_list_per.get(position);
+        Integer k=Integer.parseInt(gg);
+        Integer kk=k/10;
+        Float g=(float) kk;
+        holder.RB_rating_userisc.setRating(g);
+
+
+
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return u_list_id.size();
+    }
+
+}
+
+
+

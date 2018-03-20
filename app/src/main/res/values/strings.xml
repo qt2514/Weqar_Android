@@ -28,4 +28,8 @@
     <string name="title_activity_multi_spinner__vendor__category">MultiSpinner_Vendor_Category
     </string>
     <string name="title_activity_home_screen_vendor">HomeScreen_vendor</string>
+    <string name="title_activity_add_discount__vendor">AddDiscount_Vendor</string>
+    <string name="title_activity_discount_details__user">DiscountDetails_User</string>
+    <string name="title_activity_discount_details__vendor">DiscountDetails_Vendor</string>
+    <string name="title_activity_add_jobs__vendor">AddJobs_Vendor</string>
 </resources>

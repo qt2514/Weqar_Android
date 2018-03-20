@@ -50,7 +50,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".DiscountDetails"
+            android:name=".DiscountDetails_User"
             android:label="@string/title_activity_discount_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -73,6 +73,18 @@
         <activity
             android:name=".HomeScreen_vendor"
             android:label="@string/title_activity_home_screen_vendor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddDiscount_Vendor"
+            android:label="@string/title_activity_add_discount__vendor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DiscountDetails_Vendor"
+            android:label="@string/title_activity_discount_details__vendor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddJobs_Vendor"
+            android:label="@string/title_activity_add_jobs__vendor"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

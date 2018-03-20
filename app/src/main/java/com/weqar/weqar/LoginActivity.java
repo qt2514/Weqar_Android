@@ -2,9 +2,11 @@ package com.weqar.weqar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.weqar.weqar.DBHandlers.SessionManager;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 
 import org.json.JSONException;
@@ -38,8 +41,10 @@ public class LoginActivity extends AppCompatActivity {
     Button But_newaxccount;
     CircleButton But_login;
     String S_username,S_password;
+
     String s_ln_userid,s_ln_username,s_ln_usermail,s_ln_usertype,s_ln_usertoken;
     Boolean s_ln_tab1,s_ln_tab2,s_ln_tab3;
+SessionManager session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +53,13 @@ public class LoginActivity extends AppCompatActivity {
         ET_password=findViewById(R.id.login_password);
         But_newaxccount=findViewById(R.id.but_newaccount);
         But_login=findViewById(R.id.login_but);
+
+
+        session = new SessionManager(getApplicationContext());
+//        if (session.isLoggedIn()) {
+//            Intent intent = new Intent(LoginActivity.this, ProfileInfo.class);
+//            startActivity(intent);
+//        }
         ET_username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -170,6 +182,20 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(String response) {
                     try {
 
+
+                        JSONObject jObj = new JSONObject(response);
+
+                        JSONObject verification = jObj.getJSONObject("Response");
+                      //  session.setLogin(true);
+                        s_ln_username=verification.getString("UserName");
+                        s_ln_userid=verification.getString("Id");
+                        s_ln_usermail=verification.getString("Email");
+                        s_ln_usertype=verification.getString("UserType");
+                        s_ln_usertoken=verification.getString("APIKey");
+                        s_ln_tab1=verification.getBoolean("Tab1");
+                        s_ln_tab2=verification.getBoolean("Tab2");
+                        s_ln_tab3=verification.getBoolean("Tab3");
+
                         new PromptDialog(LoginActivity.this)
                                 .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
                                 .setAnimationEnable(true)
@@ -187,24 +213,20 @@ public class LoginActivity extends AppCompatActivity {
                                         intent.putExtra("login_tab1",s_ln_tab1);
                                         intent.putExtra("login_tab2",s_ln_tab2);
                                         intent.putExtra("login_tab3",s_ln_tab3);
-
+                                        SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                                        SharedPreferences.Editor editor = preferencess.edit();
+                                        editor.putString("sp_w_usertype",s_ln_usertype);
+                                        editor.putString("sp_w_useremail",s_ln_usermail);
+                                        editor.putString("sp_w_userid",s_ln_userid);
+                                        editor.putString("sp_w_apikey",s_ln_usertoken);
+                                        editor.putBoolean("login_tab1",s_ln_tab1);
+                                        editor.putBoolean("login_tab2",s_ln_tab2);
+                                        editor.putBoolean("login_tab3",s_ln_tab3);
+                                        editor.apply();
+                                      //  intent.putExtra("w_usertype",s_ln_usertype);
                                         startActivity(intent);
                                     }
                                 }).show();
-                        JSONObject jObj = new JSONObject(response);
-
-                        JSONObject verification = jObj.getJSONObject("Response");
-
-                        s_ln_username=verification.getString("UserName");
-                        s_ln_userid=verification.getString("Id");
-                        s_ln_usermail=verification.getString("Email");
-                        s_ln_usertype=verification.getString("UserType");
-                        s_ln_usertoken=verification.getString("APIKey");
-                        s_ln_tab1=verification.getBoolean("Tab1");
-                        s_ln_tab2=verification.getBoolean("Tab2");
-                        s_ln_tab3=verification.getBoolean("Tab3");
-
-
                         //finish();
                     }
                     catch (JSONException e) {

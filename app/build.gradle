@@ -43,4 +43,6 @@ dependencies {
     compile 'com.wdullaer:materialdatetimepicker:3.5.0'
     compile 'com.github.abumoallim:Android-Multi-Select-Dialog:v1.6'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.whiteelephant:monthandyearpicker:1.2.0'
+    compile 'com.github.twinkle942910:monthyearpicker:0.0.1'
 }

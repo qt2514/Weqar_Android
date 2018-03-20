@@ -19,6 +19,7 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.weqar.weqar.AddDiscount_Vendor;
 import com.weqar.weqar.JobDetails;
 import com.weqar.weqar.R;
 
@@ -34,7 +35,7 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
     private List<ApplicationInfo> mAppList;
     private BotNav_JobsFragment_Vendor.AppAdapter mAdapter;
     CardView card_jobs;
-
+    ImageView IV_addjobs_vendor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +46,14 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
         mAppList = getActivity().getPackageManager().getInstalledApplications(0);
 
         SwipeMenuListView listView = (SwipeMenuListView) view.findViewById(R.id.weqar_jobs);
+        IV_addjobs_vendor=view.findViewById(R.id.homescreen_adddiscount);
+        IV_addjobs_vendor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                startActivity(new Intent(getActivity(),AddDiscount_Vendor.class));
+            }
+        });
         mAdapter = new BotNav_JobsFragment_Vendor.AppAdapter();
         listView.setAdapter(mAdapter);
 
@@ -182,7 +191,7 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
                         R.layout.item_list_app, null);
                 new  BotNav_JobsFragment_Vendor.AppAdapter.ViewHolder(convertView);
             }
-            BotNav_JobsFragment.AppAdapter.ViewHolder holder = (BotNav_JobsFragment.AppAdapter.ViewHolder) convertView.getTag();
+            BotNav_JobsFragment_Vendor.AppAdapter.ViewHolder holder = (BotNav_JobsFragment_Vendor.AppAdapter.ViewHolder) convertView.getTag();
             ApplicationInfo item = getItem(position);
             holder.tv_name.setText(item.loadLabel(getActivity().getPackageManager()));
 

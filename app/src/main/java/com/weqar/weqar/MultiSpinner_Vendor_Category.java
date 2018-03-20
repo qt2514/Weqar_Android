@@ -32,6 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.JavaClasses.MultispinnerList;
 
 import org.json.JSONArray;
@@ -62,43 +63,33 @@ public class MultiSpinner_Vendor_Category extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi_spinner__vendor__category);
-
         subject_name_list();
-
-
         listViewWithCheckBox = findViewById(R.id.listView);
-
         serach_text=findViewById(R.id.serach_subject);
         textViewadd=findViewById(R.id.add_subject_list);
-
         Bdone=findViewById(R.id.addsubject_button);
         context=this;
         subjectnamelist=new ArrayList<>();
         subjectnameid=new ArrayList<>();
         listViewItems = new ArrayList<MultispinnerList>();
-IV_back=findViewById(R.id.back_ima_scedule);
-IV_back.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        finish();
-    }
-});
+        IV_back=findViewById(R.id.back_ima_scedule);
+        IV_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         listViewWithCheckBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-// make Toast when click
-
                 cb =  view.findViewById(R.id.checkBox);
                 cb.setChecked(!cb.isChecked());
-                // Toast.makeText(getApplicationContext(), "Position " + position, Toast.LENGTH_LONG).show();
             }
         });
-
         Bdone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 TinyDB tinydb = new TinyDB(context);
                 tinydb.putListString("subjectnamelist", (ArrayList<String>) subjectnamelist);
                 tinydb.putListString("subjectnameid", (ArrayList<String>) subjectnameid);
@@ -106,41 +97,27 @@ IV_back.setOnClickListener(new View.OnClickListener() {
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
                 finish();
-
             }
         });
-
         serach_text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 listViewItems.clear();
-
                 subject_name_list();
-
             }
-
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
-
-
-
-
     }
-
     public class CustomListView extends ArrayAdapter {
         private List<MultispinnerList> ScheduleModeList;
         private int resource;
         Context context;
         private LayoutInflater inflater;
-
         CustomListView(Context context, int resource, List<MultispinnerList> objects) {
             super(context, resource, objects);
             ScheduleModeList = objects;
@@ -148,18 +125,14 @@ IV_back.setOnClickListener(new View.OnClickListener() {
             this.resource = resource;
             inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         }
-
         @Override
         public int getViewTypeCount() {
             return 1;
         }
-
         @Override
         public int getItemViewType(int position) {
             return position;
         }
-
-
         @NonNull
         @Override
         public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
@@ -167,71 +140,44 @@ IV_back.setOnClickListener(new View.OnClickListener() {
             if (convertView == null) {
                 convertView = inflater.inflate(resource, null);
                 holder = new ViewHolder();
-
-                holder.subjectname = (TextView)convertView.findViewById(R.id.subjectname);
-                holder.subjectid = (TextView)convertView.findViewById(R.id.subjectid);
-
-                holder.checkBox = (CheckBox)convertView.findViewById(R.id.checkBox);
-
-                //     holder.TVstart_time = convertView.findViewById(R.id.hours_sched);
-
+                holder.subjectname = convertView.findViewById(R.id.subjectname);
+                holder.subjectid = convertView.findViewById(R.id.subjectid);
+                holder.checkBox = convertView.findViewById(R.id.checkBox);
                 convertView.setTag(holder);
-            }//ino
+            }
             else {
                 holder = (ViewHolder) convertView.getTag();
             }
             final MultispinnerList supl = ScheduleModeList.get(position);
-
             holder.subjectname.setText(supl.getMulsubject());
             holder.subjectid.setText(supl.getMulsubjectid());
-
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked){
-                        // add into arraylist
                         subjectnamelist.add(supl.getMulsubject());
                         subjectnameid.add(supl.getMulsubjectid());
-
                     }else{
-                        // remove from arraylist
                         subjectnamelist.remove(supl.getMulsubject());
                         subjectnameid.remove(supl.getMulsubjectid());
-
                     }
-
                 }
             });
-
             return convertView;
         }
-
         class ViewHolder {
-
             TextView subjectname,subjectid;
-
             CheckBox checkBox;
-            //  private TextView TVstart_time;
-
-
         }
     }
-
-
-
     public void subject_name_list() {
-
-
-
         RequestQueue requestQueueq = Volley.newRequestQueue(this);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://weqar.co/webapi/api/vendor/category", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Global_URL.Vendor_select_categ, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONObject jObj = new JSONObject(response);
                     JSONArray jsonArray = jObj.getJSONArray("Response");
-
                         Bdone.setVisibility(View.VISIBLE);
                         textViewadd.setVisibility(View.INVISIBLE);
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -239,51 +185,29 @@ IV_back.setOnClickListener(new View.OnClickListener() {
                             String name = jsonobject.getString("Name");
                             String id = jsonobject.getString("Id");
                             listViewItems.add(new MultispinnerList(name,id));
-
-
                     }
-
-
                     CustomListView adapter = new CustomListView(getBaseContext(), R.layout.time_slot_list_view, listViewItems);
                     listViewWithCheckBox.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
-                    //    listViewWithCheckBox.setAdapter(new CustomListView(getBaseContext(), listViewItems));
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
         }) {
             @Override
             public String getBodyContentType() {
-
                 return "application/json; charset=utf-8";
             }
-
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-
-
-
                 return headers;
-
             }
-
-
-
-        };
-
+       };
         requestQueueq.add(stringRequest);
     }
-
-
-
-
 }

@@ -2,6 +2,7 @@ package com.weqar.weqar.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.weqar.weqar.DBHandlers.SessionManager;
+import com.weqar.weqar.LoginActivity;
 import com.weqar.weqar.Settings_AccountActivity;
 import com.weqar.weqar.Settings_ProfileActivity;
 import com.weqar.weqar.R;
@@ -19,16 +22,21 @@ public class BotNav_SettingsFragment extends Fragment {
         BotNav_SettingsFragment fragment= new BotNav_SettingsFragment();
         return fragment;
     }
-    ImageView IV_set_profile,IV_set_account;
-    TextView TV_set_profile,TV_set_account;
+    ImageView IV_set_profile,IV_set_account,IV_set_logout;
+    TextView TV_set_profile,TV_set_account,TV_set_logout;
+    SessionManager session;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_bot_nav__settings_fragment__vendor, container, false);
+        View view= inflater.inflate(R.layout.fragment_bot_nav__settings_fragment, container, false);
         IV_set_profile=view.findViewById(R.id.WIV_set_profile);
         TV_set_profile=view.findViewById(R.id.WTV_set_profile);
         IV_set_account=view.findViewById(R.id.WIV_set_account);
         TV_set_account=view.findViewById(R.id.WTV_set_account);
+        IV_set_logout = view.findViewById(R.id.IV_set_u_logout);
+        TV_set_logout = view.findViewById(R.id.TV_set_u_logout);
+        session = new SessionManager(getActivity());
+
         IV_set_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +62,30 @@ public class BotNav_SettingsFragment extends Fragment {
             }
         });
 
+        IV_set_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),LoginActivity.class);
+                session.setLogin(false);
+                PreferenceManager.getDefaultSharedPreferences(getActivity()).
+                        edit().clear().apply();
+                startActivity(intent);
 
+
+            }
+        });
+        TV_set_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),LoginActivity.class);
+
+                session.setLogin(false);
+                PreferenceManager.getDefaultSharedPreferences(getActivity()).
+                        edit().clear().apply();
+                startActivity(intent);
+
+            }
+        });
 
         return  view;
     }

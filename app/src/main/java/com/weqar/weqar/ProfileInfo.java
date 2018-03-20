@@ -35,6 +35,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
+import com.weqar.weqar.DBHandlers.SessionManager;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.JavaClasses.ImageUtil;
 import com.weqar.weqar.JavaClasses.RecyclerViewAdapter;
@@ -57,6 +58,7 @@ import java.util.UUID;
 import javax.microedition.khronos.opengles.GL;
 
 import cn.refactor.lib.colordialog.PromptDialog;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileInfo extends AppCompatActivity implements com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener{
@@ -67,6 +69,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     SearchableSpinner SP_mobilepin,SP_vendor_com_planchoose,SP_vendor_com_offertype;
     ScrollView scrollView_personal,scrollView_professional,scrollview_vendor_professional,scrollView_complete,scrollView_vendor_complete;
     Button B_saveandcontinue_personal,B_professional_next,B_vendorprofessional_next;
+    CircleImageView IV_bas;
     ImageView IV_basic_image,IV_personal,IV_professional,IV_complete,IV_prof_uploadfile,IV_vendor_professional_companylogo,
     IV_vcomplete_imageupload;
     View view1,view2,view3,view4;
@@ -99,6 +102,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     ArrayList<String> vendor_plan = new ArrayList<String>();
     String compl_vendor_offertype[] = {"Discount","Offer"},count_on_skip_forvendor="0";
     String serviceuid="",s_lnw_usermailid;
+    SessionManager sessiion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,13 +114,10 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         ET_mname=findViewById(R.id.et_mname);
         ET_lname=findViewById(R.id.et_lname);
         ET_emailid=findViewById(R.id.et_emailid);
-
         ET_mobile=findViewById(R.id.et_mobile);
         ET_address=findViewById(R.id.et_address);
-
         SP_mobilepin=findViewById(R.id.basic_spiner_countrycode);
         ET_country=findViewById(R.id.et_selectcountry);
-
         ET_Prof_cidno=findViewById(R.id.et_prof_cidno);
         ET_Prof_memno=findViewById(R.id.et_prof_membernum);
         ET_Prof_valid=findViewById(R.id.et_prof_valid);
@@ -139,6 +140,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         B_vcomplete_complete=findViewById(R.id.B_vcomplete_complete);
 
         IV_basic_image=findViewById(R.id.profile_edit);
+        IV_bas=findViewById(R.id.basic_profile_img);
         IV_personal=findViewById(R.id.IV_personaL);
         IV_professional=findViewById(R.id.IV_professional);
         IV_complete=findViewById(R.id.IV_complete);
@@ -167,42 +169,55 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         SP_mobilepin.setPrompt("+965");
         context = ProfileInfo.this;
         RecyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext());
-
         Rec_usersubs.setLayoutManager(RecyclerViewLayoutManager);
-
         RecyclerViewHorizontalAdapter = new RecyclerViewAdapter(L_user_planid,L_user_plantype,L_user_planamount,L_user_desc,getApplicationContext());
-
         HorizontalLayout = new LinearLayoutManager(ProfileInfo.this, LinearLayoutManager.HORIZONTAL, false);
         Rec_usersubs.setLayoutManager(HorizontalLayout);
         Rec_usersubs.setHorizontalScrollBarEnabled(false);
         vendor_plan = new ArrayList<String>();
-        Intent getuserdet=getIntent();
-        s_lnw_userid=getuserdet.getStringExtra("w_userid");
-        s_lnw_useremail=getuserdet.getStringExtra("w_useremail");
-        s_lnw_usertype=getuserdet.getStringExtra("w_usertype");
-        s_lnw_usertoken=getuserdet.getStringExtra("APIKey");
-        s_ln_tab1= getuserdet.getBooleanExtra("login_tab1",false);
-        s_ln_tab2= getuserdet.getBooleanExtra("login_tab2",false);
-        s_ln_tab3= getuserdet.getBooleanExtra("login_tab3",false);
-
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        s_lnw_usermailid = preferences.getString("weqar_emailid", "");
+        s_lnw_usermailid = preferences.getString("sp_w_useremail", "");
+        s_lnw_usertype= preferences.getString("sp_w_usertype","");
+        s_lnw_userid= preferences.getString("sp_w_userid","");
+        s_lnw_usertoken= preferences.getString("sp_w_apikey","");
+        s_ln_tab1= preferences.getBoolean("login_tab1",false);
+        s_ln_tab2= preferences.getBoolean("login_tab2",false);
+        s_ln_tab3= preferences.getBoolean("login_tab3",false);
         ET_emailid.setText(s_lnw_usermailid);
         getVendorplan();
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, compl_vendor_offertype);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         SP_vendor_com_offertype.setAdapter(spinnerArrayAdapter);
+        sessiion = new SessionManager(getApplicationContext());
 
+//        if (sessiion.isLoggedIn()) {
+//            if(s_lnw_usertype.equals("vendor")||s_lnw_usertype.matches("vendor"))
+//            {
+//                Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
+//                SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(context);
+//                SharedPreferences.Editor editor = preferencess.edit();
+//                editor.putString("weqar_uid",s_lnw_userid);
+//                editor.putString("weqar_token",s_lnw_usertoken);
+//                editor.apply();
+//                startActivity(intent);
+//            }
+//            else
+//            {
+//                startActivity(new Intent(ProfileInfo.this, HomeScreen.class));
+//            }
+//        }
         if(s_lnw_usertype.equals("user")||s_lnw_usertype.matches("user"))
         {
             if(s_ln_tab1)
             {
-
                 if (s_ln_tab2)
                 {
                     if (s_ln_tab3)
                     {
-                        startActivity(new Intent(ProfileInfo.this, HomeScreen.class));
+//                        if (sessiion.isLoggedIn())
+//                        {
+                            startActivity(new Intent(ProfileInfo.this, HomeScreen.class));
+                       // }
                     }
                     else
                     {
@@ -212,7 +227,6 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                         scrollView_professional.setVisibility(View.INVISIBLE);
                         but_complete.setVisibility(View.VISIBLE);
                         scrollView_complete.setVisibility(View.VISIBLE);
-
                         IV_personal.setImageResource(R.drawable.profile_basic_three);
                         IV_professional.setImageResource(R.drawable.profile_professional_three);
                         IV_complete.setImageResource(R.drawable.profile_complete_two);
@@ -224,7 +238,6 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 else
                 {
                     toolbar.setTitle("Professional");
-
                     scrollView_personal.setVisibility(View.INVISIBLE);
                     scrollView_professional.setVisibility(View.VISIBLE);
                     scrollView_complete.setVisibility(View.INVISIBLE);
@@ -244,18 +257,20 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 view1.setBackgroundResource(R.color.colorAccent);
             }
         }
-
         else  if(s_lnw_usertype.equals("vendor")||s_lnw_usertype.matches("vendor"))
         {
             if(s_ln_tab1 && s_ln_tab2)
-            {
-                Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
-                SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor editor = preferencess.edit();
-                editor.putString("weqar_uid",s_lnw_userid);
-                editor.putString("weqar_token",s_lnw_usertoken);
-                editor.apply();
-                startActivity(intent);
+          {
+//                if (sessiion.isLoggedIn())
+//                {
+                    Intent intent = new Intent(ProfileInfo.this, HomeScreen_vendor.class);
+                    SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = preferencess.edit();
+                    editor.putString("weqar_uid", s_lnw_userid);
+                    editor.putString("weqar_token", s_lnw_usertoken);
+                    editor.apply();
+                    startActivity(intent);
+               // }
             }
             else
             {
@@ -279,13 +294,9 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                     IV_complete.setImageResource(R.drawable.profile_complete_one);
                     view1.setBackgroundResource(R.color.colorAccent);
                     view2.setBackgroundResource(R.color.colorAccent);
-
                 }
             }
         }
-
-
-
         Calendar now = Calendar.getInstance();
         dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
                 ProfileInfo.this,
@@ -294,19 +305,21 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 now.get(Calendar.DAY_OF_MONTH)
         );
         focuschange();
-
-
-        ET_Prof_valid.setOnClickListener(new View.OnClickListener() {
+        ET_Prof_valid.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 String genrateach= UUID.randomUUID().toString();
                 dpd.show(getFragmentManager(),genrateach);
                 dpd.setTitle("Valid Date");
             }
         });
-        ET_vprof_category.setOnClickListener(new View.OnClickListener() {
+        ET_vprof_category.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(ProfileInfo.this, MultiSpinner_Vendor_Category.class);
                 startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
             }
@@ -349,19 +362,13 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         B_saveandcontinue_personal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 callmetouploadbasic();
-
-
             }
         });
         B_professional_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 callmetouploadprofessional();
-
-
 
             }
         });
@@ -382,7 +389,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 S_vcomple_plantype_sel = parent.getItemAtPosition(position).toString();
-getvendor_plannameid(position);
+        getvendor_plannameid(position);
 
             }
             public void onNothingSelected(AdapterView<?> parent) {
@@ -402,11 +409,8 @@ getvendor_plannameid(position);
                     ET_vcomplete_percentage.setVisibility(View.INVISIBLE);
                     TIL_vcomplete_percentage.setVisibility(View.INVISIBLE);
                 }
-
-
             }
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         TV_vcomplete_skip.setOnClickListener(new View.OnClickListener() {
@@ -414,8 +418,8 @@ getvendor_plannameid(position);
             public void onClick(View v) {
                 count_on_skip_forvendor="1";
                 Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor editor = preferences.edit();
+                SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(context);
+                SharedPreferences.Editor editor = preferencess.edit();
                 editor.putString("weqar_uid",s_lnw_userid);
                 editor.putString("weqar_token",s_lnw_usertoken);
                 editor.apply();
@@ -436,7 +440,7 @@ getvendor_plannameid(position);
             Uri imageUri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                IV_basic_image.setImageBitmap(bitmap);
+                IV_bas.setImageBitmap(bitmap);
                 basic_image(bitmap);
             }
             catch (IOException e) {
@@ -532,6 +536,7 @@ getvendor_plannameid(position);
                     try {
                         JSONObject jObj = new JSONObject(response);
                         s_basic_image=jObj.getString("Response");
+                        Log.i("basic_image_response",response);
                     }
                     catch (JSONException e) {
                         e.printStackTrace();
@@ -541,7 +546,7 @@ getvendor_plannameid(position);
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
+                    Log.i("VOLLEY", error.toString());
                 }
             }) {
                 @Override
@@ -596,6 +601,8 @@ getvendor_plannameid(position);
                     {
                         JSONObject jObj = new JSONObject(response);
                         s_res_userprofimg=jObj.getString("Response");
+                        Log.i("user_prof_image",response);
+
                     }
                     catch (JSONException e) {
                         e.printStackTrace();
@@ -605,7 +612,7 @@ getvendor_plannameid(position);
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
+                    Log.i("VOLLEY", error.toString());
                 }
             }) {
                 @Override
@@ -660,6 +667,8 @@ getvendor_plannameid(position);
                     {
                         JSONObject jObj = new JSONObject(response);
                         s_lnw_getcompany=jObj.getString("Response");
+                        Log.i("user_vendor_companylogo_response",response);
+
                     }
                     catch (JSONException e) {
                         e.printStackTrace();
@@ -669,7 +678,7 @@ getvendor_plannameid(position);
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
+                    Log.i("VOLLEY", error.toString());
                 }
             }) {
                 @Override
@@ -721,6 +730,9 @@ getvendor_plannameid(position);
                     {
                         JSONObject jObj = new JSONObject(response);
                         s_vcomplete_image_response=jObj.getString("Response");
+                        Log.i("user_vendor_complete_image_response",response);
+
+
                     }
                     catch (JSONException e) {
                         e.printStackTrace();
@@ -729,7 +741,7 @@ getvendor_plannameid(position);
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
+                    Log.i("VOLLEY", error.toString());
                 }
             }) {
                 @Override
@@ -921,13 +933,14 @@ getvendor_plannameid(position);
 
                 public void onResponse(String response) {
                    // startActivity(new Intent(ProfileInfo.this, LoginActivity.class));
+                    Log.i("basic_details_response",response);
 
 
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
+                    Log.i("VOLLEY", error.toString());
                 }
             }) {
                 @Override
@@ -1060,13 +1073,14 @@ getvendor_plannameid(position);
 
                 public void onResponse(String response) {
                    // startActivity(new Intent(ProfileInfo.this, LoginActivity.class));
+                    Log.i("user_professional_response",response);
 
 
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
+                    Log.i("VOLLEY", error.toString());
                 }
             }) {
                 @Override
@@ -1151,11 +1165,13 @@ getvendor_plannameid(position);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.user_insert_completedetails, new Response.Listener<String>() {
 
                 public void onResponse(String response) {
+                    Log.i("user_complete_response",response);
+
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
+                    Log.i("VOLLEY", error.toString());
                 }
             }) {
                 @Override
@@ -1330,12 +1346,13 @@ getvendor_plannameid(position);
                 public void onResponse(String response) {
                     // startActivity(new Intent(ProfileInfo.this, LoginActivity.class));
 
+                    Log.i("vendor_professional_response",response);
 
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
+                    Log.i("VOLLEY", error.toString());
                 }
             }) {
                 @Override
@@ -1538,11 +1555,13 @@ getvendor_plannameid(position);
                             s_vcomplete_description = ET_vcomplete_discdesc.getText().toString();
                             callmetouploadvendorcomplete_url(s_vcomplete_description,s_vcomplete_image_response,s_lnw_userid
                                     , S_vcomplete_title, S_vcomplete_percentage, serviceuid, S_vcomple_offertype_sel);
-                           Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
-                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                            SharedPreferences.Editor editor = preferences.edit();
+                            Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
+                            SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(context);
+                            SharedPreferences.Editor editor = preferencess.edit();
                             editor.putString("weqar_uid",s_lnw_userid);
                             editor.putString("weqar_token",s_lnw_usertoken);
+                            TinyDB tinydb = new TinyDB(context);
+                            tinydb.putBoolean("hgffh", true);
                             editor.apply();
                             startActivity(intent);
                         }
@@ -1550,8 +1569,6 @@ getvendor_plannameid(position);
                 }
             }
         }catch (Exception e){}
-
-
 
     }
         private String getvendor_plannameid(int position){
@@ -1569,8 +1586,6 @@ getvendor_plannameid(position);
                                                  String plantype,String ofertype)
     {
         try {
-
-
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONArray jsonArray = new JSONArray();
             JSONObject jsonBody = new JSONObject();
@@ -1581,17 +1596,17 @@ getvendor_plannameid(position);
             jsonBody.put("Percentage", percentage);
             jsonBody.put("DiscountPlan", plantype);
             jsonBody.put("DiscountType", ofertype);
-
             final String requestBody = jsonBody.toString();
-
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.vendor_insert_completedetails, new Response.Listener<String>() {
-
                 public void onResponse(String response) {
+                    Log.i("vendor_complete_response",response);
+
                 }
             }, new Response.ErrorListener() {
+
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
+                    Log.i("VOLLEY", error.toString());
                 }
             }) {
                 @Override
@@ -1599,7 +1614,6 @@ getvendor_plannameid(position);
 
                     return "application/json; charset=utf-8";
                 }
-
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
@@ -1608,7 +1622,6 @@ getvendor_plannameid(position);
                     return headers;
 
                 }
-
                 @Override
                 public byte[] getBody() throws AuthFailureError {
                     try {
@@ -1619,10 +1632,7 @@ getvendor_plannameid(position);
                         return null;
                     }
                 }
-
-
             };
-
             requestQueue.add(stringRequest);
         }catch (JSONException e){
 
