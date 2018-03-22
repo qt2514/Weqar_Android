@@ -10,7 +10,7 @@ import java.security.PublicKey;
 
 public class Global_URL {
     public static  String Base_url ="http://weqar.co/webapi/";
-    public static String Image_URL="http://weqar.co/webAPI/api";
+    public static String Image_URL="http://weqar.co/webAPI/api/";
 
     public static  String User_signup= Base_url + "api/user/register";
     public static  String User_signin= Base_url + "api/user/mobilelogin";
@@ -20,7 +20,7 @@ public class Global_URL {
     public static String User_subscriptiondet_get=Base_url+"api/userplan/get";
     public static String user_insert_completedetails=Base_url+"api/usersubscription";
     public static String user_show_discount=Base_url+"api/Discounts/viewall";
-    public static String user_show_jobs=Base_url+"/api/job/viewall";
+    public static String user_show_jobs=Base_url+"api/job/viewall";
 
 
     public static String Vendor_insertprofessionalinfo=Base_url+"api/vendor/professional";
@@ -32,6 +32,6 @@ public  static  String Vendor_insert_second_Discount=Base_url+"api/discounts/add
 
 
 
-        public static String Image_url_load=Image_URL+"/file/view?filename=";
+        public static String Image_url_load=Image_URL+"file/view?filename=";
 
 }

@@ -17,17 +17,16 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/roundimg_one"
-            android:layout_width="match_parent"
+            android:layout_width="400dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="13dp"
-            android:layout_marginRight="13dp"
+
+
+
 
             android:paddingBottom="6dp"
             android:paddingTop="6dp"
             android:src="@drawable/rounded_two"
-            app:riv_border_color="@color/colorHints"
-            app:riv_border_width="2dip"
-            app:riv_corner_radius="13dp"
+
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
@@ -36,7 +35,7 @@
         <ImageView
             android:id="@+id/IV_vdisc_image_vendor"
             android:layout_width="250dp"
-            android:layout_height="154dp"
+            android:layout_height="158dp"
             android:layout_centerVertical="true"
             android:src="@drawable/vgv"
             android:clickable="false"
@@ -44,23 +43,21 @@
             android:focusableInTouchMode="false"
             />
 
-        <com.makeramen.roundedimageview.RoundedImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/RIV_vendor_logo_vendor"
             android:layout_width="60dp"
             android:layout_height="60dp"
-
             android:layout_alignStart="@+id/TV_disc_percentage_vendor"
             android:layout_alignTop="@+id/IV_vdisc_image_vendor"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="11dp"
-            android:src="@drawable/rounded"
-            app:riv_border_color="@color/colorPrimary"
-            app:riv_border_width="2dip"
-            app:riv_oval="true"
+
+            android:layout_marginTop="19dp"
             android:clickable="false"
+
             android:focusable="false"
             android:focusableInTouchMode="false"
-            />
+            android:src="@drawable/rounded"
+            app:civ_border_color="@color/colorPrimary"
+            app:civ_border_width="1dp" />
 
         <TextView
             android:id="@+id/TV_disc_percentage_vendor"
@@ -68,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/RIV_vendor_logo_vendor"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="10dp"
 
             android:text="75% Discount in KFC"
             android:textColor="@color/colorWhite"

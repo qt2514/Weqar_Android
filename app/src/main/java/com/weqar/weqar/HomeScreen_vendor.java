@@ -1,5 +1,6 @@
 package com.weqar.weqar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 
@@ -49,6 +50,13 @@ public class HomeScreen_vendor extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
 
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+    }
 
 }

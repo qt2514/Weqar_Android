@@ -2,17 +2,23 @@ package com.weqar.weqar.JavaClasses;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.Image;
 import android.media.Rating;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.R;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by andriod on 16/3/18.
@@ -33,6 +39,8 @@ public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapt
 
         TextView TV_descdet_title,TV_disc_desc;
         RatingBar RB_rating_userisc;
+        ImageView IV_image;
+        CircleImageView CV_logo;
 
         public MyView(View view) {
             super(view);
@@ -40,6 +48,8 @@ public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapt
             TV_descdet_title = view.findViewById(R.id.disc_desc_title);
             TV_disc_desc = view.findViewById(R.id.disc_dec_det);
             RB_rating_userisc = view.findViewById(R.id.disc_desc_rating);
+            IV_image = view.findViewById(R.id.disc_det_image);
+            CV_logo = view.findViewById(R.id.disc_det_logo);
 
 
         }
@@ -87,6 +97,15 @@ public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapt
         Integer kk=k/10;
         Float g=(float) kk;
         holder.RB_rating_userisc.setRating(g);
+        try {
+
+            Picasso.with(context).load(Global_URL.Image_url_load+u_list_img).fit().centerCrop().into(holder.IV_image);
+            Picasso.with(context).load(Global_URL.Image_url_load+u_list_logo).error(R.drawable.rounded).fit().centerCrop().into(holder.CV_logo);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
 
 
 

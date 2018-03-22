@@ -42,6 +42,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class BotNav_DiscountsFragment_Vendor  extends Fragment
@@ -105,7 +108,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                 convertView = inflater.inflate(resource, null);
                 holder = new ViewHolder();
                 holder.textone = (TextView) convertView.findViewById(R.id.TV_disc_percentage_vendor);
-                holder.menuimage = (ImageView)convertView.findViewById(R.id.IV_vdisc_image_vendor);
+                holder.menuimage = convertView.findViewById(R.id.roundimg_one);
                 holder.RB_vendor_rating = (RatingBar)convertView.findViewById(R.id.RB_vendr_rating_vendor);
                 holder.RIV_logo=convertView.findViewById(R.id.RIV_vendor_logo_vendor);
                 convertView.setTag(holder);
@@ -122,22 +125,19 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
             Integer kk=k/10;
             Float g=(float) kk;
             holder.RB_vendor_rating.setRating(g);
-            if(vendor_image.isEmpty())
+            //  holder.menuimage.setImageResource(R.drawable.vgv);
+            try
             {
-                holder.menuimage.setImageResource(R.drawable.vgv);
+                Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getImage()).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(holder.menuimage);
+
+
+                Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getLogo()).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(holder.RIV_logo);
+            }catch (Exception e){
+
+                e.printStackTrace();
             }
-            else
-            {
-                 Picasso.with(context).load(ccitacc.getImage()).fit().fit().into(holder.menuimage);
-            }
-//            String df=ccitacc.getLogo();
-//            Picasso
-//                    .with(context)
-//                    .load(df)
-//                    .fit()
-//                    .error(getResources().getDrawable(R.drawable.professional_image_upload))
-//                    .centerCrop()
-//                    .into( holder.RIV_logo);
+
+
             SwipeMenuCreator creator = new SwipeMenuCreator()
             {
                 @Override
@@ -185,7 +185,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
         class ViewHolder {
             public TextView textone;
             private ImageView menuimage;
-            RoundedImageView RIV_logo;
+           CircleImageView RIV_logo;
             RatingBar RB_vendor_rating;
         }
     }

@@ -126,7 +126,7 @@ return view;
 
             try {
 
-                Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getLogo()).fit().centerCrop().into(holder.IV_logo);
+                Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getLogo()).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(holder.IV_logo);
 
             } catch (Exception e) {
 

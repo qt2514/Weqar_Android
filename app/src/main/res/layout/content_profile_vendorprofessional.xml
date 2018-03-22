@@ -27,8 +27,8 @@
                 android:textSize="16sp" />
             <ImageView
                 android:id="@+id/vendor_professional_companylogo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_margin="15dp"
                 android:src= "@drawable/professional_image_upload"/>
 
@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="number"
-                    android:maxLength="10"
+                    android:maxLength="8"
                     android:background="@drawable/selector_bg_edit"
                     android:textCursorDrawable="@drawable/bg_input_cursor"
                     android:paddingBottom="2dp" />

@@ -2,6 +2,9 @@ package com.weqar.weqar.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -28,9 +30,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 import com.weqar.weqar.DBJavaClasses.discountcard_list;
 import com.weqar.weqar.DiscountDetails_User;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
+import com.weqar.weqar.JavaClasses.ImageConverter;
 import com.weqar.weqar.JavaClasses.RecyclerViewAdapter_Category;
 import com.weqar.weqar.R;
 
@@ -48,6 +52,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -126,7 +132,8 @@ Context c;
                 holder = new ViewHolder();
 
                 holder.textone = (TextView) convertView.findViewById(R.id.TV_disc_percentage);
-                holder.menuimage = (ImageView)convertView.findViewById(R.id.IV_vdisc_image);
+                holder.menuimage = convertView.findViewById(R.id.roundimg_one);
+                holder.RIV_logo = convertView.findViewById(R.id.roundedImageView);
 
                 holder.ratingbar=convertView.findViewById(R.id.RB_vendr_rating);
                 convertView.setTag(holder);
@@ -144,16 +151,15 @@ Context c;
             holder.ratingbar.setRating(g);
             String ing=ccitacc.getImage().trim();
             String ings=ccitacc.getLogo().trim();
-       //     if (ing.isEmpty()) {
-                holder.menuimage.setImageResource(R.drawable.vgv);
-//            } else{
-//                Picasso.with(context).load(ccitacc.getImage()).fit().centerCrop().into(holder.menuimage);
-//            }
-//            if (ings.isEmpty()) {
-//                holder.menuimage.setImageResource(R.drawable.profile_complete_two);
-//            } else{
-//                Picasso.with(context).load(ccitacc.getLogo()).fit().centerCrop().into(holder.RIV_logo);
-//            }
+
+
+            try
+            {
+                Picasso.with(context).load(Global_URL.Image_url_load+ing).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(holder.menuimage);
+                Picasso.with(context).load(Global_URL.Image_url_load+ings).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(holder.RIV_logo);
+            }catch (Exception e){}
+
+
 
             return convertView;
         }
@@ -161,7 +167,7 @@ Context c;
         class ViewHolder {
             public TextView textone;
             private ImageView menuimage;
-            private RoundedImageView RIV_logo;
+            private CircleImageView RIV_logo;
             RatingBar ratingbar;
         }
     }
