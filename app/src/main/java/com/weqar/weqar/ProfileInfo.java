@@ -206,7 +206,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
 //                startActivity(new Intent(ProfileInfo.this, HomeScreen.class));
 //            }
 //        }
-        if(s_lnw_usertype.equals("user")||s_lnw_usertype.matches("user"))
+        if(s_lnw_usertype.equals("user"))
         {
             if(s_ln_tab1)
             {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.weqar.weqar.JobDetails">
+    tools:context="com.weqar.weqar.JobDetails_User">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_homescreen"
@@ -33,9 +33,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Detail Jobs"
+
                     android:layout_centerInParent="true"
                     android:layout_centerHorizontal="true"
-                    android:textColor="@color/colorHint"
+                    android:textColor="@color/colorHintss"
                     android:textSize="23sp"/>
                 <ImageView
                     android:id="@+id/homescreen_notification"
@@ -65,16 +66,14 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:orientation="horizontal">
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/roundedImageView"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/logo_user_jobdet"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_gravity="center"
         android:layout_weight=".0"
         android:src="@drawable/rounded"
-        app:riv_border_color="@color/colorPrimary"
-        app:riv_border_width="2dip"
-        app:riv_oval="true" />
+        />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,6 +94,7 @@
             android:layout_marginLeft="10dp"
             android:gravity="start"
             android:text="Film Maker -"
+            android:id="@+id/text_jobtype_user_jobdet"
             android:textStyle="bold"
             android:textColor="@color/colorHintss"
             android:textSize="18sp" />
@@ -104,19 +104,13 @@
                 android:layout_gravity="start"
                 android:layout_marginLeft="10dp"
                 android:gravity="start"
+                android:id="@+id/text_jobfield_user_jobdet"
                 android:text="Producer"
+                android:layout_marginBottom="5dp"
                 android:textColor="@color/colorHintss"
                 android:textSize="17sp" />
         </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginLeft="10dp"
-            android:gravity="start"
-            android:text="General Electric"
-            android:textColor="@color/colorHintss"
-            android:textSize="15sp" />
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -124,6 +118,7 @@
             android:layout_gravity="start"
             android:layout_marginLeft="10dp"
             android:gravity="start"
+            android:layout_marginTop="5dp"
             android:text=" Leeds,York,Harrogate,Bradford"
             android:drawableLeft="@drawable/ic_blacklocation"
             android:textColor="@color/colorHintss"
@@ -133,8 +128,11 @@
             android:layout_height="wrap_content"
             android:text=" Deadline 27-03-2017"
             android:layout_gravity="start"
-            android:layout_marginLeft="10dp"
-            android:textSize="13sp"
+            android:id="@+id/text_deadline_user_jobdet"
+            android:layout_marginLeft="5dp"
+            android:textSize="13sp"            android:layout_marginTop="10dp"
+
+
             android:drawableLeft="@drawable/ic_access_alarm_black_24dp"
             android:gravity="end"/>
 
@@ -150,6 +148,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_margin="13dp"
+            android:id="@+id/text_desc_user_jobdet"
             android:layout_height="wrap_content"
             android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."/>
 

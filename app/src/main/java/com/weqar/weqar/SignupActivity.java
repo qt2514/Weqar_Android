@@ -262,16 +262,7 @@ public class SignupActivity extends AppCompatActivity {
     public void signup_twotr(String s_user_type,String s_username,String s_emailid,String s_password) {
 
         try {
-            new PromptDialog(SignupActivity.this)
-                    .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
-                    .setAnimationEnable(true)
-                    .setTitleText("Weqar Welcomes You!")
-                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                        @Override
-                        public void onClick(PromptDialog dialog) {
-                            startActivity(new Intent(SignupActivity.this,LoginActivity.class));
-                        }
-                    }).show();
+
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONArray jsonArray= new JSONArray();
             JSONObject jsonBody = new JSONObject();
@@ -293,7 +284,16 @@ public class SignupActivity extends AppCompatActivity {
 
                 public void onResponse(String response) {
                    // startActivity(new Intent(SignupActivity.this, LoginActivity.class));
-
+                    new PromptDialog(SignupActivity.this)
+                            .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                            .setAnimationEnable(true)
+                            .setTitleText("Weqar Welcomes You!")
+                            .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                @Override
+                                public void onClick(PromptDialog dialog) {
+                                    startActivity(new Intent(SignupActivity.this,LoginActivity.class));
+                                }
+                            }).show();
 
 
                 }

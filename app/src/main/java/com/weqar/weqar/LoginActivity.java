@@ -182,51 +182,73 @@ SessionManager session;
                 public void onResponse(String response) {
                     try {
 
-
                         JSONObject jObj = new JSONObject(response);
 
-                        JSONObject verification = jObj.getJSONObject("Response");
-                      //  session.setLogin(true);
-                        s_ln_username=verification.getString("UserName");
-                        s_ln_userid=verification.getString("Id");
-                        s_ln_usermail=verification.getString("Email");
-                        s_ln_usertype=verification.getString("UserType");
-                        s_ln_usertoken=verification.getString("APIKey");
-                        s_ln_tab1=verification.getBoolean("Tab1");
-                        s_ln_tab2=verification.getBoolean("Tab2");
-                        s_ln_tab3=verification.getBoolean("Tab3");
+                        String status = jObj.getString("Status");
+                        if(status.equals("success")||status.matches("success"))
+                        {
+                            JSONObject verification = jObj.getJSONObject("Response");
+                            //  session.setLogin(true);
+                            s_ln_username=verification.getString("UserName");
+                            s_ln_userid=verification.getString("Id");
+                            s_ln_usermail=verification.getString("Email");
+                            s_ln_usertype=verification.getString("UserType");
+                            s_ln_usertoken=verification.getString("APIKey");
+                            s_ln_tab1=verification.getBoolean("Tab1");
+                            s_ln_tab2=verification.getBoolean("Tab2");
+                            s_ln_tab3=verification.getBoolean("Tab3");
 
-                        new PromptDialog(LoginActivity.this)
+                            new PromptDialog(LoginActivity.this)
+                                    .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                                    .setAnimationEnable(true)
+                                    .setTitleText("Welcome to Weqar")
+                                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                        @Override
+                                        public void onClick(PromptDialog dialog) {
+
+
+                                            Intent intent=new Intent(LoginActivity.this, ProfileInfo.class);
+                                            intent.putExtra("w_userid",s_ln_userid);
+                                            intent.putExtra("w_useremail",s_ln_usermail);
+                                            intent.putExtra("w_usertype",s_ln_usertype);
+                                            intent.putExtra("APIKey",s_ln_usertoken);
+                                            intent.putExtra("login_tab1",s_ln_tab1);
+                                            intent.putExtra("login_tab2",s_ln_tab2);
+                                            intent.putExtra("login_tab3",s_ln_tab3);
+                                            SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+
+                                            SharedPreferences.Editor editor = preferencess.edit();
+                                            editor.putString("sp_w_usertype",s_ln_usertype);
+                                            editor.putString("sp_w_useremail",s_ln_usermail);
+                                            editor.putString("sp_w_userid",s_ln_userid);
+                                            editor.putString("sp_w_apikey",s_ln_usertoken);
+                                            editor.putBoolean("login_tab1",s_ln_tab1);
+                                            editor.putBoolean("login_tab2",s_ln_tab2);
+                                            editor.putBoolean("login_tab3",s_ln_tab3);
+                                            editor.apply();
+                                            //  intent.putExtra("w_usertype",s_ln_usertype);
+                                            startActivity(intent);
+                                        }
+                                    }).show();
+                        }
+                        else
+                        {
+                            String verification = jObj.getString("Response");
+
+                            new PromptDialog(LoginActivity.this)
                                 .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
                                 .setAnimationEnable(true)
-                                .setTitleText("Welcome to Weqar")
+                                .setTitleText(verification.toString())
                                 .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
                                     @Override
                                     public void onClick(PromptDialog dialog) {
-
-
-                                        Intent intent=new Intent(LoginActivity.this, ProfileInfo.class);
-                                        intent.putExtra("w_userid",s_ln_userid);
-                                        intent.putExtra("w_useremail",s_ln_usermail);
-                                        intent.putExtra("w_usertype",s_ln_usertype);
-                                        intent.putExtra("APIKey",s_ln_usertoken);
-                                        intent.putExtra("login_tab1",s_ln_tab1);
-                                        intent.putExtra("login_tab2",s_ln_tab2);
-                                        intent.putExtra("login_tab3",s_ln_tab3);
-                                        SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-                                        SharedPreferences.Editor editor = preferencess.edit();
-                                        editor.putString("sp_w_usertype",s_ln_usertype);
-                                        editor.putString("sp_w_useremail",s_ln_usermail);
-                                        editor.putString("sp_w_userid",s_ln_userid);
-                                        editor.putString("sp_w_apikey",s_ln_usertoken);
-                                        editor.putBoolean("login_tab1",s_ln_tab1);
-                                        editor.putBoolean("login_tab2",s_ln_tab2);
-                                        editor.putBoolean("login_tab3",s_ln_tab3);
-                                        editor.apply();
-                                      //  intent.putExtra("w_usertype",s_ln_usertype);
-                                        startActivity(intent);
+                                        dialog.dismiss();
                                     }
                                 }).show();
+
+                        }
+
+
                         //finish();
                     }
                     catch (JSONException e) {
@@ -238,16 +260,7 @@ SessionManager session;
                 @Override
                 public void onErrorResponse(VolleyError error) {
 
-                    new PromptDialog(LoginActivity.this)
-                            .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
-                            .setAnimationEnable(true)
-                            .setTitleText("Please Check the Credentials you entered")
-                            .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                                @Override
-                                public void onClick(PromptDialog dialog) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
+
                 }
             }) {
                 @Override

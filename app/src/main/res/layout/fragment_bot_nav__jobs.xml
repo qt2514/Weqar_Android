@@ -34,7 +34,7 @@
 
                 <EditText
                     android:id="@+id/homescreen_search"
-                    android:layout_width="238dp"
+                    android:layout_width="248dp"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/homescreen_addjobs"
                     android:layout_marginStart="23dp"
@@ -46,16 +46,7 @@
                     android:hint="Search"
                     android:padding="4dp"
                     android:textColorHint="@color/colorHints" />
-                <ImageView
-                    android:id="@+id/homescreen_addjobs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginRight="40dp"
-                    android:layout_centerVertical="true"
 
-                    android:background="@drawable/ic_add_black_24dp"
-                    />
                 <ImageView
                     android:id="@+id/homescreen_notification"
                     android:layout_width="wrap_content"
@@ -70,13 +61,20 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RV_jobs_user"
 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appbar_homescreen"
+        android:layout_marginBottom="10dp"
+        />
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/jobs_vendor_gv"
         android:divider="@android:color/transparent"
-        android:layout_below="@+id/appbar_homescreen"
+        android:layout_below="@+id/RV_jobs_user"
         android:padding="3dp"
         android:layout_margin="6dp"
         />

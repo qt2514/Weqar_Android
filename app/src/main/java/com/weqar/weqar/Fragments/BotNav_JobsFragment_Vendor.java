@@ -1,224 +1,286 @@
 package com.weqar.weqar.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.net.Uri;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.weqar.weqar.AddDiscount_Vendor;
-import com.weqar.weqar.JobDetails;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+import com.weqar.weqar.AddJobs_Vendor;
+import com.weqar.weqar.DBJavaClasses.jobscard_list;
+import com.weqar.weqar.DBJavaClasses.jobscard_list_vendor;
+import com.weqar.weqar.Global_url_weqar.Global_URL;
+import com.weqar.weqar.JobDetails_User;
+import com.weqar.weqar.JobDetails_Vendor;
 import com.weqar.weqar.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
 public class BotNav_JobsFragment_Vendor extends Fragment {
-    SwipeMenuListView swipeMenuListView_jobs;
     public static BotNav_JobsFragment_Vendor newInstance() {
         BotNav_JobsFragment_Vendor fragment= new BotNav_JobsFragment_Vendor();
         return fragment;
     }
-    private List<ApplicationInfo> mAppList;
-    private BotNav_JobsFragment_Vendor.AppAdapter mAdapter;
-    CardView card_jobs;
-    ImageView IV_addjobs_vendor;
 
+    ImageView IV_addjobs_vendor;
+    String s_vendor_disc,s_vendor_token;
+    SwipeMenuListView GV_vendor_view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_bot_nav__jobs_fragment__vendor, container, false);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        s_vendor_disc = preferences.getString("weqar_uid", "");
+        s_vendor_token = preferences.getString("weqar_token", "");
+        GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
 
-        mAppList = getActivity().getPackageManager().getInstalledApplications(0);
-
-        SwipeMenuListView listView = (SwipeMenuListView) view.findViewById(R.id.weqar_jobs);
-        IV_addjobs_vendor=view.findViewById(R.id.homescreen_adddiscount);
+        IV_addjobs_vendor=view.findViewById(R.id.homescreen_addjobs);
         IV_addjobs_vendor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                startActivity(new Intent(getActivity(),AddDiscount_Vendor.class));
+                startActivity(new Intent(getActivity(),AddJobs_Vendor.class));
             }
         });
-        mAdapter = new BotNav_JobsFragment_Vendor.AppAdapter();
-        listView.setAdapter(mAdapter);
-
-        SwipeMenuCreator creator = new SwipeMenuCreator() {
-
-            @Override
-            public void create(SwipeMenu menu) {
-                // Create different menus depending on the view type
-                switch (menu.getViewType()) {
-                    case 0:
-                        createMenu1(menu);
-                        break;
-                    case 1:
-                        createMenu2(menu);
-                        break;
-                    case 2:
-                        createMenu3(menu);
-                        break;
-
-                }
-            }
-
-            private void createMenu1(SwipeMenu menu) {
-                SwipeMenuItem item1 = new SwipeMenuItem(
-                        getActivity());
-                item1.setBackground(R.color.colorHints);
-                item1.setWidth(dp2px(90));
-                item1.setIcon(R.drawable.jobs_more);
-                menu.addMenuItem(item1);
-                SwipeMenuItem item2 = new SwipeMenuItem(
-                        getActivity());
-                item2.setBackground(R.color.colorPrimary);
-
-                item2.setWidth(dp2px(90));
-
-                item2.setIcon(R.drawable.jobs_archive);
+        new kilomilo().execute(Global_URL.Vendor_showownjobs);
 
 
-
-                menu.addMenuItem(item2);
-            }
-
-            private void createMenu2(SwipeMenu menu) {
-                SwipeMenuItem item1 = new SwipeMenuItem(
-                        getActivity());
-                item1.setBackground(R.color.colorHints);
-                item1.setWidth(dp2px(90));
-                item1.setIcon(R.drawable.jobs_more);
-                menu.addMenuItem(item1);
-                SwipeMenuItem item2 = new SwipeMenuItem(
-                        getActivity());
-                item2.setBackground(R.color.colorPrimary);
-
-                item2.setWidth(dp2px(90));
-
-                item2.setIcon(R.drawable.jobs_archive);
-
-                menu.addMenuItem(item2);
-            }
-
-            private void createMenu3(SwipeMenu menu) {
-                SwipeMenuItem item1 = new SwipeMenuItem(
-                        getActivity());
-                item1.setBackground(R.color.colorHints);
-                item1.setWidth(dp2px(90));
-                item1.setIcon(R.drawable.jobs_more);
-                menu.addMenuItem(item1);
-                SwipeMenuItem item2 = new SwipeMenuItem(
-                        getActivity());
-                item2.setBackground(R.color.colorPrimary);
-
-                item2.setWidth(dp2px(90));
-
-                item2.setIcon(R.drawable.jobs_archive);
-
-                menu.addMenuItem(item2);
-            }
-        };
-        listView.setMenuCreator(creator);
-
-        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                ApplicationInfo item = mAppList.get(position);
-                switch (index) {
-                    case 0:
-                        // open
-                        break;
-                    case 1:
-                        // delete
-//					delete(item);
-                        mAppList.remove(position);
-                        mAdapter.notifyDataSetChanged();
-                        break;
-                }
-                return false;
-            }
-        });
         return view;
     }
 
-    class AppAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return mAppList.size();
+    public class MovieAdap extends ArrayAdapter
+    {
+        private List<jobscard_list_vendor> movieModelList;
+        private int resource;
+        Context context;
+        private LayoutInflater inflater;
+        MovieAdap(Context context, int resource, List<jobscard_list_vendor> objects)
+        {
+            super(context, resource, objects);
+            movieModelList = objects;
+            this.context = context;
+            this.resource = resource;
+            inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
         }
-
-        @Override
-        public ApplicationInfo getItem(int position) {
-            return mAppList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
         @Override
         public int getViewTypeCount() {
-            // menu type count
-            return 3;
+            return 1;
         }
-
         @Override
         public int getItemViewType(int position) {
-            // current menu type
-            return position % 3;
+            return position;
         }
-
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = View.inflate(getActivity(),
-                        R.layout.item_list_app, null);
-                new  BotNav_JobsFragment_Vendor.AppAdapter.ViewHolder(convertView);
+        public View getView(final int position, View convertView, ViewGroup parent)
+        {
+            final MovieAdap.ViewHolder holder;
+            if (convertView == null)
+            {
+                convertView = inflater.inflate(resource, null);
+                holder = new MovieAdap.ViewHolder();
+                holder.text_jobtype = (TextView) convertView.findViewById(R.id.fag_jobs_type_vendor);
+                holder.text_jobfield = (TextView) convertView.findViewById(R.id.fag_jobs_field_vendor);
+                holder.text_jobdesc = (TextView) convertView.findViewById(R.id.fag_jobs_desc_vendor);
+                holder.text_jobdeadline = (TextView) convertView.findViewById(R.id.fag_jobs_deadline_vendor);
+                holder.RIV_logo=convertView.findViewById(R.id.IV_logo_job_vendor);
+                convertView.setTag(holder);
             }
-            BotNav_JobsFragment_Vendor.AppAdapter.ViewHolder holder = (BotNav_JobsFragment_Vendor.AppAdapter.ViewHolder) convertView.getTag();
-            ApplicationInfo item = getItem(position);
-            holder.tv_name.setText(item.loadLabel(getActivity().getPackageManager()));
+            else
+            {
+                holder = (MovieAdap.ViewHolder) convertView.getTag();
+            }
+            jobscard_list_vendor ccitacc = movieModelList.get(position);
 
-            card_jobs.setOnClickListener(new View.OnClickListener() {
+            holder.text_jobtype.setText(ccitacc.getJobType());
+            holder.text_jobfield.setText(ccitacc.getJobField());
+            holder.text_jobdesc.setText(ccitacc.getDescription());
+            holder.text_jobdeadline.setText(ccitacc.getClosingDate());
+            try
+            {
+                Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getLogo()).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(holder.RIV_logo);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+
+            SwipeMenuCreator creator = new SwipeMenuCreator()
+            {
                 @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(getActivity(),JobDetails.class));
+                public void create(SwipeMenu menu)
+                {
+                    SwipeMenuItem more_sched = new SwipeMenuItem(
+                            getContext());
+                    more_sched.setBackground(R.color.colorHints);
+                    more_sched.setWidth(180);
+                    more_sched.setTitle("More");
+                    more_sched.setIcon(R.drawable.ic_more_horiz_black_24dp);
+                    more_sched.setTitleSize(12);
+                    more_sched.setTitleColor(Color.WHITE);
+                    menu.addMenuItem(more_sched);
+                    SwipeMenuItem review_sched = new SwipeMenuItem(
+                            getContext());
+                    review_sched.setBackground(R.color.colorPrimary);
+                    review_sched.setWidth(180);
+                    review_sched.setTitle("Delete");
+                    review_sched.setTitleSize(12);
+                    review_sched.setTitleColor(Color.WHITE);
+                    review_sched.setIcon(R.drawable.discount_vendor_delete);
+                    menu.addMenuItem(review_sched);
+                }
+            };
+            GV_vendor_view.setMenuCreator(creator);
+            GV_vendor_view.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener()
+            {
+                @Override
+                public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                    switch (index) {
+                        case 0:
+                            Toast.makeText(getActivity(), "Chat"+position, Toast.LENGTH_SHORT).show();
+
+                            break;
+                        case 1:
+                            Toast.makeText(getActivity(), "Message"+position, Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                    return false;
                 }
             });
             return convertView;
         }
-
         class ViewHolder {
-            ImageView iv_icon;
-            TextView tv_name;
+            public TextView text_jobtype,text_jobfield,text_jobdesc,text_jobdeadline;
+            CircleImageView RIV_logo;
 
-            public ViewHolder(View view) {
-                tv_name = (TextView) view.findViewById(R.id.tv_name);
-                card_jobs=view.findViewById(R.id.cardview_jobs);
-                view.setTag(this);
+        }
+    }
+    @SuppressLint("StaticFieldLeak")
+    public class kilomilo extends AsyncTask<String, String, List<jobscard_list_vendor>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected List<jobscard_list_vendor> doInBackground(String... params) {
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+            try {
+                URL url = new URL(params[0]);
+                DataOutputStream printout;
+                DataInputStream inputStream;
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput (true);
+                connection.setDoOutput (true);
+                connection.setUseCaches (false);
+                connection.setRequestProperty("Content-Type","application/json");
+                connection.setRequestProperty("x-api-type","Android");
+                connection.setRequestProperty("x-api-key",s_vendor_token);
+                connection.setRequestMethod("POST");
+                connection.connect();
+                JSONObject auth=new JSONObject();
+                auth.put("QueryFor","vendor");
+                auth.put("UserId",s_vendor_disc);
+                auth.put("PageNumber", "1");
+                auth.put("RowsPerPage", "5");
+                printout = new DataOutputStream(connection.getOutputStream ());
+                printout.writeBytes(auth.toString());
+                printout.flush ();
+                printout.close ();
+                InputStream stream = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder buffer = new StringBuilder();
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+                String finalJson = buffer.toString();
+                JSONObject parentObject = new JSONObject(finalJson);
+                JSONObject ed = parentObject.getJSONObject("Response");
+                JSONArray parentArray = ed.getJSONArray("Data");
+                List<jobscard_list_vendor> milokilo = new ArrayList<>();
+                Gson gson = new Gson();
+                for (int i = 0; i < parentArray.length(); i++) {
+                    JSONObject finalObject = parentArray.getJSONObject(i);
+                    jobscard_list_vendor catego = gson.fromJson(finalObject.toString(), jobscard_list_vendor.class);
+                    milokilo.add(catego);
+                }
+                return milokilo;
+            } catch (JSONException | IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(final List<jobscard_list_vendor> movieMode) {
+            super.onPostExecute(movieMode);
+            if((movieMode != null) && (movieMode.size()>0) ){
+                GV_vendor_view.setVisibility(View.VISIBLE);
+               MovieAdap adapter = new MovieAdap(getActivity(), R.layout.content_jobs_vendor_card, movieMode);
+                GV_vendor_view.setAdapter(adapter);
+                GV_vendor_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        jobscard_list_vendor item = movieMode.get(position);
+                        Intent intent = new Intent(getActivity(),JobDetails_Vendor.class);
+                        intent.putExtra("put_jobs_vendor_logo",item.getLogo());
+                        intent.putExtra("put_jobs_vendor_jobtype",item.getJobType());
+                        intent.putExtra("put_jobs_vendor_jobfield",item.getJobField());
+                        intent.putExtra("put_jobs_vendor_deadline",item.getClosingDate());
+                        intent.putExtra("put_jobs_vendor_desc",item.getDescription());
+                        startActivity(intent);
+                    }
+                });
+                adapter.notifyDataSetChanged();
             }
         }
     }
-
-    private int dp2px(int dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                getResources().getDisplayMetrics());
-    }
-
 }

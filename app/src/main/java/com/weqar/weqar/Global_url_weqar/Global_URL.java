@@ -27,8 +27,12 @@ public class Global_URL {
     public static String Vendor_complete_chooseplan=Base_url+"api/vendor/discountplan";
     public static String vendor_insert_completedetails=Base_url+"api/Discounts/add";
     public static String Vendor_showown_discounts=Base_url+"api/discounts/get";
-public  static  String Vendor_select_categ=Base_url+"api/vendor/category";
-public  static  String Vendor_insert_second_Discount=Base_url+"api/discounts/add";
+    public  static  String Vendor_select_categ=Base_url+"api/vendor/category";
+    public  static  String Vendor_insert_second_Discount=Base_url+"api/discounts/add";
+    public  static  String Vendor_getjobtype=Base_url+"api/system/jobtypes";
+    public  static  String Vendor_getjobfield=Base_url+"api/system/jobfields";
+    public  static  String Vendor_addjobs=Base_url+"Api/job/add";
+    public  static  String Vendor_showownjobs=Base_url+"api/job/get";
 
 
 

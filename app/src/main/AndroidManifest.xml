@@ -62,7 +62,7 @@
             android:label="@string/title_activity_settings__account"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".JobDetails"
+            android:name=".JobDetails_User"
             android:label="@string/title_activity_job_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -85,6 +85,18 @@
         <activity
             android:name=".AddJobs_Vendor"
             android:label="@string/title_activity_add_jobs__vendor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MultiSpinner_Vendor_JobType"
+            android:label="@string/title_activity_multi_spinner__vendor__job_type"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MultiSpinner_Vendor_JobField"
+            android:label="@string/title_activity_multi_spinner__vendor__job_field"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".JobDetails_Vendor"
+            android:label="@string/title_activity_job_details__vendor"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

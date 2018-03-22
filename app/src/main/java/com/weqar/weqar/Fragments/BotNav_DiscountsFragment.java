@@ -1,5 +1,6 @@
 package com.weqar.weqar.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -146,7 +147,7 @@ Context c;
             holder.textone.setText(ccitacc.getPercentage()+"% "+ccitacc.getTitle());
             String gg=ccitacc.getPercentage();
             Integer k=Integer.parseInt(gg);
-            Integer kk=k/10;
+            Integer kk=k/20;
             Float g=(float) kk;
             holder.ratingbar.setRating(g);
             String ing=ccitacc.getImage().trim();
@@ -155,8 +156,9 @@ Context c;
 
             try
             {
-                Picasso.with(context).load(Global_URL.Image_url_load+ing).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(holder.menuimage);
                 Picasso.with(context).load(Global_URL.Image_url_load+ings).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(holder.RIV_logo);
+                Picasso.with(context).load(Global_URL.Image_url_load+ings).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(holder.menuimage);
+
             }catch (Exception e){}
 
 
@@ -172,6 +174,7 @@ Context c;
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     public class kilomilo extends AsyncTask<String, String, List<discountcard_list>> {
         @Override
         protected void onPreExecute() {

@@ -2,40 +2,35 @@ package com.weqar.weqar.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
-import android.util.Log;
-import android.util.TypedValue;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
-import com.weqar.weqar.DBJavaClasses.discountcard_list;
 import com.weqar.weqar.DBJavaClasses.jobscard_list;
-import com.weqar.weqar.DiscountDetails_User;
+import com.weqar.weqar.DBJavaClasses.jobscard_list_vendor;
+import com.weqar.weqar.DiscountDetails_Vendor;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
-import com.weqar.weqar.JobDetails;
+import com.weqar.weqar.JavaClasses.RecyclerViewAdapter_Category;
+import com.weqar.weqar.JavaClasses.RecyclerViewAdapter_JobField;
+import com.weqar.weqar.JobDetails_User;
 import com.weqar.weqar.R;
 
 import org.json.JSONArray;
@@ -49,7 +44,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -58,6 +55,14 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class BotNav_JobsFragment extends Fragment {
     ListView GV_jobs_user;
+    String s_user_jobfield_name,s_user_jobfield_id;
+
+    RecyclerView RV_home_hoizontal_scroll;
+    RecyclerView.LayoutManager RecyclerViewLayoutManager;
+    RecyclerViewAdapter_JobField RecyclerViewHorizontalAdapter;
+    List<String> L_user_jobfield_name;
+    List<String> L_user_jobfield_id;
+    LinearLayoutManager HorizontalLayout ;
     public static BotNav_JobsFragment newInstance() {
         BotNav_JobsFragment fragment= new BotNav_JobsFragment();
         return fragment;
@@ -70,8 +75,20 @@ public class BotNav_JobsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_bot_nav__jobs, container, false);
         GV_jobs_user=view.findViewById(R.id.jobs_vendor_gv);
+        RV_home_hoizontal_scroll=view.findViewById(R.id.RV_jobs_user);
+        RecyclerViewLayoutManager = new LinearLayoutManager(getActivity());
+        L_user_jobfield_name= new ArrayList<String>();
+        L_user_jobfield_id= new ArrayList<String>();
+        RV_home_hoizontal_scroll.setLayoutManager(RecyclerViewLayoutManager);
+
+        RecyclerViewHorizontalAdapter = new RecyclerViewAdapter_JobField(L_user_jobfield_id,L_user_jobfield_name,getActivity());
+
+        HorizontalLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        RV_home_hoizontal_scroll.setLayoutManager(HorizontalLayout);
+        RV_home_hoizontal_scroll.setHorizontalScrollBarEnabled(false);
         String URLLL = Global_URL.user_show_jobs;
         new kilomilo().execute(URLLL);
+        getUserJobfields();
 return view;
     }
 
@@ -199,12 +216,19 @@ return view;
 
             if((movieMode != null) && (movieMode.size()>0) ){
 
-                MovieAdap adapter = new MovieAdap(getActivity(), R.layout.item_list_app, movieMode);
+                MovieAdap adapter = new MovieAdap(getActivity(), R.layout.content_jobs_user, movieMode);
                 GV_jobs_user.setAdapter(adapter);
                 GV_jobs_user.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        startActivity(new Intent(getActivity(),JobDetails.class));
+                        jobscard_list item = movieMode.get(position);
+                        Intent intent = new Intent(getActivity(),JobDetails_User.class);
+                        intent.putExtra("put_jobs_user_logo",item.getLogo());
+                        intent.putExtra("put_jobs_user_jobtype",item.getJobField());
+                        intent.putExtra("put_jobs_user_jobfield",item.getJobType());
+                        intent.putExtra("put_jobs_user_deadline",item.getClosingDate());
+                        intent.putExtra("put_jobs_user_desc",item.getDescription());
+                        startActivity(intent);
                     }
                 });
 
@@ -216,5 +240,52 @@ return view;
 
         }
     }
+    public void getUserJobfields()
+    {
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Global_URL.Vendor_getjobfield, new Response.Listener<String>() {
 
+            public void onResponse(String response) {
+                try {
+
+                    JSONObject jObj = new JSONObject(response);
+                    JSONArray jsonArray = jObj.getJSONArray("Response");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        s_user_jobfield_name= object.getString("Description");
+                        s_user_jobfield_id= object.getString("Id");
+
+                        L_user_jobfield_id.add(String.valueOf(s_user_jobfield_id));
+                        L_user_jobfield_name.add(String.valueOf(s_user_jobfield_name));
+
+
+                    }
+                    RV_home_hoizontal_scroll.setAdapter(RecyclerViewHorizontalAdapter);
+                }
+
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                return headers;
+            }
+        };
+
+        requestQueue.add(stringRequest);
+    }
 }
