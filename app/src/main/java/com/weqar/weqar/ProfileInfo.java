@@ -190,80 +190,50 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         SP_vendor_com_offertype.setAdapter(spinnerArrayAdapter);
         sessiion = new SessionManager(getApplicationContext());
 
-//        if (sessiion.isLoggedIn()) {
-//            if(s_lnw_usertype.equals("vendor")||s_lnw_usertype.matches("vendor"))
-//            {
-//                Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
-//                SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(context);
-//                SharedPreferences.Editor editor = preferencess.edit();
-//                editor.putString("weqar_uid",s_lnw_userid);
-//                editor.putString("weqar_token",s_lnw_usertoken);
-//                editor.apply();
-//                startActivity(intent);
-//            }
-//            else
-//            {
-//                startActivity(new Intent(ProfileInfo.this, HomeScreen.class));
-//            }
-//        }
-        if(s_lnw_usertype.equals("user"))
-        {
-            if(s_ln_tab1)
-            {
-                if (s_ln_tab2)
-                {
-                    if (s_ln_tab3)
-                    {
-//                        if (sessiion.isLoggedIn())
-//                        {
+        if(sessiion.isLoggedIn()) {
+            if (s_lnw_usertype.equals("user")) {
+                if (s_ln_tab1) {
+                    if (s_ln_tab2) {
+                        if (s_ln_tab3) {
+
                             startActivity(new Intent(ProfileInfo.this, HomeScreen.class));
-                       // }
-                    }
-                    else
-                    {
-                        toolbar.setTitle("Subscription");
-                        getUserCompletesubscription();
+
+                        } else {
+                            toolbar.setTitle("Subscription");
+                            getUserCompletesubscription();
+                            scrollView_personal.setVisibility(View.INVISIBLE);
+                            scrollView_professional.setVisibility(View.INVISIBLE);
+                            but_complete.setVisibility(View.VISIBLE);
+                            scrollView_complete.setVisibility(View.VISIBLE);
+                            IV_personal.setImageResource(R.drawable.profile_basic_three);
+                            IV_professional.setImageResource(R.drawable.profile_professional_three);
+                            IV_complete.setImageResource(R.drawable.profile_complete_two);
+                            view1.setBackgroundResource(R.color.colorAccent);
+                            view2.setBackgroundResource(R.color.colorAccent);
+                            view3.setBackgroundResource(R.color.colorAccent);
+                        }
+                    } else {
+                        toolbar.setTitle("Professional");
                         scrollView_personal.setVisibility(View.INVISIBLE);
-                        scrollView_professional.setVisibility(View.INVISIBLE);
-                        but_complete.setVisibility(View.VISIBLE);
-                        scrollView_complete.setVisibility(View.VISIBLE);
+                        scrollView_professional.setVisibility(View.VISIBLE);
+                        scrollView_complete.setVisibility(View.INVISIBLE);
                         IV_personal.setImageResource(R.drawable.profile_basic_three);
-                        IV_professional.setImageResource(R.drawable.profile_professional_three);
-                        IV_complete.setImageResource(R.drawable.profile_complete_two);
+                        IV_professional.setImageResource(R.drawable.profile_professional_two);
+                        IV_complete.setImageResource(R.drawable.profile_complete_one);
                         view1.setBackgroundResource(R.color.colorAccent);
                         view2.setBackgroundResource(R.color.colorAccent);
-                        view3.setBackgroundResource(R.color.colorAccent);
                     }
-                }
-                else
-                {
-                    toolbar.setTitle("Professional");
-                    scrollView_personal.setVisibility(View.INVISIBLE);
-                    scrollView_professional.setVisibility(View.VISIBLE);
+                } else {
+                    toolbar.setTitle("Basic Infos");
+                    scrollView_personal.setVisibility(View.VISIBLE);
+                    scrollView_professional.setVisibility(View.INVISIBLE);
                     scrollView_complete.setVisibility(View.INVISIBLE);
-                    IV_personal.setImageResource(R.drawable.profile_basic_three);
-                    IV_professional.setImageResource(R.drawable.profile_professional_two);
-                    IV_complete.setImageResource(R.drawable.profile_complete_one);
                     view1.setBackgroundResource(R.color.colorAccent);
-                    view2.setBackgroundResource(R.color.colorAccent);
                 }
-            }
-            else
-            {
-                toolbar.setTitle("Basic Info");
-                scrollView_personal.setVisibility(View.VISIBLE);
-                scrollView_professional.setVisibility(View.INVISIBLE);
-                scrollView_complete.setVisibility(View.INVISIBLE);
-                view1.setBackgroundResource(R.color.colorAccent);
-            }
-        }
-        else  if(s_lnw_usertype.equals("vendor")||s_lnw_usertype.matches("vendor"))
-        {
-            IV_basic_image.setVisibility(View.GONE);
-            if(s_ln_tab1 && s_ln_tab2)
-          {
-//                if (sessiion.isLoggedIn())
-//                {
+            } else if (s_lnw_usertype.equals("vendor") || s_lnw_usertype.matches("vendor")) {
+                IV_basic_image.setVisibility(View.GONE);
+                IV_bas.setVisibility(View.GONE);
+                if (s_ln_tab1 && s_ln_tab2 && sessiion.isLoggedIn()) {
                     Intent intent = new Intent(ProfileInfo.this, HomeScreen_vendor.class);
                     SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(context);
                     SharedPreferences.Editor editor = preferencess.edit();
@@ -271,34 +241,30 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                     editor.putString("weqar_token", s_lnw_usertoken);
                     editor.apply();
                     startActivity(intent);
-               // }
-            }
-            else
-            {
-                if(!s_ln_tab1)
-                {
-                    toolbar.setTitle("Basic Info");
-                    scrollView_personal.setVisibility(View.VISIBLE);
-                    scrollView_professional.setVisibility(View.INVISIBLE);
-                    scrollView_complete.setVisibility(View.INVISIBLE);
-                    view1.setBackgroundResource(R.color.colorAccent);
-                }
-                else if(!s_ln_tab2)
-                {
-                    toolbar.setTitle("Verification");
-                    scrollview_vendor_professional.setVisibility(View.VISIBLE);
-                    scrollView_personal.setVisibility(View.INVISIBLE);
-                    scrollView_professional.setVisibility(View.INVISIBLE);
-                    scrollView_complete.setVisibility(View.INVISIBLE);
-                    IV_personal.setImageResource(R.drawable.profile_basic_three);
-                    IV_professional.setImageResource(R.drawable.profile_professional_two);
-                    IV_complete.setImageResource(R.drawable.profile_complete_one);
-                    view1.setBackgroundResource(R.color.colorAccent);
-                    view2.setBackgroundResource(R.color.colorAccent);
+                } else {
+
+                    if (!s_ln_tab1) {
+                        toolbar.setTitle("Basic Info");
+                        scrollView_personal.setVisibility(View.VISIBLE);
+                        scrollView_professional.setVisibility(View.INVISIBLE);
+                        scrollView_complete.setVisibility(View.INVISIBLE);
+                        view1.setBackgroundResource(R.color.colorAccent);
+                    } else if (!s_ln_tab2) {
+                        toolbar.setTitle("Verification");
+                        scrollview_vendor_professional.setVisibility(View.VISIBLE);
+                        scrollView_personal.setVisibility(View.INVISIBLE);
+                        scrollView_professional.setVisibility(View.INVISIBLE);
+                        scrollView_complete.setVisibility(View.INVISIBLE);
+                        IV_personal.setImageResource(R.drawable.profile_basic_three);
+                        IV_professional.setImageResource(R.drawable.profile_professional_two);
+                        IV_complete.setImageResource(R.drawable.profile_complete_one);
+                        view1.setBackgroundResource(R.color.colorAccent);
+                        view2.setBackgroundResource(R.color.colorAccent);
+                    }
                 }
             }
         }
-        Calendar now = Calendar.getInstance();
+               Calendar now = Calendar.getInstance();
         dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
                 ProfileInfo.this,
                 now.get(Calendar.YEAR),

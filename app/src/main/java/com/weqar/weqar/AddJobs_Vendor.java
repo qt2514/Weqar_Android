@@ -342,7 +342,16 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
              public void onResponse(String response) {
                  // startActivity(new Intent(ProfileInfo.this, LoginActivity.class));
                  Log.i("basic_details_response",response);
-
+                 new PromptDialog(AddJobs_Vendor.this)
+                         .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                         .setAnimationEnable(true)
+                         .setTitleText("Job Added Successfully")
+                         .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                             @Override
+                             public void onClick(PromptDialog dialog) {
+                                startActivity(new Intent(AddJobs_Vendor.this,HomeScreen_vendor.class));
+                             }
+                         }).show();
 
              }
          }, new Response.ErrorListener() {

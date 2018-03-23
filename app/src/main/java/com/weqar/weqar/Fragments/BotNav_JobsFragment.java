@@ -139,7 +139,9 @@ return view;
             holder.text_jobtype.setText(ccitacc.getJobType());
             holder.textjobfield.setText(ccitacc.getJobField());
             holder.textdesc.setText(ccitacc.getDescription());
-            holder.textdeadline.setText(ccitacc.getClosingDate());
+            String first=ccitacc.getClosingDate();
+            String second=first.substring(0,10);
+            holder.textdeadline.setText("Deadline "+second);
 
             try {
 

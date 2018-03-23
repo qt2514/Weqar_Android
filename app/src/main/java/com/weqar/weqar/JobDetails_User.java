@@ -51,8 +51,8 @@ public class JobDetails_User extends AppCompatActivity {
         {
 
             Picasso.with(this).load(Global_URL.Image_url_load+s_jobdet_logo).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(CIV_Ujobdet_logo);
-            TV_ujobdet_jobtype.setText(s_jobdet_jobtype);
-            TV_ujobdet_jobfield.setText(s_jobdet_jobfield);
+            TV_ujobdet_jobtype.setText(s_jobdet_jobfield+" -");
+            TV_ujobdet_jobfield.setText(s_jobdet_jobtype);
             TV_ujob_jobdeadline.setText(s_jobdet_jobdeadline);
             TV_ujob_desc.setText(s_jobdet_desc);
 

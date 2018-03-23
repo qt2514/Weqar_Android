@@ -48,7 +48,7 @@
                 android:id="@+id/et_prof_membernum"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
                 android:background="@drawable/selector_bg_edit"
                 android:textCursorDrawable="@drawable/bg_input_cursor"
                 android:paddingBottom="2dp" />

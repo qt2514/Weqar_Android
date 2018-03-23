@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,6 +110,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                 convertView = inflater.inflate(resource, null);
                 holder = new ViewHolder();
                 holder.textone = (TextView) convertView.findViewById(R.id.TV_disc_percentage_vendor);
+                holder.texttwo_desc = (TextView) convertView.findViewById(R.id.text_vendor_discount_desc);
                 holder.menuimage = convertView.findViewById(R.id.roundimg_one);
                 holder.RB_vendor_rating = (RatingBar)convertView.findViewById(R.id.RB_vendr_rating_vendor);
                 holder.RIV_logo=convertView.findViewById(R.id.RIV_vendor_logo_vendor);
@@ -119,13 +122,15 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
             }
             discountcard_list_vendor ccitacc = movieModelList.get(position);
             holder.textone.setText(ccitacc.getPercentage()+"% "+ccitacc.getTitle());
-            String vendor_image=ccitacc.getImage();
             String gg=ccitacc.getPercentage();
             Integer k=Integer.parseInt(gg);
-            Integer kk=k/10;
+            Integer kk=k/20;
             Float g=(float) kk;
             holder.RB_vendor_rating.setRating(g);
-            //  holder.menuimage.setImageResource(R.drawable.vgv);
+
+            String htmlAsString = ccitacc.getDescription();
+            Spanned htmlAsSpanned = Html.fromHtml(htmlAsString);
+            holder.texttwo_desc.setText(htmlAsSpanned);
             try
             {
                 Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getImage()).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(holder.menuimage);
@@ -183,7 +188,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
             return convertView;
         }
         class ViewHolder {
-            public TextView textone;
+            public TextView textone,texttwo_desc;
             private ImageView menuimage;
            CircleImageView RIV_logo;
             RatingBar RB_vendor_rating;
@@ -267,6 +272,8 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         discountcard_list_vendor item = movieMode.get(position);
                         Intent intent = new Intent(getActivity(),DiscountDetails_Vendor.class);
+                        intent.putExtra("put_image",item.getImage());
+                        intent.putExtra("put_logo",item.getLogo());
                         intent.putExtra("put_title",item.getTitle());
                         intent.putExtra("put_per",item.getPercentage());
                         intent.putExtra("put_desc",item.getDescription());

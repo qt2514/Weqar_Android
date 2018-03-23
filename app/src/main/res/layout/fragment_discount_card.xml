@@ -45,7 +45,8 @@
                     android:id="@+id/roundedImageView"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    app:civ_border_width="1dp"
+                    android:background="@drawable/rounded"
+                    app:civ_border_width="2dp"
                     app:civ_border_color="@color/colorPrimary"
 
                     android:layout_alignStart="@+id/TV_disc_percentage"

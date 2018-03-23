@@ -56,10 +56,10 @@ SessionManager session;
 
 
         session = new SessionManager(getApplicationContext());
-//        if (session.isLoggedIn()) {
-//            Intent intent = new Intent(LoginActivity.this, ProfileInfo.class);
-//            startActivity(intent);
-//        }
+        if (session.isLoggedIn()) {
+            Intent intent = new Intent(LoginActivity.this, ProfileInfo.class);
+            startActivity(intent);
+        }
         ET_username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -188,7 +188,7 @@ SessionManager session;
                         if(status.equals("success")||status.matches("success"))
                         {
                             JSONObject verification = jObj.getJSONObject("Response");
-                            //  session.setLogin(true);
+                           session.setLogin(true);
                             s_ln_username=verification.getString("UserName");
                             s_ln_userid=verification.getString("Id");
                             s_ln_usermail=verification.getString("Email");

@@ -17,7 +17,7 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/roundimg_one"
-            android:layout_width="400dp"
+            android:layout_width="500dp"
             android:layout_height="match_parent"
 
 
@@ -51,13 +51,15 @@
             android:layout_alignTop="@+id/IV_vdisc_image_vendor"
 
             android:layout_marginTop="19dp"
-            android:clickable="false"
 
+            android:clickable="false"
+            android:background="@drawable/rounded"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/colorPrimary"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:src="@drawable/rounded"
-            app:civ_border_color="@color/colorPrimary"
-            app:civ_border_width="1dp" />
+             />
 
         <TextView
             android:id="@+id/TV_disc_percentage_vendor"
@@ -66,7 +68,9 @@
             android:layout_below="@+id/RIV_vendor_logo_vendor"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:maxLength="20"
             android:text="75% Discount in KFC"
             android:textColor="@color/colorWhite"
             android:textSize="14sp"
@@ -77,16 +81,18 @@
             />
 
         <TextView
-            android:id="@+id/textViewu"
+            android:id="@+id/text_vendor_discount_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/TV_disc_percentage_vendor"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="2dp"
-
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="Percide January 7 2018 Dont miss it"
             android:textColor="@color/colorWhite"
             android:textSize="11sp"
+android:maxLength="27"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"/>
@@ -96,7 +102,7 @@
             style="?android:attr/ratingBarStyleIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewu"
+            android:layout_below="@+id/text_vendor_discount_desc"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="3dp"
 

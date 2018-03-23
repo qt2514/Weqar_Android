@@ -40,13 +40,14 @@
                     android:textSize="23sp"/>
                 <ImageView
                     android:id="@+id/homescreen_notification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
                     android:layout_marginRight="10dp"
                     android:layout_centerVertical="true"
+
                     android:background="@drawable/home_toolbar_notification"
-                    android:backgroundTint="@color/colorHint" />
+                    />
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
@@ -73,6 +74,9 @@
         android:layout_gravity="center"
         android:layout_weight=".0"
         android:src="@drawable/rounded"
+        android:background="@drawable/rounded"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/colorPrimary"
         />
     <LinearLayout
         android:layout_width="wrap_content"
@@ -111,7 +115,6 @@
                 android:textSize="17sp" />
         </LinearLayout>
 
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -123,18 +126,20 @@
             android:drawableLeft="@drawable/ic_blacklocation"
             android:textColor="@color/colorHintss"
             android:textSize="13sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" Deadline 27-03-2017"
             android:layout_gravity="start"
             android:id="@+id/text_deadline_user_jobdet"
-            android:layout_marginLeft="5dp"
-            android:textSize="13sp"            android:layout_marginTop="10dp"
+            android:textSize="13sp"
+            android:layout_marginTop="10dp"
 
 
             android:drawableLeft="@drawable/ic_access_alarm_black_24dp"
             android:gravity="end"/>
+
 
     </LinearLayout>
 
@@ -147,7 +152,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_margin="13dp"
+            android:layout_margin="22dp"
             android:id="@+id/text_desc_user_jobdet"
             android:layout_height="wrap_content"
             android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."/>

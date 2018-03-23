@@ -72,6 +72,7 @@ public class AddDiscount_Vendor extends AppCompatActivity {
     TextInputLayout TIV_vcomplete_percentage_s;
     Button B_vcomplete_completed_s;
     String s_disc_startdate,s_disc_enddate,s_disc_offertype,s_disc_percentage,s_disc_title,s_disc_desc,s_image;
+    String check_discounttype_vendor_discount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,10 +143,12 @@ public class AddDiscount_Vendor extends AppCompatActivity {
                 S_vcomple_offertype_sel= parent.getItemAtPosition(position).toString();
                 if(S_vcomple_offertype_sel.equals("Discount")||S_vcomple_offertype_sel.matches("Discount"))
                 {
+
                     ET_vcomplete_percentage.setVisibility(View.VISIBLE);
                     TIL_vcomplete_percentage.setVisibility(View.VISIBLE);
                 } else if(S_vcomple_offertype_sel.equals("Offer")||S_vcomple_offertype_sel.matches("Offer"))
                 {
+
                     ET_vcomplete_percentage.setVisibility(View.INVISIBLE);
                     TIL_vcomplete_percentage.setVisibility(View.INVISIBLE);
                 }
@@ -162,10 +165,12 @@ public class AddDiscount_Vendor extends AppCompatActivity {
                 s_disc_offertype= parent.getItemAtPosition(position).toString();
                 if(s_disc_offertype.equals("Discount")||s_disc_offertype.matches("Discount"))
                 {
+                    check_discounttype_vendor_discount="1";
                     et_vcomplete_percentage_s.setVisibility(View.VISIBLE);
                     TIV_vcomplete_percentage_s.setVisibility(View.VISIBLE);
                 } else if(s_disc_offertype.equals("Offer")||s_disc_offertype.matches("Offer"))
                 {
+                    check_discounttype_vendor_discount="2";
                     et_vcomplete_percentage_s.setVisibility(View.INVISIBLE);
                     TIV_vcomplete_percentage_s.setVisibility(View.INVISIBLE);
                 }
@@ -694,7 +699,7 @@ public class AddDiscount_Vendor extends AppCompatActivity {
 
 
                                 callmetoupload_seconddiscount_url(s_disc_desc,s_lnw_userid,s_image,s_disc_title,
-                                        s_disc_startdate,s_disc_enddate,s_disc_percentage,s_disc_offertype);
+                                        s_disc_startdate,s_disc_enddate,s_disc_percentage,check_discounttype_vendor_discount);
 
 
 startActivity(new Intent(AddDiscount_Vendor.this,HomeScreen_vendor.class));

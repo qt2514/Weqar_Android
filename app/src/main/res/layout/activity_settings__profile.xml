@@ -4,20 +4,44 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.weqar.weqar.Fragments.BotNav_SettingsFragment">
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="6dp"
-        android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
-        android:id="@+id/account_setting_back" />
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/relative_layout_profile"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="6dp"
+            android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
+            android:id="@+id/account_setting_back" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            android:textSize="20sp"
+
+            android:layout_centerInParent="true"/>
+        <ImageView
+            android:id="@+id/homescreen_notification"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+
+            android:background="@drawable/home_toolbar_notification"
+
+            />
+    </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_below="@+id/account_setting_back"
+        android:layout_below="@+id/relative_layout_profile"
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
             <com.makeramen.roundedimageview.RoundedImageView

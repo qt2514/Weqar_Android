@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:id="@+id/appbar_jobdet"
         android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
         android:theme="@style/AppTheme.AppBarOverlay">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,13 +34,15 @@
                 android:textSize="23sp"/>
             <ImageView
                 android:id="@+id/homescreen_notification"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="10dp"
                 android:layout_centerVertical="true"
+
                 android:background="@drawable/home_toolbar_notification"
-                android:backgroundTint="@color/colorHint" />
+
+                />
         </RelativeLayout>
 
     </android.support.design.widget.AppBarLayout>
@@ -66,12 +69,15 @@
                 android:layout_height="70dp"
                 android:layout_gravity="center"
                 android:layout_weight=".0"
+                android:background="@drawable/rounded"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/colorPrimary"
                 android:src="@drawable/rounded"
                 />
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginRight="0dp"
                 android:layout_weight="2"
                 android:orientation="vertical">
@@ -85,13 +91,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:layout_marginLeft="10dp"
+                        android:paddingLeft="7dp"
                         android:gravity="start"
                         android:text="Film Maker -"
                         android:id="@+id/text_jobtype_vendor_jobdet"
                         android:textStyle="bold"
                         android:textColor="@color/colorHintss"
-                        android:textSize="18sp" />
+                        android:textSize="19sp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -110,10 +116,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_marginLeft="10dp"
                     android:gravity="start"
                     android:layout_marginTop="5dp"
-                    android:text=" Leeds,York,Harrogate,Bradford"
+                    android:text="Leeds,York,Harrogate,Bradford"
                     android:drawableLeft="@drawable/ic_blacklocation"
                     android:textColor="@color/colorHintss"
                     android:textSize="13sp" />
@@ -123,7 +128,6 @@
                     android:text=" Deadline 27-03-2017"
                     android:layout_gravity="start"
                     android:id="@+id/text_deadline_vendor_jobdet"
-                    android:layout_marginLeft="5dp"
                     android:textSize="13sp"
                     android:layout_marginTop="10dp"
 
@@ -142,7 +146,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_margin="13dp"
+            android:layout_margin="22dp"
             android:id="@+id/text_desc_vendor_jobdet"
             android:layout_height="wrap_content"
             android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."/>
