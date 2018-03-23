@@ -48,6 +48,8 @@ RecyclerView RV_discdet_user;
     List<String> L_det_det_logo;
     String s_disc_det_id,s_disc_det_desc,s_disc_det_image,s_disc_edt_percentage,s_disc_det_title,s_det_det_logo;
 String s_lnw_usermailid;
+    SharedPreferences Shared_user_details;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +72,10 @@ String s_lnw_usermailid;
         L_disc_edt_percentage= new ArrayList<String>();
         L_disc_det_title= new ArrayList<String>();
         L_det_det_logo= new ArrayList<String>();
+        Shared_user_details=getSharedPreferences("user_detail_mode",0);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        s_lnw_usermailid = preferences.getString("weqar_token", "");
+        s_lnw_usermailid= Shared_user_details.getString("weqar_token", null);
+
         RecyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext());
 
 

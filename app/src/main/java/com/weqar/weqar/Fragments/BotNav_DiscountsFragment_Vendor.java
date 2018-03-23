@@ -54,6 +54,8 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
     String s_vendor_disc,s_vendor_token;
     SwipeMenuListView GV_vendor_view;
     ImageView IV_adddiscount_vendor;
+    SharedPreferences Shared_user_details;
+    SharedPreferences.Editor editor;
     public static BotNav_DiscountsFragment_Vendor newInstance()
     {
         BotNav_DiscountsFragment_Vendor fragment= new BotNav_DiscountsFragment_Vendor();
@@ -64,9 +66,10 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                              Bundle savedInstanceState)
     {
         View view= inflater.inflate(R.layout.fragment_bot_nav__discounts_fragment__vendor, container, false);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        s_vendor_disc = preferences.getString("weqar_uid", "");
-        s_vendor_token = preferences.getString("weqar_token", "");
+        Shared_user_details=getActivity().getSharedPreferences("user_detail_mode",0);
+        s_vendor_disc=  Shared_user_details.getString("weqar_uid", null);
+        s_vendor_token=  Shared_user_details.getString("weqar_token", null);
+
         GV_vendor_view=view.findViewById(R.id.disc_vendor_gv);
         IV_adddiscount_vendor=view.findViewById(R.id.homescreen_adddiscount);
         IV_adddiscount_vendor.setOnClickListener(new View.OnClickListener() {

@@ -44,7 +44,9 @@ public class LoginActivity extends AppCompatActivity {
 
     String s_ln_userid,s_ln_username,s_ln_usermail,s_ln_usertype,s_ln_usertoken;
     Boolean s_ln_tab1,s_ln_tab2,s_ln_tab3;
-SessionManager session;
+    private SessionManager session;
+    SharedPreferences Shared_user_details;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,7 @@ SessionManager session;
 
 
         session = new SessionManager(getApplicationContext());
+        Shared_user_details = getSharedPreferences("user_detail_mode", 0);
         if (session.isLoggedIn()) {
             Intent intent = new Intent(LoginActivity.this, ProfileInfo.class);
             startActivity(intent);
@@ -215,18 +218,22 @@ SessionManager session;
                                             intent.putExtra("login_tab1",s_ln_tab1);
                                             intent.putExtra("login_tab2",s_ln_tab2);
                                             intent.putExtra("login_tab3",s_ln_tab3);
-                                            SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
 
-                                            SharedPreferences.Editor editor = preferencess.edit();
+
+
+                                            editor = Shared_user_details.edit();
                                             editor.putString("sp_w_usertype",s_ln_usertype);
                                             editor.putString("sp_w_useremail",s_ln_usermail);
                                             editor.putString("sp_w_userid",s_ln_userid);
                                             editor.putString("sp_w_apikey",s_ln_usertoken);
+
+
                                             editor.putBoolean("login_tab1",s_ln_tab1);
                                             editor.putBoolean("login_tab2",s_ln_tab2);
                                             editor.putBoolean("login_tab3",s_ln_tab3);
+
                                             editor.apply();
-                                            //  intent.putExtra("w_usertype",s_ln_usertype);
+                                            editor.commit();
                                             startActivity(intent);
                                         }
                                     }).show();

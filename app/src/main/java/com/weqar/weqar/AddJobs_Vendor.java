@@ -64,6 +64,8 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
     SimpleDateFormat simpleDateFormat;
     int one;
     String s_jobtitle,s_jobtype,s_jobfield,s_jobstartingdate,s_closingdate,s_desc;
+    SharedPreferences Shared_user_details;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,10 +82,10 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
         But_add=findViewById(R.id.but_vaddjobs_add);
         simpleDateFormat = new SimpleDateFormat("dd MM yyyy", Locale.US);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        s_lnw_usertoken= preferences.getString("sp_w_apikey","");
-        s_lnw_userid= preferences.getString("sp_w_userid","");
+        Shared_user_details=getSharedPreferences("user_detail_mode",0);
 
+        s_lnw_userid= Shared_user_details.getString("sp_w_userid", null);
+        s_lnw_usertoken= Shared_user_details.getString("sp_w_apikey", null);
 
         TV_vaddjobs_jobtype.setOnClickListener(new View.OnClickListener()
         {

@@ -1,20 +1,18 @@
 package com.weqar.weqar;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,8 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import com.abdeveloper.library.MultiSelectDialog;
-import com.abdeveloper.library.MultiSelectModel;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -54,8 +51,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-
-import javax.microedition.khronos.opengles.GL;
 
 import cn.refactor.lib.colordialog.PromptDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -102,7 +97,9 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     ArrayList<String> vendor_plan = new ArrayList<String>();
     String compl_vendor_offertype[] = {"Discount","Offer"},count_on_skip_forvendor="0";
     String serviceuid="",s_lnw_usermailid;
-    SessionManager sessiion;
+    private SessionManager session;
+    SharedPreferences Shared_user_details;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,22 +172,26 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         Rec_usersubs.setLayoutManager(HorizontalLayout);
         Rec_usersubs.setHorizontalScrollBarEnabled(false);
         vendor_plan = new ArrayList<String>();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        s_lnw_usermailid = preferences.getString("sp_w_useremail", "");
-        s_lnw_usertype= preferences.getString("sp_w_usertype","");
-        s_lnw_userid= preferences.getString("sp_w_userid","");
-        s_lnw_usertoken= preferences.getString("sp_w_apikey","");
-        s_ln_tab1= preferences.getBoolean("login_tab1",false);
-        s_ln_tab2= preferences.getBoolean("login_tab2",false);
-        s_ln_tab3= preferences.getBoolean("login_tab3",false);
+        session = new SessionManager(getApplicationContext());
+        Shared_user_details=getSharedPreferences("user_detail_mode",0);
+        editor = Shared_user_details.edit();
+        s_lnw_usermailid=  Shared_user_details.getString("sp_w_useremail", null);
+        s_lnw_usertype=  Shared_user_details.getString("sp_w_usertype", null);
+        s_lnw_userid= Shared_user_details.getString("sp_w_userid", null);
+        s_lnw_usertoken= Shared_user_details.getString("sp_w_apikey", null);
+//getmydet(s_lnw_userid);
+        s_ln_tab1=  Shared_user_details.getBoolean("login_tab1",false);
+        s_ln_tab2=  Shared_user_details.getBoolean("login_tab2",false);
+        s_ln_tab3=  Shared_user_details.getBoolean("login_tab3",false);
+
+
         ET_emailid.setText(s_lnw_usermailid);
         getVendorplan();
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, compl_vendor_offertype);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         SP_vendor_com_offertype.setAdapter(spinnerArrayAdapter);
-        sessiion = new SessionManager(getApplicationContext());
 
-        if(sessiion.isLoggedIn()) {
+        if(session.isLoggedIn()) {
             if (s_lnw_usertype.equals("user")) {
                 if (s_ln_tab1) {
                     if (s_ln_tab2) {
@@ -230,18 +231,20 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                     scrollView_complete.setVisibility(View.INVISIBLE);
                     view1.setBackgroundResource(R.color.colorAccent);
                 }
-            } else if (s_lnw_usertype.equals("vendor") || s_lnw_usertype.matches("vendor")) {
+            } else if (s_lnw_usertype.equals("vendor") ) {
                 IV_basic_image.setVisibility(View.GONE);
                 IV_bas.setVisibility(View.GONE);
-                if (s_ln_tab1 && s_ln_tab2 && sessiion.isLoggedIn()) {
+                if (s_ln_tab1 && s_ln_tab2 )
+                {
                     Intent intent = new Intent(ProfileInfo.this, HomeScreen_vendor.class);
-                    SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(context);
-                    SharedPreferences.Editor editor = preferencess.edit();
-                    editor.putString("weqar_uid", s_lnw_userid);
-                    editor.putString("weqar_token", s_lnw_usertoken);
+                    editor = Shared_user_details.edit();
+                    editor.putString("weqar_uid",s_lnw_userid);
+                    editor.putString("weqar_token",s_lnw_usertoken);
                     editor.apply();
+                    editor.commit();
                     startActivity(intent);
-                } else {
+                }
+                else {
 
                     if (!s_ln_tab1) {
                         toolbar.setTitle("Basic Info");
@@ -330,12 +333,17 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             @Override
             public void onClick(View v) {
                 callmetouploadbasic();
+              //  getmydet(s_lnw_userid);
+
             }
         });
         B_professional_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 callmetouploadprofessional();
+                //getmydet(s_lnw_userid);
+
+
 
             }
         });
@@ -343,6 +351,9 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             @Override
             public void onClick(View v) {
                 callmetouploadprofessional_vendor();
+                //getmydet(s_lnw_userid);
+
+
             }
         });
         but_complete.setOnClickListener(new View.OnClickListener() {
@@ -350,6 +361,8 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             public void onClick(View v) {
 
              callmetouploadusercomplete();
+            //    getmydet(s_lnw_userid);
+
             }
         });
         SP_vendor_com_planchoose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -385,11 +398,11 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             public void onClick(View v) {
                 count_on_skip_forvendor="1";
                 Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
-                SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor editor = preferencess.edit();
+                editor = Shared_user_details.edit();
                 editor.putString("weqar_uid",s_lnw_userid);
                 editor.putString("weqar_token",s_lnw_usertoken);
                 editor.apply();
+                editor.commit();
                 startActivity(intent);
             }
         });
@@ -483,15 +496,18 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     private void basic_image(final Bitmap bitmap) {
 
 
-        final String base64String = ImageUtil.convert(bitmap);
-        String strOut = base64String.substring(0, 8);
+        Bitmap immagex=bitmap;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
         try {
 
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONArray jsonArray= new JSONArray();
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("extension", "JPG");
-            jsonBody.put("content", strOut);
+            jsonBody.put("content", imageEncoded);
 
 
             final String requestBody = jsonBody.toString();
@@ -551,16 +567,18 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     }
     private void upload_user_profimage(final Bitmap bitmap) {
 
-
-        final String base64String = ImageUtil.convert(bitmap);
-        String strOut = base64String.substring(0, 8);
+        Bitmap immagex=bitmap;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
         try {
 
            RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONArray jsonArray= new JSONArray();
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("extension", "JPG");
-            jsonBody.put("content", strOut);
+            jsonBody.put("content", imageEncoded);
             final String requestBody = jsonBody.toString();
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.User_uploadprofessionalimage, new Response.Listener<String>() {
                 public void onResponse(String response) {
@@ -618,14 +636,17 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     }
     private void upload_vendor_companylogo(final Bitmap bitmap)
     {
-        final String base64String = ImageUtil.convert(bitmap);
-        String strOut = base64String.substring(0, 8);
+        Bitmap immagex=bitmap;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONArray jsonArray= new JSONArray();
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("extension", "JPG");
-            jsonBody.put("content", strOut);
+            jsonBody.put("content", imageEncoded);
             final String requestBody = jsonBody.toString();
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.User_uploadprofessionalimage, new Response.Listener<String>() {
                 public void onResponse(String response) {
@@ -681,15 +702,17 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
 
     }
     private void upload_vendor_complete_image(final Bitmap bitmap)
-    {
-        final String base64String = ImageUtil.convert(bitmap);
-        String strOut = base64String.substring(0, 8);
+    { Bitmap immagex=bitmap;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONArray jsonArray= new JSONArray();
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("extension", "JPG");
-            jsonBody.put("content", strOut);
+            jsonBody.put("content", imageEncoded);
             final String requestBody = jsonBody.toString();
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.User_uploadprofessionalimage, new Response.Listener<String>() {
                 public void onResponse(String response) {
@@ -901,6 +924,22 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 public void onResponse(String response) {
                    // startActivity(new Intent(ProfileInfo.this, LoginActivity.class));
                     Log.i("basic_details_response",response);
+                    try {
+                        JSONObject jObj = new JSONObject(response);
+
+                        String status = jObj.getString("Status");
+                        if(status.equals("success"))
+                        {
+
+                            editor.putBoolean("login_tab1", true);
+                            editor.apply();
+                            editor.commit();
+
+                        }
+                    }catch (Exception e){
+
+                        e.printStackTrace();
+                    }
 
 
                 }
@@ -1042,12 +1081,29 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                    // startActivity(new Intent(ProfileInfo.this, LoginActivity.class));
                     Log.i("user_professional_response",response);
 
+                    try {
+                        JSONObject jObj = new JSONObject(response);
+
+                        String status = jObj.getString("Status");
+                        if(status.equals("success"))
+                        {
+
+                            editor.putBoolean("login_tab2", true);
+                            editor.apply();
+                            editor.commit();
+
+                        }
+                    }catch (Exception e){
+
+                        e.printStackTrace();
+                    }
 
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.i("VOLLEY", error.toString());
+
                 }
             }) {
                 @Override
@@ -1087,9 +1143,8 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
 
     public void callmetouploadusercomplete()
     {
+        String  categid_book =  Shared_user_details.getString("sel_user_plantype", null);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-       String  categid_book = preferences.getString("sel_user_plantype", "");
         TinyDB tinydb = new TinyDB(context);
         s_fromadp_getuser_plantype_id=tinydb.getString("check_userplantype_id");
         s_fromadp_getuser_plantype=tinydb.getString("check_userplantype_type");
@@ -1133,6 +1188,22 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
 
                 public void onResponse(String response) {
                     Log.i("user_complete_response",response);
+                    try {
+                        JSONObject jObj = new JSONObject(response);
+
+                        String status = jObj.getString("Status");
+                        if(status.equals("success"))
+                        {
+
+                            editor.putBoolean("login_tab3", true);
+                            editor.apply();
+                            editor.commit();
+
+                        }
+                    }catch (Exception e){
+
+                        e.printStackTrace();
+                    }
 
                 }
             }, new Response.ErrorListener() {
@@ -1312,6 +1383,22 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
 
                 public void onResponse(String response) {
                     // startActivity(new Intent(ProfileInfo.this, LoginActivity.class));
+                    try {
+                        JSONObject jObj = new JSONObject(response);
+
+                        String status = jObj.getString("Status");
+                        if(status.equals("success"))
+                        {
+
+                            editor.putBoolean("login_tab2", true);
+                            editor.apply();
+                            editor.commit();
+
+                        }
+                    }catch (Exception e){
+
+                        e.printStackTrace();
+                    }
 
                     Log.i("vendor_professional_response",response);
 
@@ -1523,13 +1610,14 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                             callmetouploadvendorcomplete_url(s_vcomplete_description,s_vcomplete_image_response,s_lnw_userid
                                     , S_vcomplete_title, S_vcomplete_percentage, serviceuid, S_vcomple_offertype_sel);
                             Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
-                            SharedPreferences preferencess = PreferenceManager.getDefaultSharedPreferences(context);
-                            SharedPreferences.Editor editor = preferencess.edit();
+                            editor = Shared_user_details.edit();
                             editor.putString("weqar_uid",s_lnw_userid);
                             editor.putString("weqar_token",s_lnw_usertoken);
+                            editor.apply();
+                            editor.commit();
                             TinyDB tinydb = new TinyDB(context);
                             tinydb.putBoolean("hgffh", true);
-                            editor.apply();
+
                             startActivity(intent);
                         }
                     }
@@ -1538,7 +1626,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         }catch (Exception e){}
 
     }
-        private String getvendor_plannameid(int position){
+        private void getvendor_plannameid(int position){
 
         try {
             JSONObject json = result.getJSONObject(position);
@@ -1547,14 +1635,13 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return serviceuid;
-    }
+        }
     public void callmetouploadvendorcomplete_url(String v_discdesc,String image,String id,String title,String percentage,
                                                  String plantype,String ofertype)
     {
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
-            JSONArray jsonArray = new JSONArray();
+
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("Description", v_discdesc);
             jsonBody.put("Images", image);
@@ -1567,6 +1654,23 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.vendor_insert_completedetails, new Response.Listener<String>() {
                 public void onResponse(String response) {
                     Log.i("vendor_complete_response",response);
+                    try {
+                        JSONObject jObj = new JSONObject(response);
+
+                        String status = jObj.getString("Status");
+                        if(status.equals("success"))
+                        {
+
+                            editor.putBoolean("login_tab3", true);
+                            editor.apply();
+                            editor.commit();
+
+                        }
+                    }catch (Exception e){
+
+                        e.printStackTrace();
+                    }
+
 
                 }
             }, new Response.ErrorListener() {
@@ -1605,6 +1709,95 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
 
         }
     }
+//    public void getmydet(String susername)
+//    {
+//
+//        try {
+//            RequestQueue requestQueue = Volley.newRequestQueue(this);
+//
+//            JSONObject jsonBody = new JSONObject();
+//            jsonBody.put("Id", susername);
+//
+//
+//
+//            final String requestBody = jsonBody.toString();
+//
+//            StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.getDetails, new Response.Listener<String>() {
+//
+//                public void onResponse(String response) {
+//                    try {
+//
+//                        JSONObject jObj = new JSONObject(response);
+//
+//                        String status = jObj.getString("Status");
+//                        if(status.equals("success")||status.matches("success"))
+//                        {
+//                            JSONObject verification = jObj.getJSONObject("Response");
+//
+//                            s_ln_tab1=verification.getBoolean("Tab1");
+//                            s_ln_tab2=verification.getBoolean("Tab2");
+//                            s_ln_tab3=verification.getBoolean("Tab3");
+//
+//                        }
+//                        else
+//                        {
+//
+//
+//                        }
+//
+//
+//                        //finish();
+//                    }
+//                    catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//
+//
+//                }
+//            }) {
+//                @Override
+//                public String getBodyContentType() {
+//
+//                    return "application/json; charset=utf-8";
+//                }
+//
+//                @Override
+//                public Map<String, String> getHeaders() throws AuthFailureError {
+//                    HashMap<String, String> headers = new HashMap<String, String>();
+//                    //// headers.put("Content-Type", "application/json");
+//                    // headers.put("x-tutor-app-id", "tutor-app-android");
+//                    return headers;
+//
+//                }
+//
+//                @Override
+//                public byte[] getBody() throws AuthFailureError {
+//                    try {
+//                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+//
+//                    } catch (UnsupportedEncodingException uee) {
+//                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+//                        return null;
+//                    }
+//                }
+//
+//
+//
+//
+//            };
+//
+//            requestQueue.add(stringRequest);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+
     public void focuschange()
     {
         ET_fname.setOnFocusChangeListener(new View.OnFocusChangeListener() {

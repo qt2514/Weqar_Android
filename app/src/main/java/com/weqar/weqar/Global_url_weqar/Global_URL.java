@@ -34,6 +34,7 @@ public class Global_URL {
     public  static  String Vendor_addjobs=Base_url+"Api/job/add";
     public  static  String Vendor_showownjobs=Base_url+"api/job/get";
 
+    public static String getDetails=Base_url+"api/user/get";
 
 
         public static String Image_url_load=Image_URL+"file/view?filename=";

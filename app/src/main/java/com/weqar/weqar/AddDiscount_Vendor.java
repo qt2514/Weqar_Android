@@ -6,13 +6,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -41,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -73,6 +71,8 @@ public class AddDiscount_Vendor extends AppCompatActivity {
     Button B_vcomplete_completed_s;
     String s_disc_startdate,s_disc_enddate,s_disc_offertype,s_disc_percentage,s_disc_title,s_disc_desc,s_image;
     String check_discounttype_vendor_discount;
+    SharedPreferences Shared_user_details;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,13 +103,14 @@ public class AddDiscount_Vendor extends AppCompatActivity {
 
 
         TV_vcomplete_skip.setVisibility(View.INVISIBLE);
-
-        //SV_adddisc_secondpage.setVisibility(View.VISIBLE);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Shared_user_details=getSharedPreferences("user_detail_mode",0);
         TinyDB tinydb = new TinyDB(this);
         s_check_discount=tinydb.getBoolean("hgffh");
-        s_lnw_usertoken= preferences.getString("sp_w_apikey","");
-        s_lnw_userid= preferences.getString("sp_w_userid","");
+
+        s_lnw_userid= Shared_user_details.getString("sp_w_userid", null);
+        s_lnw_usertoken= Shared_user_details.getString("sp_w_apikey", null);
+
+
         getVendorplan();
 
         if(s_check_discount)
@@ -157,8 +158,8 @@ public class AddDiscount_Vendor extends AppCompatActivity {
             }
         });
         ArrayAdapter<String> spinnerArrayAdapters = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, compl_vendor_offertype);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-        SP_vcomplete_offertype_s.setAdapter(spinnerArrayAdapter);
+        spinnerArrayAdapters.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        SP_vcomplete_offertype_s.setAdapter(spinnerArrayAdapters);
         SP_vcomplete_offertype_s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -258,7 +259,7 @@ public class AddDiscount_Vendor extends AppCompatActivity {
     }
 
 
-    private String getvendor_plannameid(int position){
+    private void getvendor_plannameid(int position){
 
         try {
             JSONObject json = result.getJSONObject(position);
@@ -267,7 +268,6 @@ public class AddDiscount_Vendor extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return serviceuid;
     }
     private void getVendorplan() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -479,14 +479,17 @@ public class AddDiscount_Vendor extends AppCompatActivity {
     }
     private void upload_vendor_complete_image(final Bitmap bitmap)
     {
-        final String base64String = ImageUtil.convert(bitmap);
-        String strOut = base64String.substring(0, 8);
+        Bitmap immagex=bitmap;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
-            JSONArray jsonArray= new JSONArray();
+
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("extension", "JPG");
-            jsonBody.put("content", strOut);
+            jsonBody.put("content", imageEncoded);
             final String requestBody = jsonBody.toString();
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.User_uploadprofessionalimage, new Response.Listener<String>() {
                 public void onResponse(String response) {
@@ -538,14 +541,20 @@ public class AddDiscount_Vendor extends AppCompatActivity {
         }
     }  private void upload_vendor_complete_image_s(final Bitmap bitmap)
     {
-        final String base64String = ImageUtil.convert(bitmap);
-        String strOut = base64String.substring(0, 8);
+
+            Bitmap immagex=bitmap;
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] b = baos.toByteArray();
+            String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
+
+
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
-            JSONArray jsonArray= new JSONArray();
+
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("extension", "JPG");
-            jsonBody.put("content", strOut);
+            jsonBody.put("content", imageEncoded);
             final String requestBody = jsonBody.toString();
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.User_uploadprofessionalimage, new Response.Listener<String>() {
                 public void onResponse(String response) {

@@ -53,6 +53,8 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
 public class BotNav_JobsFragment_Vendor extends Fragment {
+    SharedPreferences Shared_user_details;
+    SharedPreferences.Editor editor;
     public static BotNav_JobsFragment_Vendor newInstance() {
         BotNav_JobsFragment_Vendor fragment= new BotNav_JobsFragment_Vendor();
         return fragment;
@@ -66,10 +68,10 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_bot_nav__jobs_fragment__vendor, container, false);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        s_vendor_disc = preferences.getString("weqar_uid", "");
-        s_vendor_token = preferences.getString("weqar_token", "");
-        GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
+        Shared_user_details=getActivity().getSharedPreferences("user_detail_mode",0);
+        s_vendor_disc=  Shared_user_details.getString("weqar_uid", null);
+        s_vendor_token=  Shared_user_details.getString("weqar_token", null);
+
 
         IV_addjobs_vendor=view.findViewById(R.id.homescreen_addjobs);
         IV_addjobs_vendor.setOnClickListener(new View.OnClickListener() {

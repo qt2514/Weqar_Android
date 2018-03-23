@@ -40,6 +40,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<String> list2;
     private List<String> list3;
     String check_userplan,check_userplan_id;
+    SharedPreferences Shared_user_details;
+    SharedPreferences.Editor editor;
     public class MyView extends RecyclerView.ViewHolder {
 
         public TextView textView,textView2,textView3,textView_id;
@@ -109,12 +111,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                 TinyDB tinydb = new TinyDB(context);
                                 tinydb.putString("check_userplantype_id", check_userplan_id);
                                 tinydb.putString("check_userplantype_type",check_userplan);
-                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                                SharedPreferences.Editor editor = preferences.edit();
+                                Shared_user_details =context. getSharedPreferences("user_detail_mode", 0);
+                                editor = Shared_user_details.edit();
+
+                                editor = Shared_user_details.edit();
                                 editor.putString("sel_user_plantype",check_userplan_id);
 
-                                editor.apply();
 
+                                editor.apply();
+                                editor.commit();
                             }
                         }).show();
 
