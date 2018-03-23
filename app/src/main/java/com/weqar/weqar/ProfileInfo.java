@@ -259,6 +259,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         }
         else  if(s_lnw_usertype.equals("vendor")||s_lnw_usertype.matches("vendor"))
         {
+            IV_basic_image.setVisibility(View.GONE);
             if(s_ln_tab1 && s_ln_tab2)
           {
 //                if (sessiion.isLoggedIn())

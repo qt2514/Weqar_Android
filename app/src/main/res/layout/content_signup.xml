@@ -37,7 +37,7 @@
             android:id="@+id/Signup_But_vendor"
             android:layout_width="110dp"
             android:layout_height="40dp"
-            android:text="Vendor"
+            android:text="Company"
             android:layout_marginLeft="10dp"
             android:background="@drawable/but_unselected"
             android:padding="5dp"
