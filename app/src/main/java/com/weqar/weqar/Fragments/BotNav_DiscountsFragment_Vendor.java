@@ -285,7 +285,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
         @Override
         protected void onPostExecute(final List<discountcard_list_vendor> movieMode) {
             super.onPostExecute(movieMode);
-            if((movieMode != null) && (movieMode.size()>0) ){
+            if((movieMode != null) && (movieMode.size()>0)&&getActivity()!=null ){
 
               GV_vendor_view.setVisibility(View.VISIBLE);
                 MovieAdap adapter = new MovieAdap(getActivity(), R.layout.fragment_discountcard_vendor, movieMode);

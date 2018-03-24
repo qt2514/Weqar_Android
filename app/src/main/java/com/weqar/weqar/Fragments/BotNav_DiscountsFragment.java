@@ -230,7 +230,7 @@ IV_nodisc=view.findViewById(R.id.IV_noitem_disc);
         protected void onPostExecute(final List<discountcard_list> movieMode) {
             super.onPostExecute(movieMode);
 
-            if((movieMode != null) && (movieMode.size()>0) ){
+            if((movieMode != null) && (movieMode.size()>0)&&getActivity()!=null  ){
 
                 MovieAdap adapter = new MovieAdap(getActivity(), R.layout.fragment_discount_card, movieMode);
                 GV_disc_user.setAdapter(adapter);

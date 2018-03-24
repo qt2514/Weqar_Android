@@ -220,7 +220,7 @@ return view;
         protected void onPostExecute(final List<jobscard_list> movieMode) {
             super.onPostExecute(movieMode);
 
-            if((movieMode != null) && (movieMode.size()>0) ){
+            if((movieMode != null) && (movieMode.size()>0) &&getActivity()!=null ){
 
                 MovieAdap adapter = new MovieAdap(getActivity(), R.layout.content_jobs_user, movieMode);
                 GV_jobs_user.setAdapter(adapter);

@@ -269,7 +269,7 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
         @Override
         protected void onPostExecute(final List<jobscard_list_vendor> movieMode) {
             super.onPostExecute(movieMode);
-            if((movieMode != null) && (movieMode.size()>0) ){
+            if((movieMode != null) && (movieMode.size()>0) &&getActivity()!=null ){
 //                GV_vendor_view.setVisibility(View.VISIBLE);
                MovieAdap adapter = new MovieAdap(getActivity(), R.layout.content_jobs_vendor_card, movieMode);
                 GV_vendor_view.setAdapter(adapter);

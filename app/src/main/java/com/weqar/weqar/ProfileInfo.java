@@ -61,7 +61,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     ET_Prof_cidno,ET_Prof_memno,ET_vprof_businescontect,ET_vprof_businesemail,ET_vprof_websitel,ET_vcomplete_percentage,
     ET_vcomplete_disctitle,ET_vcomplete_discdesc;
     TextView ET_vprof_category,ET_Prof_valid,TV_vcomplete_skip;
-    SearchableSpinner SP_mobilepin,SP_vendor_com_planchoose,SP_vendor_com_offertype;
+    SearchableSpinner SP_mobilepin,SP_gender_sel,SP_vendor_com_planchoose,SP_vendor_com_offertype;
     ScrollView scrollView_personal,scrollView_professional,scrollview_vendor_professional,scrollView_complete,scrollView_vendor_complete;
     Button B_saveandcontinue_personal,B_professional_next,B_vendorprofessional_next;
     CircleImageView IV_bas;
@@ -95,7 +95,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     String Ssubjectkind;
     private JSONArray result;
     ArrayList<String> vendor_plan = new ArrayList<String>();
-    String compl_vendor_offertype[] = {"Discount","Offer"},count_on_skip_forvendor="0";
+    String compl_vendor_offertype[] = {"Discount","Offer"},count_on_skip_forvendor="0",gender[]={"Male","Female"};
     String serviceuid="",s_lnw_usermailid;
     private SessionManager session;
     SharedPreferences Shared_user_details;
@@ -114,6 +114,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         ET_mobile=findViewById(R.id.et_mobile);
         ET_address=findViewById(R.id.et_address);
         SP_mobilepin=findViewById(R.id.basic_spiner_countrycode);
+        SP_gender_sel=findViewById(R.id.baisc_gender_sel);
         ET_country=findViewById(R.id.et_selectcountry);
         ET_Prof_cidno=findViewById(R.id.et_prof_cidno);
         ET_Prof_memno=findViewById(R.id.et_prof_membernum);
@@ -190,6 +191,22 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, compl_vendor_offertype);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         SP_vendor_com_offertype.setAdapter(spinnerArrayAdapter);
+
+
+        ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, gender);
+        spinnerArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        SP_gender_sel.setAdapter(spinnerArrayAdapter2);
+        SP_gender_sel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String gender = parent.getItemAtPosition(position).toString();
+                getvendor_plannameid(position);
+
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         if(session.isLoggedIn()) {
             if (s_lnw_usertype.equals("user")) {
@@ -770,6 +787,9 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     }
     public void callmetouploadbasic()
     {
+
+
+
         if(ET_fname.getText().toString().equals(""))
         {
             new PromptDialog(ProfileInfo.this)
@@ -785,21 +805,21 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         }
         else
         {
-            if(ET_mname.getText().toString().equals(""))
-            {
-                new PromptDialog(ProfileInfo.this)
-                        .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
-                        .setAnimationEnable(true)
-                        .setTitleText("Please Enter Middle Name")
-                        .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                            @Override
-                            public void onClick(PromptDialog dialog) {
-                                dialog.dismiss();
-                            }
-                        }).show();
-            }
-            else
-            {
+//            if(ET_mname.getText().toString().equals(""))
+//            {
+//                new PromptDialog(ProfileInfo.this)
+//                        .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+//                        .setAnimationEnable(true)
+//                        .setTitleText("Please Enter Middle Name")
+//                        .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+//                            @Override
+//                            public void onClick(PromptDialog dialog) {
+//                                dialog.dismiss();
+//                            }
+//                        }).show();
+//            }
+//            else
+//            {
                 if(ET_lname.getText().toString().equals(""))
                 {
                     new PromptDialog(ProfileInfo.this)
@@ -815,21 +835,21 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 }
                 else
                 {
-                    if(ET_emailid.getText().toString().equals(""))
-                    {
-                        new PromptDialog(ProfileInfo.this)
-                                .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
-                                .setAnimationEnable(true)
-                                .setTitleText("Please Enter Your Email Id")
-                                .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                                    @Override
-                                    public void onClick(PromptDialog dialog) {
-                                        dialog.dismiss();
-                                    }
-                                }).show();
-                    }
-                    else
-                    {
+//                    if(ET_emailid.getText().toString().equals(""))
+//                    {
+//                        new PromptDialog(ProfileInfo.this)
+//                                .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+//                                .setAnimationEnable(true)
+//                                .setTitleText("Please Enter Your Email Id")
+//                                .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+//                                    @Override
+//                                    public void onClick(PromptDialog dialog) {
+//                                        dialog.dismiss();
+//                                    }
+//                                }).show();
+//                    }
+//                    else
+//                    {
                         if(ET_mobile.getText().toString().equals(""))
                         {
                             new PromptDialog(ProfileInfo.this)
@@ -860,6 +880,14 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                             }
                             else
                             {
+                                if(ET_mname.getText().toString().isEmpty())
+                                {
+                                    ET_mname.setText("mname");
+                                }
+                                if(ET_emailid.getText().toString().isEmpty())
+                                {
+                                    ET_emailid.setText("a@gmail.com");
+                                }
                                 s_fname=ET_fname.getText().toString();
                                 s_mname=ET_mname.getText().toString();
                                 s_lname=ET_lname.getText().toString();
@@ -890,11 +918,13 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                                 callmetouploadbasicurl(s_lnw_userid,s_emailid,s_fname,s_mname,s_lname,s_mobile,s_address,s_country);
                             }
                         }
-                    }
+                  //  }
 
                 }
-            }
+           // }
         }
+
+
 
     }
     public void callmetouploadbasicurl(String user_uid,String user_email,String sfname,
@@ -985,6 +1015,9 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     }
     public void callmetouploadprofessional()
     {
+
+
+
         if(ET_Prof_cidno.getText().toString().equals(""))
         {
             new PromptDialog(ProfileInfo.this)
@@ -1000,38 +1033,46 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         }
         else
         {
-            if(ET_Prof_memno.getText().toString().equals(""))
+//            if(ET_Prof_memno.getText().toString().equals(""))
+//            {
+//                new PromptDialog(ProfileInfo.this)
+//                    .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+//                    .setAnimationEnable(true)
+//                    .setTitleText("Please Enter Member Number")
+//                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+//                        @Override
+//                        public void onClick(PromptDialog dialog) {
+//                            dialog.dismiss();
+//                        }
+//                    }).show();
+//
+//            }
+//            else
+//            {
+//                if(ET_Prof_valid.getText().toString().equals(""))
+//                {
+//                    new PromptDialog(ProfileInfo.this)
+//                        .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+//                        .setAnimationEnable(true)
+//                        .setTitleText("Please Enter Valid Date")
+//                        .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+//                            @Override
+//                            public void onClick(PromptDialog dialog) {
+//                                dialog.dismiss();
+//                            }
+//                        }).show();
+//
+//                }
+//                else
+//                {
+            if(ET_Prof_memno.getText().toString().isEmpty())
             {
-                new PromptDialog(ProfileInfo.this)
-                    .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
-                    .setAnimationEnable(true)
-                    .setTitleText("Please Enter Member Number")
-                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                        @Override
-                        public void onClick(PromptDialog dialog) {
-                            dialog.dismiss();
-                        }
-                    }).show();
-
+                ET_Prof_memno.setText("123");
             }
-            else
+            if(ET_Prof_valid.getText().toString().isEmpty())
             {
-                if(ET_Prof_valid.getText().toString().equals(""))
-                {
-                    new PromptDialog(ProfileInfo.this)
-                        .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
-                        .setAnimationEnable(true)
-                        .setTitleText("Please Enter Valid Date")
-                        .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                            @Override
-                            public void onClick(PromptDialog dialog) {
-                                dialog.dismiss();
-                            }
-                        }).show();
-
-                }
-                else
-                {
+                ET_Prof_valid.setText("12/12/12");
+            }
                     s_prof_cidno=ET_Prof_cidno.getText().toString();
                     s_prof_memno=ET_Prof_memno.getText().toString();
                     s_prof_valid=ET_Prof_valid.getText().toString(); scrollView_personal.setVisibility(View.INVISIBLE);
@@ -1051,8 +1092,9 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                                 IV_professional.setImageResource(R.drawable.profile_professional_three);
                                 IV_complete.setImageResource(R.drawable.profile_complete_three);
                                 view4.setBackgroundResource(R.color.colorAccent);
-                }
-            }
+               // }
+          //  }
+
         }
 
     }
@@ -1249,6 +1291,8 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     }
     public void callmetouploadprofessional_vendor()
     {
+
+
         if(ET_vprof_category.getText().toString().equals(""))
         {
             new PromptDialog(ProfileInfo.this)
@@ -1300,22 +1344,28 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
 
                     svendor_busimail = ET_vprof_businesemail.getText().toString().trim();
                     if (svendor_busimail.matches(SemailPattern)) {
-                        if (ET_vprof_websitel.getText().toString().equals(""))
-                        {
-                            new PromptDialog(ProfileInfo.this)
-                                    .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
-                                    .setAnimationEnable(true)
-                                    .setTitleText("Please Enter Website Link")
-                                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                                        @Override
-                                        public void onClick(PromptDialog dialog) {
-                                            dialog.dismiss();
-                                        }
-                                    }).show();
+//                        if (ET_vprof_websitel.getText().toString().equals(""))
+//                        {
+//                            new PromptDialog(ProfileInfo.this)
+//                                    .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+//                                    .setAnimationEnable(true)
+//                                    .setTitleText("Please Enter Website Link")
+//                                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+//                                        @Override
+//                                        public void onClick(PromptDialog dialog) {
+//                                            dialog.dismiss();
+//                                        }
+//                                    }).show();
+//
+//                        }
+//                        else {
 
-                        }
-                        else {
+
                             s_vprof_category = ET_vprof_category.getText().toString();
+                            if (ET_vprof_websitel.getText().toString().isEmpty())
+                            {
+                                s_vprof_websitelink="sdasda";
+                            }
                             s_vprof_buscontact = ET_vprof_businescontect.getText().toString();
                             s_vprof_busemail = ET_vprof_businesemail.getText().toString();
                             s_vprof_websitelink = ET_vprof_websitel.getText().toString();
@@ -1337,14 +1387,14 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                             IV_complete.setImageResource(R.drawable.profile_complete_two);
                             //view4.setBackgroundResource(R.color.colorAccent);
 
-                        }
+                      //  }
                     }
                     else
                     {
                         new PromptDialog(ProfileInfo.this)
                                 .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
                                 .setAnimationEnable(true)
-                                .setTitleText("Please Check Your Entered EMail")
+                                .setTitleText("Please Check Email format")
                                 .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
                                     @Override
                                     public void onClick(PromptDialog dialog) {
@@ -1603,27 +1653,50 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                                             dialog.dismiss();
                                         }
                                     }).show();
-                        } else {
-                            S_vcomplete_percentage = ET_vcomplete_percentage.getText().toString();
-                            S_vcomplete_title = ET_vcomplete_disctitle.getText().toString();
-                            s_vcomplete_description = ET_vcomplete_discdesc.getText().toString();
-                            callmetouploadvendorcomplete_url(s_vcomplete_description,s_vcomplete_image_response,s_lnw_userid
-                                    , S_vcomplete_title, S_vcomplete_percentage, serviceuid, S_vcomple_offertype_sel);
-                            Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
-                            editor = Shared_user_details.edit();
-                            editor.putString("weqar_uid",s_lnw_userid);
-                            editor.putString("weqar_token",s_lnw_usertoken);
-                            editor.apply();
-                            editor.commit();
-                            TinyDB tinydb = new TinyDB(context);
-                            tinydb.putBoolean("hgffh", true);
+                        }
+                        else
+                            {
+                            if(s_vcomplete_image_response.equals(""))
+                            {
+                                new PromptDialog(ProfileInfo.this)
+                                    .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
+                                    .setAnimationEnable(true)
+                                    .setTitleText("Please Select Image")
+                                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                        @Override
+                                        public void onClick(PromptDialog dialog) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
 
-                            startActivity(intent);
+                            }
+                            else
+                            {
+                                S_vcomplete_percentage = ET_vcomplete_percentage.getText().toString();
+                                S_vcomplete_title = ET_vcomplete_disctitle.getText().toString();
+                                s_vcomplete_description = ET_vcomplete_discdesc.getText().toString();
+                                callmetouploadvendorcomplete_url(s_vcomplete_description,s_vcomplete_image_response,s_lnw_userid
+                                        , S_vcomplete_title, S_vcomplete_percentage, serviceuid, S_vcomple_offertype_sel);
+                                Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
+                                editor = Shared_user_details.edit();
+                                editor.putString("weqar_uid",s_lnw_userid);
+                                editor.putString("weqar_token",s_lnw_usertoken);
+                                editor.apply();
+                                editor.commit();
+                                TinyDB tinydb = new TinyDB(context);
+                                tinydb.putBoolean("hgffh", true);
+
+                                startActivity(intent);
+                            }
+
+
                         }
                     }
                 }
             }
-        }catch (Exception e){}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
         private void getvendor_plannameid(int position){

@@ -161,6 +161,14 @@
                         android:paddingBottom="2dp" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/baisc_gender_sel"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/spiner_border"
+                app:hintText="Select Your Gender"/>
             <android.support.design.widget.TextInputLayout
 
                 android:textColorHint="@color/colorBlack"
