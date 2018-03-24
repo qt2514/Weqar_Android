@@ -2,6 +2,7 @@ package com.weqar.weqar.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -63,6 +65,7 @@ public class BotNav_JobsFragment extends Fragment {
     List<String> L_user_jobfield_name;
     List<String> L_user_jobfield_id;
     LinearLayoutManager HorizontalLayout ;
+    ImageView IV_nojobs;
     public static BotNav_JobsFragment newInstance() {
         BotNav_JobsFragment fragment= new BotNav_JobsFragment();
         return fragment;
@@ -76,6 +79,7 @@ public class BotNav_JobsFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_bot_nav__jobs, container, false);
         GV_jobs_user=view.findViewById(R.id.jobs_vendor_gv);
         RV_home_hoizontal_scroll=view.findViewById(R.id.RV_jobs_user);
+        IV_nojobs=view.findViewById(R.id.IV_noitem_jobs);
         RecyclerViewLayoutManager = new LinearLayoutManager(getActivity());
         L_user_jobfield_name= new ArrayList<String>();
         L_user_jobfield_id= new ArrayList<String>();
@@ -236,6 +240,11 @@ return view;
 
 
                 adapter.notifyDataSetChanged();
+            }
+            else
+            {
+                GV_jobs_user.setVisibility(View.INVISIBLE);
+                IV_nojobs.setVisibility(View.VISIBLE);
             }
 
 

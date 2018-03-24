@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -19,6 +20,15 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
@@ -30,6 +40,8 @@ import com.weqar.weqar.AddDiscount_Vendor;
 import com.weqar.weqar.DBJavaClasses.discountcard_list_vendor;
 import com.weqar.weqar.DiscountDetails_Vendor;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
+import com.weqar.weqar.LoginActivity;
+import com.weqar.weqar.ProfileInfo;
 import com.weqar.weqar.R;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,11 +52,15 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import cn.refactor.lib.colordialog.PromptDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
@@ -125,7 +141,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
             {
                 holder = (ViewHolder) convertView.getTag();
             }
-            discountcard_list_vendor ccitacc = movieModelList.get(position);
+            final discountcard_list_vendor ccitacc = movieModelList.get(position);
             holder.textone.setText(ccitacc.getPercentage()+"% "+ccitacc.getTitle());
             String gg=ccitacc.getPercentage();
             Integer k=Integer.parseInt(gg);
@@ -184,7 +200,8 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
 
                             break;
                         case 1:
-                            Toast.makeText(getActivity(), "Message"+position, Toast.LENGTH_SHORT).show();
+                            String ed=ccitacc.getId();
+                            callmetodeleteiscount(ed);
                             break;
                     }
                     return false;
@@ -292,6 +309,84 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                 GV_vendor_view.setVisibility(View.INVISIBLE);
                 IV_nodiscount_items.setVisibility(View.VISIBLE);
             }
+        }
+    }
+    public void callmetodeleteiscount(String id)
+    {
+
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("Id", id);
+
+
+            final String requestBody = jsonBody.toString();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_delete_discounts, new Response.Listener<String>() {
+
+                public void onResponse(String response) {
+                    new PromptDialog(getActivity())
+                            .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                            .setAnimationEnable(true)
+                            .setTitleText("Your Discount Deleted Successfully")
+                            .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                @Override
+                                public void onClick(PromptDialog dialog) {
+
+
+
+                                    AppCompatActivity activity = (AppCompatActivity) getActivity();
+                                    Fragment myFragment = new BotNav_DiscountsFragment_Vendor();
+                                    activity.getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.contentContainer, myFragment).addToBackStack(null).commit();
+                                    dialog.dismiss();
+                                }
+                    }).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    //// headers.put("Content-Type", "application/json");
+                    // headers.put("x-tutor-app-id", "tutor-app-android");
+                    headers.put("x-api-type","Android");
+                    headers.put("x-api-key",s_vendor_token);
+                    return headers;
+
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+
+
+
+
+            };
+
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

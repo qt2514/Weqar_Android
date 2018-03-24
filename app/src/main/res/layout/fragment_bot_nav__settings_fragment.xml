@@ -55,15 +55,16 @@
                 android:layout_marginTop="2dp"
                 android:background="@color/colorWhite"
                 android:orientation="horizontal">
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/roundedImageView"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/settings_user_image"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_margin="12dp"
                     android:src="@drawable/rounded"
-                    app:riv_border_color="@color/colorPrimary"
-                    app:riv_border_width="2dip"
-                    app:riv_oval="true" />
+                    android:background="@drawable/rounded"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/colorPrimary"
+                  />
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
@@ -71,12 +72,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/Settings_user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Shabber Ahmed Annik"
                         android:textSize="18sp"
                         android:textColor="@color/colorBlack"/>
                     <TextView
+                        android:id="@+id/Settings_user_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="shabber@gmail.com"
@@ -283,7 +286,7 @@
                     android:layout_gravity="center"
                     android:layout_weight=".6"
                     android:paddingLeft="2dp"
-                    android:src="@drawable/ic_keyboard_arrow_left_black_24dp"/>
+                    android:src="@drawable/setting_logout"/>
                 <TextView
                     android:id="@+id/TV_set_u_logout"
                     android:layout_width="wrap_content"

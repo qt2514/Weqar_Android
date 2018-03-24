@@ -68,6 +68,7 @@ Context c;
     LinearLayoutManager HorizontalLayout ;
     List<String> L_vendor_hor_id;
     List<String> L_vendor_hor_name;
+    ImageView IV_nodisc;
     public static BotNav_DiscountsFragment newInstance() {
         BotNav_DiscountsFragment fragment= new BotNav_DiscountsFragment();
 
@@ -87,7 +88,7 @@ Context c;
         RV_home_hoizontal_scroll=view.findViewById(R.id.home_hoizontal_scroll);
         L_vendor_hor_id= new ArrayList<String>();
         L_vendor_hor_name= new ArrayList<String>();
-
+IV_nodisc=view.findViewById(R.id.IV_noitem_disc);
         RecyclerViewLayoutManager = new LinearLayoutManager(getActivity());
 
         RV_home_hoizontal_scroll.setLayoutManager(RecyclerViewLayoutManager);
@@ -242,6 +243,11 @@ Context c;
 
 
                 adapter.notifyDataSetChanged();
+            }
+            else
+            {
+                GV_disc_user.setVisibility(View.INVISIBLE);
+                IV_nodisc.setVisibility(View.VISIBLE);
             }
 
 

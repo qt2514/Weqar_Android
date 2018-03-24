@@ -63,6 +63,7 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
     ImageView IV_addjobs_vendor;
     String s_vendor_disc,s_vendor_token;
     SwipeMenuListView GV_vendor_view;
+    ImageView IV_nojobs;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
         s_vendor_disc=  Shared_user_details.getString("weqar_uid", null);
         s_vendor_token=  Shared_user_details.getString("weqar_token", null);
 
+        IV_nojobs=view.findViewById(R.id.IV_noitem_jobs);
 GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
         IV_addjobs_vendor=view.findViewById(R.id.homescreen_addjobs);
         IV_addjobs_vendor.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +135,10 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
             holder.text_jobtype.setText(ccitacc.getJobType());
             holder.text_jobfield.setText(ccitacc.getJobField());
             holder.text_jobdesc.setText(ccitacc.getDescription());
-            holder.text_jobdeadline.setText(ccitacc.getClosingDate());
+            String first=ccitacc.getClosingDate();
+
+            String second=first.substring(0,10);
+            holder.text_jobdeadline.setText("Deadline "+second);
             try
             {
                 Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getLogo()).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(holder.RIV_logo);
@@ -282,6 +287,11 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
                     }
                 });
                 adapter.notifyDataSetChanged();
+            }
+            else
+            {
+                GV_vendor_view.setVisibility(View.INVISIBLE);
+                IV_nojobs.setVisibility(View.VISIBLE);
             }
         }
     }

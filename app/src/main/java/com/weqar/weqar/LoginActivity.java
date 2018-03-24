@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     CircleButton But_login;
     String S_username,S_password;
 
-    String s_ln_userid,s_ln_username,s_ln_usermail,s_ln_usertype,s_ln_usertoken;
+    String s_ln_userid,s_ln_username,s_ln_usermail,s_ln_usertype,s_ln_usertoken,s_username,s_image;
     Boolean s_ln_tab1,s_ln_tab2,s_ln_tab3;
     private SessionManager session;
     SharedPreferences Shared_user_details;
@@ -200,6 +200,8 @@ public class LoginActivity extends AppCompatActivity {
                             s_ln_tab1=verification.getBoolean("Tab1");
                             s_ln_tab2=verification.getBoolean("Tab2");
                             s_ln_tab3=verification.getBoolean("Tab3");
+                            s_username=verification.getString("UserName");
+                            s_image=verification.getString("Image");
 
                             new PromptDialog(LoginActivity.this)
                                     .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
@@ -221,11 +223,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
                                             editor = Shared_user_details.edit();
                                             editor.putString("sp_w_usertype",s_ln_usertype);
                                             editor.putString("sp_w_useremail",s_ln_usermail);
                                             editor.putString("sp_w_userid",s_ln_userid);
                                             editor.putString("sp_w_apikey",s_ln_usertoken);
+                                            editor.putString("sp_w_username",s_username);
+                                            editor.putString("sp_w_image",s_image);
 
 
                                             editor.putBoolean("login_tab1",s_ln_tab1);

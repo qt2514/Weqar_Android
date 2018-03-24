@@ -74,8 +74,8 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
     ImageView IV_vcomplefileupload_s;
     TextInputLayout TIV_vcomplete_percentage_s;
     Button B_vcomplete_completed_s;
-    String s_disc_startdate,s_disc_enddate,s_disc_offertype,s_disc_percentage,s_disc_title,s_disc_desc,s_image;
-    String check_discounttype_vendor_discount;
+    String s_disc_startdate,s_disc_enddate,s_disc_offertype,s_disc_percentage,s_disc_title,s_disc_desc,s_image,s_images;
+    String check_discounttype_vendor_discount, check_discounttype_vendor_discount_o;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
     int one;
@@ -150,12 +150,12 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
                 S_vcomple_offertype_sel= parent.getItemAtPosition(position).toString();
                 if(S_vcomple_offertype_sel.equals("Discount")||S_vcomple_offertype_sel.matches("Discount"))
                 {
-
+                    check_discounttype_vendor_discount_o="1";
                     ET_vcomplete_percentage.setVisibility(View.VISIBLE);
                     TIL_vcomplete_percentage.setVisibility(View.VISIBLE);
                 } else if(S_vcomple_offertype_sel.equals("Offer")||S_vcomple_offertype_sel.matches("Offer"))
                 {
-
+                    check_discounttype_vendor_discount_o="2";
                     ET_vcomplete_percentage.setVisibility(View.INVISIBLE);
                     TIL_vcomplete_percentage.setVisibility(View.INVISIBLE);
                 }
@@ -211,49 +211,7 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
                 startActivityForResult(i, 1006);
             }
         });
-//        final int[] choosenYear = {2018};
-//        et_adddiscount_startdate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(AddDiscount_Vendor.this, new MonthPickerDialog.OnDateSetListener() {
-//                    @SuppressLint("SetTextI18n")
-//                    @Override
-//                    public void onDateSet(int selectedMonth, int selectedYear) {
-//                        et_adddiscount_startdate.setText(Integer.toString(selectedMonth+1)+"-"+Integer.toString(selectedYear));
-//                        choosenYear[0] = selectedYear;
-//                    }
-//                }, choosenYear[0], 0);
-//
-//                builder .setYearRange(choosenYear[0], 2018)
-//                        .setMonthRange(0,11)
-//                        .build()
-//                        .show();
-//            }
-//
-//        });
-//        final int[] choosenYearr = {2018};
-//
-//        et_adddiscount_enddate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                    MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(AddDiscount_Vendor.this, new MonthPickerDialog.OnDateSetListener() {
-//                    @SuppressLint("SetTextI18n")
-//                    @Override
-//                    public void onDateSet(int selectedMonth, int selectedYear) {
-//                        et_adddiscount_enddate.setText(Integer.toString(selectedMonth+1)+"-"+Integer.toString(selectedYear));
-//                        choosenYearr[0] = selectedYear;
-//                    }
-//                }, choosenYearr[0], 0);
-//
-//                builder
-//                        .setYearRange(choosenYear[0], 2018)
-//                        .setMonthRange(0,11)
-//                        .build()
-//                        .show();
-//            }
-//
-//        });
+
         et_adddiscount_startdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -423,7 +381,7 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
                             S_vcomplete_percentage = ET_vcomplete_percentage.getText().toString();
                             S_vcomplete_title = ET_vcomplete_disctitle.getText().toString();
                             s_vcomplete_description = ET_vcomplete_discdesc.getText().toString();
-                            callmetouploadvendorcomplete_url(s_vcomplete_description,s_vcomplete_image_response,s_lnw_userid
+                            callmetouploadvendorcomplete_url(s_vcomplete_description,s_images,s_lnw_userid
                                     , S_vcomplete_title, S_vcomplete_percentage, serviceuid, S_vcomple_offertype_sel);
                             Intent intent=new Intent(AddDiscount_Vendor.this,HomeScreen_vendor.class);
                             TinyDB tinydb = new TinyDB(this);
@@ -445,7 +403,7 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
 
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("Description", v_discdesc);
-            jsonBody.put("Images", image);
+            jsonBody.put("Image", image);
             jsonBody.put("VendorId", id);
             jsonBody.put("Title", title);
             jsonBody.put("Percentage", percentage);
@@ -533,20 +491,22 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
-        String imageEncodeds= Base64.encodeToString(b,Base64.DEFAULT);
+        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
+
+
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
 
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("extension", "JPG");
-            jsonBody.put("content", imageEncodeds);
+            jsonBody.put("content", imageEncoded);
             final String requestBody = jsonBody.toString();
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.User_uploadprofessionalimage, new Response.Listener<String>() {
                 public void onResponse(String response) {
                     try
                     {
                         JSONObject jObj = new JSONObject(response);
-                        s_vcomplete_image_response=jObj.getString("Response");
+                        s_images=jObj.getString("Response");
                         Log.i("user_vendor_complete_image_response",response);
 
 

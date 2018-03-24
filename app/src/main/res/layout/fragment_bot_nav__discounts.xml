@@ -85,8 +85,18 @@
         android:layout_height="match_parent"
         android:id="@+id/disc_vendor_gv"
         android:divider="@android:color/transparent"
-android:layout_below="@+id/home_hoizontal_scroll"
+        android:layout_below="@+id/home_hoizontal_scroll"
         android:padding="3dp"
         android:layout_margin="6dp"
+        />
+    <ImageView
+        android:id="@+id/IV_noitem_disc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/home_hoizontal_scroll"
+android:visibility="invisible"
+
+        android:src="@drawable/discount_noitems_image"
         />
 </RelativeLayout>
