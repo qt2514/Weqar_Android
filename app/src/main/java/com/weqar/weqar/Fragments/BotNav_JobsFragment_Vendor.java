@@ -72,7 +72,7 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
         s_vendor_disc=  Shared_user_details.getString("weqar_uid", null);
         s_vendor_token=  Shared_user_details.getString("weqar_token", null);
 
-
+GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
         IV_addjobs_vendor=view.findViewById(R.id.homescreen_addjobs);
         IV_addjobs_vendor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,7 +265,7 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
         protected void onPostExecute(final List<jobscard_list_vendor> movieMode) {
             super.onPostExecute(movieMode);
             if((movieMode != null) && (movieMode.size()>0) ){
-                GV_vendor_view.setVisibility(View.VISIBLE);
+//                GV_vendor_view.setVisibility(View.VISIBLE);
                MovieAdap adapter = new MovieAdap(getActivity(), R.layout.content_jobs_vendor_card, movieMode);
                 GV_vendor_view.setAdapter(adapter);
                 GV_vendor_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {

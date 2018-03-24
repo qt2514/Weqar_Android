@@ -65,5 +65,12 @@
 
         android:layout_marginBottom="70dp"
         />
-
+    <ImageView
+        android:id="@+id/IV_noitem_disc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+       android:layout_centerInParent="true"
+        android:src="@drawable/discount_noitems_image"
+   />
 </RelativeLayout>

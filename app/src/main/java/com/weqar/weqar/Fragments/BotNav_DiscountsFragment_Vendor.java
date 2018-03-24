@@ -55,6 +55,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
     SwipeMenuListView GV_vendor_view;
     ImageView IV_adddiscount_vendor;
     SharedPreferences Shared_user_details;
+    ImageView IV_nodiscount_items;
     SharedPreferences.Editor editor;
     public static BotNav_DiscountsFragment_Vendor newInstance()
     {
@@ -72,6 +73,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
 
         GV_vendor_view=view.findViewById(R.id.disc_vendor_gv);
         IV_adddiscount_vendor=view.findViewById(R.id.homescreen_adddiscount);
+        IV_nodiscount_items=view.findViewById(R.id.IV_noitem_disc);
         IV_adddiscount_vendor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -267,6 +269,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
         protected void onPostExecute(final List<discountcard_list_vendor> movieMode) {
             super.onPostExecute(movieMode);
             if((movieMode != null) && (movieMode.size()>0) ){
+
               GV_vendor_view.setVisibility(View.VISIBLE);
                 MovieAdap adapter = new MovieAdap(getActivity(), R.layout.fragment_discountcard_vendor, movieMode);
                 GV_vendor_view.setAdapter(adapter);
@@ -284,6 +287,10 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                     }
                 });
                 adapter.notifyDataSetChanged();
+            }
+            else {
+                GV_vendor_view.setVisibility(View.INVISIBLE);
+                IV_nodiscount_items.setVisibility(View.VISIBLE);
             }
         }
     }

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,8 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
+import com.tsongkha.spinnerdatepicker.DatePickerDialog;
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.JavaClasses.ImageUtil;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
@@ -42,13 +45,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import cn.refactor.lib.colordialog.PromptDialog;
 
 
-public class AddDiscount_Vendor extends AppCompatActivity {
+public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     public Boolean s_check_discount;
     String  s_lnw_usertoken,S_vcomple_plantype_sel,S_vcomple_offertype_sel,serviceuid="",s_lnw_userid;
     ScrollView SV_adddisc_firstpage,SV_adddisc_secondpage;
@@ -73,6 +78,7 @@ public class AddDiscount_Vendor extends AppCompatActivity {
     String check_discounttype_vendor_discount;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
+    int one;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -205,48 +211,62 @@ public class AddDiscount_Vendor extends AppCompatActivity {
                 startActivityForResult(i, 1006);
             }
         });
-        final int[] choosenYear = {2018};
+//        final int[] choosenYear = {2018};
+//        et_adddiscount_startdate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(AddDiscount_Vendor.this, new MonthPickerDialog.OnDateSetListener() {
+//                    @SuppressLint("SetTextI18n")
+//                    @Override
+//                    public void onDateSet(int selectedMonth, int selectedYear) {
+//                        et_adddiscount_startdate.setText(Integer.toString(selectedMonth+1)+"-"+Integer.toString(selectedYear));
+//                        choosenYear[0] = selectedYear;
+//                    }
+//                }, choosenYear[0], 0);
+//
+//                builder .setYearRange(choosenYear[0], 2018)
+//                        .setMonthRange(0,11)
+//                        .build()
+//                        .show();
+//            }
+//
+//        });
+//        final int[] choosenYearr = {2018};
+//
+//        et_adddiscount_enddate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                    MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(AddDiscount_Vendor.this, new MonthPickerDialog.OnDateSetListener() {
+//                    @SuppressLint("SetTextI18n")
+//                    @Override
+//                    public void onDateSet(int selectedMonth, int selectedYear) {
+//                        et_adddiscount_enddate.setText(Integer.toString(selectedMonth+1)+"-"+Integer.toString(selectedYear));
+//                        choosenYearr[0] = selectedYear;
+//                    }
+//                }, choosenYearr[0], 0);
+//
+//                builder
+//                        .setYearRange(choosenYear[0], 2018)
+//                        .setMonthRange(0,11)
+//                        .build()
+//                        .show();
+//            }
+//
+//        });
         et_adddiscount_startdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(AddDiscount_Vendor.this, new MonthPickerDialog.OnDateSetListener() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onDateSet(int selectedMonth, int selectedYear) {
-                        et_adddiscount_startdate.setText(Integer.toString(selectedMonth+1)+"-"+Integer.toString(selectedYear));
-                        choosenYear[0] = selectedYear;
-                    }
-                }, choosenYear[0], 0);
-
-                builder .setYearRange(choosenYear[0], 2018)
-                        .setMonthRange(0,11)
-                        .build()
-                        .show();
+                one=1;
+                showDate(2018, 0, 1, R.style.DatePickerSpinner);
             }
-
         });
-        final int[] choosenYearr = {2018};
-
         et_adddiscount_enddate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(AddDiscount_Vendor.this, new MonthPickerDialog.OnDateSetListener() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onDateSet(int selectedMonth, int selectedYear) {
-                        et_adddiscount_enddate.setText(Integer.toString(selectedMonth+1)+"-"+Integer.toString(selectedYear));
-                        choosenYearr[0] = selectedYear;
-                    }
-                }, choosenYearr[0], 0);
-
-                builder
-                        .setYearRange(choosenYear[0], 2018)
-                        .setMonthRange(0,11)
-                        .build()
-                        .show();
+                one=2;
+                showDate(2018, 0, 1, R.style.DatePickerSpinner);
             }
-
         });
         B_vcomplete_completed_s.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,6 +278,32 @@ public class AddDiscount_Vendor extends AppCompatActivity {
 
     }
 
+    @VisibleForTesting
+    void showDate(int year, int monthOfYear, int dayOfMonth, int spinnerTheme) {
+        new SpinnerDatePickerDialogBuilder()
+                .context(this)
+                .callback((DatePickerDialog.OnDateSetListener)this)
+                .spinnerTheme(spinnerTheme)
+                .defaultDate(year, monthOfYear, dayOfMonth)
+                .build()
+                .show();
+    }
+    @Override
+    public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+        String date = (monthOfYear+1)+"/"+dayOfMonth+"/"+year;
+
+        if(one==1)
+        {
+            et_adddiscount_startdate.setText(date);
+
+        }
+        else  if(one==2)
+        {
+            et_adddiscount_enddate.setText(date);
+
+        }
+    }
 
     private void getvendor_plannameid(int position){
 
@@ -428,7 +474,10 @@ public class AddDiscount_Vendor extends AppCompatActivity {
                     HashMap<String, String> headers = new HashMap<String, String>();
                     headers.put("X-API-TYPE", "Android");
                     headers.put("x-api-key",s_lnw_usertoken);
+
+
                     return headers;
+
 
                 }
                 @Override
@@ -479,17 +528,18 @@ public class AddDiscount_Vendor extends AppCompatActivity {
     }
     private void upload_vendor_complete_image(final Bitmap bitmap)
     {
+
         Bitmap immagex=bitmap;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
+        String imageEncodeds= Base64.encodeToString(b,Base64.DEFAULT);
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
 
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("extension", "JPG");
-            jsonBody.put("content", imageEncoded);
+            jsonBody.put("content", imageEncodeds);
             final String requestBody = jsonBody.toString();
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.User_uploadprofessionalimage, new Response.Listener<String>() {
                 public void onResponse(String response) {
@@ -733,7 +783,7 @@ startActivity(new Intent(AddDiscount_Vendor.this,HomeScreen_vendor.class));
 
 
             RequestQueue requestQueue = Volley.newRequestQueue(this);
-            JSONArray jsonArray = new JSONArray();
+
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("Description", s_disc_desc);
             jsonBody.put("VendorId", s_lnw_userid);
@@ -749,7 +799,7 @@ startActivity(new Intent(AddDiscount_Vendor.this,HomeScreen_vendor.class));
 
 
             final String requestBody = jsonBody.toString();
-
+            Log.i("checkandro",requestBody);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_insert_second_Discount, new Response.Listener<String>() {
 
                 public void onResponse(String response) {
@@ -776,6 +826,8 @@ startActivity(new Intent(AddDiscount_Vendor.this,HomeScreen_vendor.class));
                     headers.put("x-api-type", "Android");
                     //headers.put("content-Type", "application/json");
                     headers.put("x-api-key",s_lnw_usertoken);
+                    Log.i("checkandroheader",headers.toString());
+
                     return headers;
 
                 }
