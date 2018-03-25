@@ -188,7 +188,7 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject jObj = new JSONObject(response);
 
                         String status = jObj.getString("Status");
-                        if(status.equals("success")||status.matches("success"))
+                        if(status.equals("success"))
                         {
                             JSONObject verification = jObj.getJSONObject("Response");
                            session.setLogin(true);
@@ -206,7 +206,8 @@ public class LoginActivity extends AppCompatActivity {
                             new PromptDialog(LoginActivity.this)
                                     .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
                                     .setAnimationEnable(true)
-                                    .setTitleText("Welcome to Weqar")
+                                    .setTitleText("Login Success")
+                                    .setContentText("Welcome to Weqar")
                                     .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
                                         @Override
                                         public void onClick(PromptDialog dialog) {
@@ -248,9 +249,10 @@ public class LoginActivity extends AppCompatActivity {
                             String verification = jObj.getString("Response");
 
                             new PromptDialog(LoginActivity.this)
-                                .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                                .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
                                 .setAnimationEnable(true)
-                                .setTitleText(verification.toString())
+.setTitleText("Login Failed!")
+                                .setContentText(verification)
                                 .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
                                     @Override
                                     public void onClick(PromptDialog dialog) {
@@ -313,4 +315,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+    }
 }

@@ -24,6 +24,7 @@ import com.weqar.weqar.DBHandlers.SessionManager;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.LoginActivity;
 import com.weqar.weqar.Settings_AccountActivity;
+import com.weqar.weqar.Settings_HelpActivity;
 import com.weqar.weqar.Settings_ProfileActivity;
 import com.weqar.weqar.R;
 
@@ -42,8 +43,8 @@ public class BotNav_SettingsFragment extends Fragment {
         BotNav_SettingsFragment fragment= new BotNav_SettingsFragment();
         return fragment;
     }
-    ImageView IV_set_profile,IV_set_account,IV_set_logout;
-    TextView TV_set_profile,TV_set_account,TV_set_logout,TV_user_name,TV_user_email;
+    ImageView IV_set_profile,IV_set_account,IV_set_logout,WIV_set_help;
+    TextView TV_set_profile,TV_set_account,TV_set_logout,TV_user_name,TV_user_email,WTV_set_help;
     SessionManager session;
     CircleImageView CV_uersset_image;
     SharedPreferences Shared_user_details;
@@ -62,9 +63,13 @@ public class BotNav_SettingsFragment extends Fragment {
         TV_set_logout = view.findViewById(R.id.TV_set_u_logout);
         TV_user_name=view.findViewById(R.id.Settings_user_name);
         TV_user_email=view.findViewById(R.id.Settings_user_email);
+        WTV_set_help=view.findViewById(R.id.WTV_set_help);
+        WIV_set_help=view.findViewById(R.id.WIV_set_help);
         CV_uersset_image=view.findViewById(R.id.settings_user_image);
         session = new SessionManager(getActivity());
         Shared_user_details=getActivity().getSharedPreferences("user_detail_mode",0);
+        editor = Shared_user_details.edit();
+
         s_lnw_usermailid=  Shared_user_details.getString("sp_w_useremail", null);
         s_lnw_usertype=  Shared_user_details.getString("sp_w_usertype", null);
         s_lnw_userid= Shared_user_details.getString("sp_w_userid", null);
@@ -89,24 +94,43 @@ public class BotNav_SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),Settings_ProfileActivity.class));
+
+
             }
         });
         TV_set_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),Settings_ProfileActivity.class));
+
             }
         });
         IV_set_account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),Settings_AccountActivity.class));
+
             }
         });
         TV_set_account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),Settings_AccountActivity.class));
+
+            }
+        });
+        WTV_set_help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),Settings_HelpActivity.class));
+
+            }
+        });
+        WIV_set_help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),Settings_HelpActivity.class));
+
             }
         });
 
@@ -115,8 +139,11 @@ public class BotNav_SettingsFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(),LoginActivity.class);
                 session.setLogin(false);
-                PreferenceManager.getDefaultSharedPreferences(getActivity()).
-                        edit().clear().apply();
+
+
+                editor.clear();
+                editor.apply();
+                editor.commit();
                 startActivity(intent);
 
 
@@ -128,9 +155,12 @@ public class BotNav_SettingsFragment extends Fragment {
                 Intent intent=new Intent(getActivity(),LoginActivity.class);
 
                 session.setLogin(false);
-                PreferenceManager.getDefaultSharedPreferences(getActivity()).
-                        edit().clear().apply();
+
+                editor.clear();
+                editor.apply();
+                editor.commit();
                 startActivity(intent);
+                getActivity().finish();
 
             }
         });

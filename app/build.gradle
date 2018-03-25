@@ -46,4 +46,5 @@ dependencies {
     compile 'com.whiteelephant:monthandyearpicker:1.2.0'
     compile 'com.github.twinkle942910:monthyearpicker:0.0.1'
     compile 'com.github.drawers:SpinnerDatePicker:1.0.6'
+    compile 'com.thefinestartist:finestwebview:1.2.7'
 }

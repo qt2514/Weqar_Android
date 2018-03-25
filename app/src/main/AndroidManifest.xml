@@ -97,7 +97,17 @@
         <activity
             android:name=".JobDetails_Vendor"
             android:label="@string/title_activity_job_details__vendor"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Settings_HelpActivity"
+            android:label="@string/title_activity_settings__help"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensor"
+
+            android:theme="@style/FinestWebViewTheme.Light" />
     </application>
 
 </manifest>

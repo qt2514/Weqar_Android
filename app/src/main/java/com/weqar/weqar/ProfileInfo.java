@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +50,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 
@@ -301,8 +303,11 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             @Override
             public void onClick(View v)
             {
-                String genrateach= UUID.randomUUID().toString();
-                dpd.show(getFragmentManager(),genrateach);
+                Random r = new Random();
+
+                int randomNumber = r.nextInt(5);
+
+                dpd.show(getFragmentManager(), String.valueOf(randomNumber));
                 dpd.setTitle("Valid Date");
             }
         });
@@ -1194,12 +1199,14 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         TinyDB tinydb = new TinyDB(context);
         s_fromadp_getuser_plantype_id=tinydb.getString("check_userplantype_id");
         s_fromadp_getuser_plantype=tinydb.getString("check_userplantype_type");
-        if(categid_book.equals("")||categid_book.equals(null))
+        assert categid_book != null;
+        if(TextUtils.isEmpty(categid_book))
         {
             new PromptDialog(ProfileInfo.this)
                     .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
                     .setAnimationEnable(true)
-                    .setTitleText("Please Choose Subscription Plan")
+                    .setTitleText("Subscription Plan")
+                    .setContentText("Please Choose Subscription Plan")
                     .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
                         @Override
                         public void onClick(PromptDialog dialog) {

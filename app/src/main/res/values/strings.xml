@@ -37,4 +37,5 @@
     <string name="title_activity_multi_spinner__vendor__job_field">MultiSpinner_Vendor_JobField
     </string>
     <string name="title_activity_job_details__vendor">JobDetails_Vendor</string>
+    <string name="title_activity_settings__help">Settings_HelpActivity</string>
 </resources>

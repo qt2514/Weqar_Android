@@ -104,7 +104,8 @@
                 <TextView
                     android:id="@+id/WTV_set_profile"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="start|center"
                     android:text="Profile"
                     android:layout_weight="2.4"
                     android:textColor="@color/colorHint"
@@ -151,7 +152,8 @@
                 <TextView
                     android:id="@+id/WTV_set_account"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="start|center"
                     android:text="Account"
                     android:layout_weight="2.4"
                     android:textColor="@color/colorHint"
@@ -182,7 +184,8 @@
                     android:src="@drawable/user_setting_message"/>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="start|center"
                     android:text="Message"
                     android:layout_weight="2.4"
                     android:textColor="@color/colorHint"
@@ -211,14 +214,17 @@
                     android:layout_weight=".5"
                     android:src="@drawable/user_setting_help"/>
                 <TextView
+                    android:id="@+id/WTV_set_help"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="start|center"
                     android:text="Help"
                     android:layout_weight="2.4"
                     android:textColor="@color/colorHint"
                     android:textSize="17sp"
                     android:layout_gravity="center"/>
                 <ImageView
+                    android:id="@+id/WIV_set_help"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
@@ -258,7 +264,8 @@
                     android:src="@drawable/user_setting_tellafriend"/>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="start|center"
                     android:text=" Tell a Friend"
                     android:layout_weight="2.3"
                     android:textColor="@color/colorHint"
@@ -290,7 +297,8 @@
                 <TextView
                     android:id="@+id/TV_set_u_logout"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="start|center"
                     android:text=" Logout"
                     android:layout_weight="2.3"
                     android:textColor="@color/colorHint"
