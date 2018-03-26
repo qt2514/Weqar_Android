@@ -54,7 +54,7 @@
             android:label="@string/title_activity_discount_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Settings_ProfileActivity"
+            android:name=".Settings_ProfileActivity_User"
             android:label="@string/title_activity_settings__profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -106,8 +106,11 @@
             android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="sensor"
-
             android:theme="@style/FinestWebViewTheme.Light" />
+        <activity
+            android:name=".Settings_ProfileActivity_Vendor"
+            android:label="@string/title_activity_settings__profile__vendor"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

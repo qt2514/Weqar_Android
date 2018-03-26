@@ -99,8 +99,8 @@ public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapt
         holder.RB_rating_userisc.setRating(g);
         try {
 
-            Picasso.with(context).load(Global_URL.Image_url_load+u_list_img).fit().centerCrop().into(holder.IV_image);
-            Picasso.with(context).load(Global_URL.Image_url_load+u_list_logo).error(R.drawable.rounded).fit().centerCrop().into(holder.CV_logo);
+            Picasso.with(context).load(Global_URL.Image_url_load+u_list_img.get(position)).error(R.color.colorHints).fit().centerCrop().into(holder.IV_image);
+            Picasso.with(context).load(Global_URL.Image_url_load+u_list_logo.get(position)).error(R.drawable.rounded).fit().centerCrop().into(holder.CV_logo);
 
         } catch (Exception e) {
 

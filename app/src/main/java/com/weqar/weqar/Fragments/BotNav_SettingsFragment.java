@@ -3,7 +3,6 @@ package com.weqar.weqar.Fragments;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,29 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 import com.weqar.weqar.DBHandlers.SessionManager;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.LoginActivity;
 import com.weqar.weqar.Settings_AccountActivity;
 import com.weqar.weqar.Settings_HelpActivity;
-import com.weqar.weqar.Settings_ProfileActivity;
+import com.weqar.weqar.Settings_ProfileActivity_User;
 import com.weqar.weqar.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -93,7 +77,7 @@ public class BotNav_SettingsFragment extends Fragment {
         IV_set_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(),Settings_ProfileActivity.class));
+                startActivity(new Intent(getActivity(),Settings_ProfileActivity_User.class));
 
 
             }
@@ -101,7 +85,7 @@ public class BotNav_SettingsFragment extends Fragment {
         TV_set_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(),Settings_ProfileActivity.class));
+                startActivity(new Intent(getActivity(),Settings_ProfileActivity_User.class));
 
             }
         });

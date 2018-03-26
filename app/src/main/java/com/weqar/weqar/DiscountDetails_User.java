@@ -1,5 +1,6 @@
 package com.weqar.weqar;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -47,7 +48,7 @@ RecyclerView RV_discdet_user;
     List<String> L_disc_det_title;
     List<String> L_det_det_logo;
     String s_disc_det_id,s_disc_det_desc,s_disc_det_image,s_disc_edt_percentage,s_disc_det_title,s_det_det_logo;
-String s_lnw_usermailid;
+String s_lnw_usermailid,s_lnw_discount_id;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
     @Override
@@ -75,6 +76,8 @@ String s_lnw_usermailid;
         Shared_user_details=getSharedPreferences("user_detail_mode",0);
 
         s_lnw_usermailid= Shared_user_details.getString("weqar_token", null);
+        Intent intent=getIntent();
+        s_lnw_discount_id=intent.getStringExtra("put_disc_id");
 
         RecyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext());
 
@@ -94,7 +97,8 @@ String s_lnw_usermailid;
     public void getUserCompletesubscription()
     {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, Global_URL.user_show_discount, new Response.Listener<String>() {
+        String final_url=Global_URL.Vendor_discount_detail+"?Id="+s_lnw_discount_id;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, final_url, new Response.Listener<String>() {
 
             public void onResponse(String response) {
                 try {

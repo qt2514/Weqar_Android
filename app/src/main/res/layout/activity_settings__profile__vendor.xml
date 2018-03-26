@@ -48,7 +48,7 @@
 
             android:orientation="vertical">
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/CV_user_profileimage"
+                android:id="@+id/CV_vendor_profileimage"
                 android:layout_width="120dp"
                 android:layout_height="110dp"
                 android:layout_gravity="center"
@@ -83,7 +83,7 @@
                     android:layout_marginTop="16dp"
                     android:textSize="16sp"/>
                 <TextView
-                    android:id="@+id/TV_user_profilefname"
+                    android:id="@+id/TV_vendor_profilefname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Shabbir  Annik"
@@ -105,7 +105,7 @@
                     android:layout_marginTop="16dp"
                     android:textSize="16sp"/>
                 <TextView
-                    android:id="@+id/TV_user_profilename"
+                    android:id="@+id/TV_vendor_profilename"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Shabbi123"
@@ -132,7 +132,7 @@
                     android:layout_marginTop="16dp"
                     android:textSize="16sp"/>
                 <TextView
-                    android:id="@+id/TV_user_profileemail"
+                    android:id="@+id/TV_vendor_profileemail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="shabbir@gmail.com"
@@ -187,7 +187,7 @@
                     android:layout_marginTop="16dp"
                     android:textSize="16sp"/>
                 <TextView
-                    android:id="@+id/TV_user_profilemobile"
+                    android:id="@+id/TV_vendor_profilemobile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="12345678"
@@ -210,7 +210,7 @@
                     android:layout_marginTop="16dp"
                     android:textSize="16sp"/>
                 <TextView
-                    android:id="@+id/TV_user_profileaddress"
+                    android:id="@+id/TV_vendor_profileaddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Kuwait city, KW"
@@ -226,7 +226,7 @@
 
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/TV_user_profilecountry"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Country"
@@ -234,6 +234,7 @@
                     android:layout_marginTop="16dp"
                     android:textSize="16sp"/>
                 <TextView
+                    android:id="@+id/TV_vendor_profilecountry"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Kuwait"
@@ -242,18 +243,18 @@
                     android:layout_marginBottom="10dp"
                     android:textSize="17sp"/>
             </LinearLayout>
-<Button
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:text="Edit"
-    android:textColor="@color/colorWhite"
-    android:layout_gravity="center|bottom"
-    android:textAllCaps="false"
-    android:textSize="18sp"
-    android:layout_marginBottom="100dp"
-    android:layout_marginTop="50dp"
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:textColor="@color/colorWhite"
+                android:layout_gravity="center|bottom"
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                android:layout_marginBottom="100dp"
+                android:layout_marginTop="50dp"
 
-    android:background="@drawable/but_selected"/>
+                android:background="@drawable/but_selected"/>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

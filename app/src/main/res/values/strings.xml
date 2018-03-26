@@ -38,4 +38,5 @@
     </string>
     <string name="title_activity_job_details__vendor">JobDetails_Vendor</string>
     <string name="title_activity_settings__help">Settings_HelpActivity</string>
+    <string name="title_activity_settings__profile__vendor">Settings_ProfileActivity_Vendor</string>
 </resources>

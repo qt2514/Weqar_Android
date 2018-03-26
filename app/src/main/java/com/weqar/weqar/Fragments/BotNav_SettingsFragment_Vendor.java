@@ -1,9 +1,7 @@
 package com.weqar.weqar.Fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -19,7 +17,8 @@ import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.LoginActivity;
 import com.weqar.weqar.R;
 import com.weqar.weqar.Settings_AccountActivity;
-import com.weqar.weqar.Settings_ProfileActivity;
+import com.weqar.weqar.Settings_ProfileActivity_User;
+import com.weqar.weqar.Settings_ProfileActivity_Vendor;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -63,24 +62,24 @@ public class BotNav_SettingsFragment_Vendor extends Fragment {
         TV_user_name.setText(s_lnw_companyname);
         TV_user_email.setText(s_lnw_usermailid);
 
-        try {
-
-            Picasso.with(getActivity()).load(Global_URL.Image_url_load+s_lnw_image).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(CV_uersset_image);
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
+//        try {
+//
+//            Picasso.with(getActivity()).load(Global_URL.Image_url_load+s_lnw_image).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(CV_uersset_image);
+//
+//        } catch (Exception e) {
+//
+//            e.printStackTrace();
+//        }
         IV_set_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), Settings_ProfileActivity.class));
+                startActivity(new Intent(getActivity(), Settings_ProfileActivity_Vendor.class));
             }
         });
         TV_set_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), Settings_ProfileActivity.class));
+                startActivity(new Intent(getActivity(), Settings_ProfileActivity_Vendor.class));
             }
         });
         IV_set_account.setOnClickListener(new View.OnClickListener() {

@@ -33,7 +33,9 @@ import com.google.gson.Gson;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.weqar.weqar.DBJavaClasses.discountcard_list;
+import com.weqar.weqar.DBJavaClasses.discountcard_list_vendor;
 import com.weqar.weqar.DiscountDetails_User;
+import com.weqar.weqar.DiscountDetails_Vendor;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.JavaClasses.ImageConverter;
 import com.weqar.weqar.JavaClasses.RecyclerViewAdapter_Category;
@@ -237,7 +239,11 @@ IV_nodisc=view.findViewById(R.id.IV_noitem_disc);
            GV_disc_user.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                @Override
                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(getActivity(),DiscountDetails_User.class));
+                   discountcard_list item = movieMode.get(position);
+                   Intent intent = new Intent(getActivity(),DiscountDetails_User.class);
+                   intent.putExtra("put_disc_id",item.getId());
+
+                   startActivity(intent);
                }
            });
 

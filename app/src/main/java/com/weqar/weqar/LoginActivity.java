@@ -251,7 +251,7 @@ public class LoginActivity extends AppCompatActivity {
                             new PromptDialog(LoginActivity.this)
                                 .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
                                 .setAnimationEnable(true)
-.setTitleText("Login Failed!")
+                                .setTitleText("Login Failed!")
                                 .setContentText(verification)
                                 .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
                                     @Override
