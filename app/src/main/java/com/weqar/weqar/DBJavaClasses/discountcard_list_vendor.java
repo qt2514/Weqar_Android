@@ -16,6 +16,7 @@ String StartDate;
 String  EndDate;
 String Title;
 String Logo;
+String DiscountType;
 
     protected discountcard_list_vendor(Parcel in) {
         Id = in.readString();
@@ -26,6 +27,25 @@ String Logo;
         EndDate = in.readString();
         Title = in.readString();
         Logo = in.readString();
+        DiscountType = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(Id);
+        dest.writeString(Description);
+        dest.writeString(Image);
+        dest.writeString(Percentage);
+        dest.writeString(StartDate);
+        dest.writeString(EndDate);
+        dest.writeString(Title);
+        dest.writeString(Logo);
+        dest.writeString(DiscountType);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<discountcard_list_vendor> CREATOR = new Creator<discountcard_list_vendor>() {
@@ -104,20 +124,11 @@ String Logo;
         Logo = logo;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getDiscountType() {
+        return DiscountType;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(Id);
-        dest.writeString(Description);
-        dest.writeString(Image);
-        dest.writeString(Percentage);
-        dest.writeString(StartDate);
-        dest.writeString(EndDate);
-        dest.writeString(Title);
-        dest.writeString(Logo);
+    public void setDiscountType(String discountType) {
+        DiscountType = discountType;
     }
 }

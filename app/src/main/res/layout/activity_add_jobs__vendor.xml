@@ -34,6 +34,7 @@
                     android:layout_height="wrap_content"
                     android:text="Add Jobs"
 
+                    android:textColor="@color/colorHintss"
                     android:layout_centerInParent="true"/>
                 <ImageView
                     android:id="@+id/homescreen_notification"

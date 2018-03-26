@@ -470,7 +470,7 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
             }
         }
 
-        if (requestCode == 1006 && resultCode == RESULT_OK && data != null) {
+       else if (requestCode == 1006 && resultCode == RESULT_OK && data != null) {
 
             Uri imageUri = data.getData();
             try {

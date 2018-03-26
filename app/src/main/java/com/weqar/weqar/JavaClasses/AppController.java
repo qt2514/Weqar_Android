@@ -1,4 +1,4 @@
-package com.weqar.weqar;
+package com.weqar.weqar.JavaClasses;
 
 import android.app.Application;
 import android.text.TextUtils;
