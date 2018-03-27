@@ -36,6 +36,10 @@ public class Global_URL {
     public  static  String Vendor_delete_discounts=Base_url+"api/discounts/delete";
     public  static  String Vendor_discount_detail=Base_url+"api/discounts/vendordiscountall";
     public  static  String Vendor_discount_update=Base_url+"api/discounts/update";
+    public  static  String Vendor_job_delete=Base_url+"api/job/delete";
+    public  static  String Vendor_job_edit=Base_url+"api/job/update";
+    public  static  String Vendor_add_event=Base_url+"api/Event/add";
+
 
     public static String getDetails=Base_url+"api/user/get";
 

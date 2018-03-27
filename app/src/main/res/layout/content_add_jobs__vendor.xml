@@ -42,6 +42,7 @@
                     android:textCursorDrawable="@drawable/bg_input_cursor"
                     android:paddingBottom="2dp" />
             </android.support.design.widget.TextInputLayout>
+
             <TextView
                 android:textSize="16sp"
                 android:text="Job Type"
@@ -64,6 +65,28 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/selector_bg_edit"
                 android:paddingBottom="5dp" />
+            <android.support.design.widget.TextInputLayout
+                android:textColorHint="@color/colorBlack"
+                android:theme="@style/TextLabel"
+
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1.4"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <EditText
+                    android:textSize="16sp"
+                    android:hint="Company Info"
+
+                    android:id="@+id/et_vaddjobs_companyinfo"
+                    android:textColor="#000"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textEmailAddress"
+                    android:background="@drawable/selector_bg_edit"
+                    android:textCursorDrawable="@drawable/bg_input_cursor"
+                    android:paddingBottom="2dp" />
+            </android.support.design.widget.TextInputLayout>
             <TextView
                 android:textSize="16sp"
                 android:hint="Opening Date"
@@ -86,7 +109,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/selector_bg_edit"
-                android:paddingBottom="7dp" /> <android.support.design.widget.TextInputLayout
+                android:paddingBottom="7dp" />
+            <android.support.design.widget.TextInputLayout
             android:textColorHint="@color/colorBlack"
             android:theme="@style/TextLabel"
 

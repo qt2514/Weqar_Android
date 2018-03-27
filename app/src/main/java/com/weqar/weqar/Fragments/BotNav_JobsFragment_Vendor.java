@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
@@ -27,9 +36,11 @@ import com.squareup.picasso.Picasso;
 import com.weqar.weqar.AddJobs_Vendor;
 import com.weqar.weqar.DBJavaClasses.jobscard_list;
 import com.weqar.weqar.DBJavaClasses.jobscard_list_vendor;
+import com.weqar.weqar.Discount_Edit_Vendor;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.JobDetails_User;
 import com.weqar.weqar.JobDetails_Vendor;
+import com.weqar.weqar.Job_Edit_Vendor;
 import com.weqar.weqar.R;
 
 import org.json.JSONArray;
@@ -42,11 +53,15 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import cn.refactor.lib.colordialog.PromptDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
@@ -63,7 +78,8 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
     ImageView IV_addjobs_vendor;
     String s_vendor_disc,s_vendor_token;
     SwipeMenuListView GV_vendor_view;
-    ImageView IV_nojobs;
+    ImageView IV_nojobs;  jobscard_list_vendor ccitacc;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -130,7 +146,7 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
             {
                 holder = (MovieAdap.ViewHolder) convertView.getTag();
             }
-            jobscard_list_vendor ccitacc = movieModelList.get(position);
+             ccitacc = movieModelList.get(position);
 
             holder.text_jobtype.setText(ccitacc.getJobType());
             holder.text_jobfield.setText(ccitacc.getJobField());
@@ -181,11 +197,19 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
                 public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                     switch (index) {
                         case 0:
-                            Toast.makeText(getActivity(), "Chat"+position, Toast.LENGTH_SHORT).show();
-
+                            Intent intent=new Intent(getActivity(),Job_Edit_Vendor.class);
+                            intent.putExtra("put_jobid_forjob_edit",ccitacc.getId());
+                            intent.putExtra("put_jobname_forjob_edit",ccitacc.getName());
+                            intent.putExtra("put_jobtype_forjob_edit",ccitacc.getJobType());
+                            intent.putExtra("put_jobfield_forjob_edit",ccitacc.getJobField());
+                            intent.putExtra("put_jobdesc_forjob_edit",ccitacc.getDescription());
+                            intent.putExtra("put_companyinfo_forjob_edit",ccitacc.getCompanyInfo());
+                            intent.putExtra("put_closingdate_forjob_edit",ccitacc.getClosingDate());
+                            startActivity(intent);
                             break;
                         case 1:
-                            Toast.makeText(getActivity(), "Message"+position, Toast.LENGTH_SHORT).show();
+                            String ed=ccitacc.getId();
+                            callmetodeleteiscount(ed);
                             break;
                     }
                     return false;
@@ -293,6 +317,84 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
                 GV_vendor_view.setVisibility(View.INVISIBLE);
                 IV_nojobs.setVisibility(View.VISIBLE);
             }
+        }
+    }
+    public void callmetodeleteiscount(String id)
+    {
+
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("Id", id);
+
+
+            final String requestBody = jsonBody.toString();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_job_delete, new Response.Listener<String>() {
+
+                public void onResponse(String response) {
+                    new PromptDialog(getActivity())
+                            .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                            .setAnimationEnable(true)
+                            .setTitleText("Your Job Deleted Successfully")
+                            .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                @Override
+                                public void onClick(PromptDialog dialog) {
+
+
+
+                                    AppCompatActivity activity = (AppCompatActivity) getActivity();
+                                    Fragment myFragment = new BotNav_JobsFragment_Vendor();
+                                    activity.getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.contentContainer, myFragment).addToBackStack(null).commit();
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    //// headers.put("Content-Type", "application/json");
+                    // headers.put("x-tutor-app-id", "tutor-app-android");
+                    headers.put("x-api-type","Android");
+                    headers.put("x-api-key",s_vendor_token);
+                    return headers;
+
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+
+
+
+
+            };
+
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

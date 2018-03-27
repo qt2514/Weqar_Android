@@ -51,7 +51,7 @@ import cn.refactor.lib.colordialog.PromptDialog;
 
 public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     ImageView IV_vaddjobs_back;
-    EditText ET_vaddjobs_title,ET_vaddjobs_desc;
+    EditText ET_vaddjobs_title,ET_vaddjobs_desc,ET_vaddjobs_companyinfo;
     TextView TV_vaddjobs_openingdate,TV_vaddjobs_closingdate,TV_vaddjobs_jobtype,TV_vaddjobs_jobfield;
     Button But_add;
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
@@ -63,7 +63,7 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
     String subjectnameids;
     SimpleDateFormat simpleDateFormat;
     int one;
-    String s_jobtitle,s_jobtype,s_jobfield,s_jobstartingdate,s_closingdate,s_desc;
+    String s_jobtitle,s_jobtype,s_jobfield,s_jobstartingdate,s_closingdate,s_desc,S_compnayinfo;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
     @Override
@@ -75,6 +75,7 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
         IV_vaddjobs_back=findViewById(R.id.iv_vaddjobs_back);
         ET_vaddjobs_title=findViewById(R.id.et_vaddjobs_title);
         ET_vaddjobs_desc=findViewById(R.id.et_vaddjobs_desc);
+        ET_vaddjobs_companyinfo=findViewById(R.id.et_vaddjobs_companyinfo);
         TV_vaddjobs_jobtype=findViewById(R.id.tv_vaddjobs_jobtype);
         TV_vaddjobs_jobfield=findViewById(R.id.tv_vaddjobs_jobfield);
         TV_vaddjobs_openingdate=findViewById(R.id.tv_vaddjobs_openingdate);
@@ -308,8 +309,9 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
                                 s_jobstartingdate=TV_vaddjobs_openingdate.getText().toString();
                                 s_closingdate=TV_vaddjobs_closingdate.getText().toString();
                                 s_desc=ET_vaddjobs_desc.getText().toString();
+                                S_compnayinfo=ET_vaddjobs_companyinfo.getText().toString();
                                callmetoupload_addjob_url(s_lnw_userid,s_jobtitle,subjectnameid,subjectnameids,
-                                       s_desc,s_jobstartingdate,s_closingdate);
+                                       s_desc,S_compnayinfo,s_closingdate);
                             }
                         }
                     }
@@ -318,7 +320,7 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
         }
     }
  public void callmetoupload_addjob_url(String id, String title, String jobtype, String jobfield, String description,
-                                       String startingdate, String closingdate)
+                                       String companyinfo, String closingdate)
  {
 
      try {
@@ -332,8 +334,8 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
          jsonBody.put("JobTypeId", jobtype);
          jsonBody.put("JobFieldId", jobfield);
          jsonBody.put("Description", description);
-         jsonBody.put("ClosingDate", startingdate);
-         jsonBody.put("OpeningDate", closingdate);
+         jsonBody.put("CompanyInfo",companyinfo);
+         jsonBody.put("ClosingDate", closingdate);
 
 
 

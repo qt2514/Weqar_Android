@@ -85,7 +85,7 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
                 IV_image_discedit=findViewById(R.id.IV_image_discedit);
                  ET_perc_discedit=findViewById(R.id.et_vcomplete_percentage_s);
                  But_update=findViewById(R.id.Disc_edit_butupdate);
-        Intent intent=getIntent();
+                Intent intent=getIntent();
 
         s_discid=intent.getStringExtra("put_discountid_fordisc_edit");
         s_offdertype=intent.getStringExtra("put_discounttype_fordisc_edit");
@@ -175,13 +175,13 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-But_update.setOnClickListener(new View.OnClickListener() {
+    But_update.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
         callmetoupload_seconddiscount();
     }
 });
-    }
+        }
 
     private void getvendor_plannameid(int position){
 
@@ -211,10 +211,8 @@ But_update.setOnClickListener(new View.OnClickListener() {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                     }
                 }){
-
             @Override
             public String getBodyContentType() {
 
@@ -236,15 +234,12 @@ But_update.setOnClickListener(new View.OnClickListener() {
             try {
                 JSONObject json = j.getJSONObject(i);
                 vendor_plan.add(json.getString("Name"));
-
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         SP_plan_discedit.setAdapter(new ArrayAdapter<String>(Discount_Edit_Vendor.this, android.R.layout.simple_dropdown_item_1line, vendor_plan));
     }
-
     @VisibleForTesting
     void showDate(int year, int monthOfYear, int dayOfMonth, int spinnerTheme) {
         new SpinnerDatePickerDialogBuilder()
@@ -259,10 +254,8 @@ But_update.setOnClickListener(new View.OnClickListener() {
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
         String date = (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
-
         if (one == 1) {
             TV_startdate_discedit.setText(date);
-
         } else if (one == 2) {
             TV_enddate_discedit.setText(date);
 
@@ -270,8 +263,6 @@ But_update.setOnClickListener(new View.OnClickListener() {
     }
         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
-
-
         if (requestCode == 1006 && resultCode == RESULT_OK && data != null) {
 
                 Uri imageUri = data.getData();
@@ -367,7 +358,8 @@ But_update.setOnClickListener(new View.OnClickListener() {
                         }
                     }).show();
         }
-        else {
+        else
+        {
             if (TV_enddate_discedit.getText().toString().equals(""))
             {
                 new PromptDialog(Discount_Edit_Vendor.this)
@@ -384,8 +376,6 @@ But_update.setOnClickListener(new View.OnClickListener() {
             else {
                 try
                 {
-
-
                     if (check_discounttype_vendor_discount.equals(""))
                     {
                         new PromptDialog(Discount_Edit_Vendor.this)
@@ -451,23 +441,15 @@ But_update.setOnClickListener(new View.OnClickListener() {
                                     String spercs=ET_perc_discedit.getText().toString();
                                     String stitles=ET_title_discedit.getText().toString();
                                     String sdescs=ET_desc_discedit.getText().toString();
-
-
                                     callmetoupload_seconddiscount_url(s_discid,sdescs,sdates,edates,
                                             s_images,spercs,check_discounttype_vendor_discount,s_plantype,stitles);
-
-
-
                                 }
-
-
                             }
                         }
                     }
                 }catch (Exception e){}
             }
         }
-
     }
     public void callmetoupload_seconddiscount_url(final String id,final String desc,
                                                   final String sdate,final String senddate,
@@ -475,8 +457,6 @@ But_update.setOnClickListener(new View.OnClickListener() {
                                                   final String type,final String plan,final String title)
     {
         try {
-
-
             RequestQueue requestQueue = Volley.newRequestQueue(this);
 
             JSONObject jsonBody = new JSONObject();
@@ -489,11 +469,6 @@ But_update.setOnClickListener(new View.OnClickListener() {
             jsonBody.put("DiscountType", type);
             jsonBody.put("DiscountPlan", plan);
             jsonBody.put("Title", title);
-
-
-
-
-
             final String requestBody = jsonBody.toString();
             Log.i("checkandro",requestBody);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_discount_update, new Response.Listener<String>() {
@@ -502,7 +477,6 @@ But_update.setOnClickListener(new View.OnClickListener() {
                     // startActivity(new Intent(ProfileInfo.this, LoginActivity.class));
 
                     Log.i("vendor_professional_response",response);
-
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -515,7 +489,6 @@ But_update.setOnClickListener(new View.OnClickListener() {
 
                     return "application/json; charset=utf-8";
                 }
-
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
@@ -523,11 +496,8 @@ But_update.setOnClickListener(new View.OnClickListener() {
                     //headers.put("content-Type", "application/json");
                     headers.put("x-api-key",s_lnw_usertoken);
                     Log.i("checkandroheader",headers.toString());
-
                     return headers;
-
                 }
-
                 @Override
                 public byte[] getBody() throws AuthFailureError {
                     try {
@@ -538,10 +508,7 @@ But_update.setOnClickListener(new View.OnClickListener() {
                         return null;
                     }
                 }
-
-
             };
-
             requestQueue.add(stringRequest);
         }catch (JSONException e){
 

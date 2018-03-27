@@ -114,6 +114,14 @@
         <activity
             android:name=".Discount_Edit_Vendor"
             android:label="@string/title_activity_discount__edit__vendor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Job_Edit_Vendor"
+            android:label="@string/title_activity_job__edit__vendor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddEvents_Vendor"
+            android:label="@string/title_activity_add_events__vendor"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

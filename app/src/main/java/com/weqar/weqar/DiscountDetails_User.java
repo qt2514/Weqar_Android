@@ -36,8 +36,8 @@ import java.util.Map;
 
 
 public class DiscountDetails_User extends AppCompatActivity {
-ImageView IV_discount_details_back;
-RecyclerView RV_discdet_user;
+    ImageView IV_discount_details_back;
+    RecyclerView RV_discdet_user;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     RecyclerViewAdapter_DiscountDetails_User RecyclerViewHorizontalAdapter;
     LinearLayoutManager HorizontalLayout ;
@@ -48,7 +48,7 @@ RecyclerView RV_discdet_user;
     List<String> L_disc_det_title;
     List<String> L_det_det_logo;
     String s_disc_det_id,s_disc_det_desc,s_disc_det_image,s_disc_edt_percentage,s_disc_det_title,s_det_det_logo;
-String s_lnw_usermailid,s_lnw_discount_id;
+    String s_lnw_usermailid,s_lnw_discount_id;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
     @Override
@@ -65,8 +65,6 @@ String s_lnw_usermailid,s_lnw_discount_id;
                 finish();
             }
         });
-
-
         L_disc_det_id= new ArrayList<String>();
         L_disc_det_desc= new ArrayList<String>();
         L_disc_det_image= new ArrayList<String>();
@@ -74,35 +72,25 @@ String s_lnw_usermailid,s_lnw_discount_id;
         L_disc_det_title= new ArrayList<String>();
         L_det_det_logo= new ArrayList<String>();
         Shared_user_details=getSharedPreferences("user_detail_mode",0);
-
         s_lnw_usermailid= Shared_user_details.getString("weqar_token", null);
         Intent intent=getIntent();
         s_lnw_discount_id=intent.getStringExtra("put_disc_id");
-
         RecyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext());
-
-
         RV_discdet_user.setLayoutManager(RecyclerViewLayoutManager);
-
         RecyclerViewHorizontalAdapter = new RecyclerViewAdapter_DiscountDetails_User(L_disc_det_id,L_disc_det_desc,L_disc_det_image,
                 L_disc_edt_percentage,L_disc_det_title,L_det_det_logo,this);
-
         HorizontalLayout = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         RV_discdet_user.setLayoutManager(HorizontalLayout);
         RV_discdet_user.setHorizontalScrollBarEnabled(false);
-      getUserCompletesubscription();
-
-
+        getUserCompletesubscription();
     }
     public void getUserCompletesubscription()
     {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         String final_url=Global_URL.Vendor_discount_detail+"?Id="+s_lnw_discount_id;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, final_url, new Response.Listener<String>() {
-
             public void onResponse(String response) {
                 try {
-
                     JSONObject jObj = new JSONObject(response);
                     JSONArray jsonArray = jObj.getJSONArray("Response");
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -113,19 +101,15 @@ String s_lnw_usermailid,s_lnw_discount_id;
                         s_disc_edt_percentage= object.getString("Percentage");
                         s_disc_det_title= object.getString("Title");
                         s_det_det_logo= object.getString("Logo");
-
                         L_disc_det_id.add(String.valueOf(s_disc_det_id));
                         L_disc_det_desc.add(String.valueOf(s_disc_det_desc));
                         L_disc_det_image.add(String.valueOf(s_disc_det_image));
                         L_disc_edt_percentage.add(String.valueOf(s_disc_edt_percentage));
                         L_disc_det_title.add(String.valueOf(s_disc_det_title));
                         L_det_det_logo.add(String.valueOf(s_det_det_logo));
-
-
                     }
                     RV_discdet_user.setAdapter(RecyclerViewHorizontalAdapter);
                 }
-
                 catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -133,15 +117,12 @@ String s_lnw_usermailid,s_lnw_discount_id;
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
         }) {
             @Override
             public String getBodyContentType() {
-
                 return "application/json; charset=utf-8";
             }
-
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
@@ -151,7 +132,6 @@ String s_lnw_usermailid,s_lnw_discount_id;
                 return headers;
             }
         };
-
         requestQueue.add(stringRequest);
     }
 }

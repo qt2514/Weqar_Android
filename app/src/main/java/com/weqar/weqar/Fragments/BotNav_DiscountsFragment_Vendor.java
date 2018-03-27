@@ -197,18 +197,16 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                 public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                     switch (index) {
                         case 0:
-Intent intent=new Intent(getActivity(),Discount_Edit_Vendor.class);
-intent.putExtra("put_discountid_fordisc_edit",ccitacc.getId());
-intent.putExtra("put_discounttype_fordisc_edit",ccitacc.getDiscountType());
-intent.putExtra("put_discounttitle_fordisc_edit",ccitacc.getTitle());
-intent.putExtra("put_discountdesc_fordisc_edit",ccitacc.getDescription());
-intent.putExtra("put_discountimage_fordisc_edit",ccitacc.getImage());
-intent.putExtra("put_discountper_fordisc_edit",ccitacc.getPercentage());
-intent.putExtra("put_discountsdate_fordisc_edit",ccitacc.getStartDate());
-intent.putExtra("put_discountedate_fordisc_edit",ccitacc.getEndDate());
-
-
-startActivity(intent);
+                            Intent intent=new Intent(getActivity(),Discount_Edit_Vendor.class);
+                            intent.putExtra("put_discountid_fordisc_edit",ccitacc.getId());
+                            intent.putExtra("put_discounttype_fordisc_edit",ccitacc.getDiscountType());
+                            intent.putExtra("put_discounttitle_fordisc_edit",ccitacc.getTitle());
+                            intent.putExtra("put_discountdesc_fordisc_edit",ccitacc.getDescription());
+                            intent.putExtra("put_discountimage_fordisc_edit",ccitacc.getImage());
+                            intent.putExtra("put_discountper_fordisc_edit",ccitacc.getPercentage());
+                            intent.putExtra("put_discountsdate_fordisc_edit",ccitacc.getStartDate());
+                            intent.putExtra("put_discountedate_fordisc_edit",ccitacc.getEndDate());
+                            startActivity(intent);
                             break;
                         case 1:
                             String ed=ccitacc.getId();

@@ -40,4 +40,6 @@
     <string name="title_activity_settings__help">Settings_HelpActivity</string>
     <string name="title_activity_settings__profile__vendor">Settings_ProfileActivity_Vendor</string>
     <string name="title_activity_discount__edit__vendor">Discount_Edit_Vendor</string>
+    <string name="title_activity_job__edit__vendor">Job_Edit_Vendor</string>
+    <string name="title_activity_add_events__vendor">AddEvents_Vendor</string>
 </resources>
