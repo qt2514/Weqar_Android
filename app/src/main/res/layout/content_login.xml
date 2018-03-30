@@ -66,14 +66,17 @@
             app:cb_pressedRingWidth="8dip" />
 
     </FrameLayout>
-    <!--<ImageView-->
-        <!--android:id="@+id/login_but"-->
-        <!--android:layout_width="75dp"-->
-        <!--android:layout_height="75dp"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:layout_below="@+id/login_password"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:src="@drawable/weqar_login"/>-->
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/loading_login"
+        android:layout_width="140dp"
+    android:layout_height="140dp"
+    style="@style/AVLoadingIndicatorView"
+    android:visibility="invisible"
+        android:layout_centerInParent="true"
+    app:indicatorName="BallTrianglePathIndicator"
+    app:indicatorColor="@color/colorPrimary"
+
+    />
     <TextView
         android:layout_width="304dp"
         android:layout_height="wrap_content"

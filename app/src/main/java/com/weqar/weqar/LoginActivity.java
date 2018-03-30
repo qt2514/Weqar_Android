@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.wang.avi.AVLoadingIndicatorView;
 import com.weqar.weqar.DBHandlers.SessionManager;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private SessionManager session;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
+    AVLoadingIndicatorView login_loading;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +57,8 @@ public class LoginActivity extends AppCompatActivity {
         ET_password=findViewById(R.id.login_password);
         But_newaxccount=findViewById(R.id.but_newaccount);
         But_login=findViewById(R.id.login_but);
+        login_loading=findViewById(R.id.loading_login);
+
 
 
         session = new SessionManager(getApplicationContext());
@@ -69,10 +73,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (hasFocus)
                 {
                     ET_username.setBackgroundResource( R.drawable.edittext_selected);
+                    ET_username.setTextColor(getResources().getColor(R.color.colorPrimary));
                 }
                 else
                 {
                     ET_username.setBackgroundResource( R.drawable.edittext_unselected);
+                    ET_username.setTextColor(getResources().getColor(R.color.colorBlack));
 
                 }
             }
@@ -83,10 +89,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (hasFocus)
                 {
                     ET_password.setBackgroundResource( R.drawable.edittext_selected);
+                    ET_password.setTextColor(getResources().getColor(R.color.colorPrimary));
                 }
                 else
                 {
                     ET_password.setBackgroundResource( R.drawable.edittext_unselected);
+                    ET_password.setTextColor(getResources().getColor(R.color.colorBlack));
 
                 }
             }
@@ -132,9 +140,9 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             S_username=ET_username.getText().toString();
                             S_password=ET_password.getText().toString();
-
                             signin_verif(S_username,S_password);
-
+                                login_loading.setVisibility(View.VISIBLE);
+                                login_loading.show();
 //                            startActivity(new Intent(LoginActivity.this,ProfileInfo.class));
 
                         }
@@ -202,12 +210,14 @@ public class LoginActivity extends AppCompatActivity {
                             s_ln_tab3=verification.getBoolean("Tab3");
                             s_username=verification.getString("UserName");
                             s_image=verification.getString("Image");
-
+                            login_loading.hide();
+                            login_loading.setVisibility(View.INVISIBLE);
                             new PromptDialog(LoginActivity.this)
                                     .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
                                     .setAnimationEnable(true)
                                     .setTitleText("Login Success")
                                     .setContentText("Welcome to Weqar")
+
                                     .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
                                         @Override
                                         public void onClick(PromptDialog dialog) {
@@ -247,6 +257,8 @@ public class LoginActivity extends AppCompatActivity {
                         else
                         {
                             String verification = jObj.getString("Response");
+                        login_loading.hide();
+                            login_loading.setVisibility(View.INVISIBLE);
 
                             new PromptDialog(LoginActivity.this)
                                 .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)

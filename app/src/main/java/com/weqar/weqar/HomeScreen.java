@@ -33,7 +33,6 @@ public class HomeScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
         bottomBar = findViewById(R.id.bottomBar);
         bottomBar.setDefaultTab(R.id.botnav_event);
-
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {

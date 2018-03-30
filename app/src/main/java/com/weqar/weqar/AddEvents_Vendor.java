@@ -56,6 +56,7 @@ public class AddEvents_Vendor extends AppCompatActivity implements DatePickerDia
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
     String s_lnw_userid, s_lnw_usertoken;
+    ImageView IV_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,13 @@ public class AddEvents_Vendor extends AppCompatActivity implements DatePickerDia
         IV_imageupload = findViewById(R.id.iv_addevent_image);
         But_upolad = findViewById(R.id.but_addevent_add);
         Shared_user_details = getSharedPreferences("user_detail_mode", 0);
-
+        IV_back=findViewById(R.id.iv_vaddjobs_back);
+        IV_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         s_lnw_userid = Shared_user_details.getString("sp_w_userid", null);
         s_lnw_usertoken = Shared_user_details.getString("sp_w_apikey", null);

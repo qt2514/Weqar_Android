@@ -10,6 +10,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -17,6 +18,7 @@
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
+
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,14 +29,22 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
+
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SignupActivity"
+
+            android:screenOrientation="portrait"
+
             android:label="@string/title_activity_signup"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HomeScreen"
             android:label="@string/title_activity_home_screen"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.NoActionBar">
 
             <!-- <intent-filter> -->
@@ -47,39 +57,56 @@
         <activity
             android:name=".ProfileInfo"
             android:label="@string/title_activity_profile_info"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".DiscountDetails_User"
             android:label="@string/title_activity_discount_details"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Settings_ProfileActivity_User"
             android:label="@string/title_activity_settings__profile"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Settings_AccountActivity"
             android:label="@string/title_activity_settings__account"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".JobDetails_User"
             android:label="@string/title_activity_job_details"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MultiSpinner_Vendor_Category"
             android:label="@string/title_activity_multi_spinner__vendor__category"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".HomeScreen_vendor"
             android:label="@string/title_activity_home_screen_vendor"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddDiscount_Vendor"
             android:label="@string/title_activity_add_discount__vendor"
+            android:screenOrientation="portrait"
+
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DiscountDetails_Vendor"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_discount_details__vendor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -121,8 +148,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddEvents_Vendor"
+
             android:label="@string/title_activity_add_events__vendor"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -84,10 +84,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/disc_vendor_gv"
-        android:divider="@android:color/transparent"
         android:layout_below="@+id/home_hoizontal_scroll"
         android:padding="3dp"
-        android:layout_margin="6dp"
+        android:layout_marginTop="10dp"
+        android:divider="@android:color/transparent"
+android:scrollbars="none"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
         />
     <ImageView
         android:id="@+id/IV_noitem_disc"

@@ -61,6 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/disc_vendor_gv"
+        android:layout_marginTop="10dp"
         android:divider="@android:color/transparent"
 
         android:layout_marginBottom="70dp"

@@ -78,6 +78,8 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
     String check_discounttype_vendor_discount, check_discounttype_vendor_discount_o;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
+    ImageView IV_set_account_back;
+
     int one;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +109,13 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
         TIV_vcomplete_percentage_s=findViewById(R.id.TIV_vcomplete_percentage_s);
         B_vcomplete_completed_s=findViewById(R.id.B_vcomplete_completed_s);
 
+        IV_set_account_back=findViewById(R.id.addjobs_back);
+        IV_set_account_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         TV_vcomplete_skip.setVisibility(View.INVISIBLE);
         Shared_user_details=getSharedPreferences("user_detail_mode",0);

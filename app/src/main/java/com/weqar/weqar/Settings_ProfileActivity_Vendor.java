@@ -37,9 +37,13 @@ public class Settings_ProfileActivity_Vendor extends AppCompatActivity {
     ImageView IV_profile_account_back;
     CircleImageView CV_vendor_profileimage;
     TextView TV_vendor_profile_fname,TV_vendor_profile_name,TV_vendor_profile_email,
-            TV_vendor_profile_mobile,TV_vendor_profile_address,TV_vendor_profile_country;
+            TV_vendor_profile_mobile,TV_vendor_profile_address,TV_vendor_profile_country,
+            TV_vendor_profiletmname,TV_vendor_profilemname,TV_vendor_profiletlname,TV_vendor_profilelname;
+
+View view_v_one,view_v_two;
     String s_vendor_id,s_vendor_token,s_vendor_p_fname,s_vendor_p_name,s_vendor_p_email,
-            s_vendor_p_mobile,s_vendor_p_address,s_vendor_p_country,s_vendor_p_image;
+            s_vendor_p_mobile,s_vendor_p_address,s_vendor_p_country,s_vendor_p_image,
+            s_vendor_p_mname,s_vendor_p_lname;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
     @Override
@@ -50,6 +54,14 @@ public class Settings_ProfileActivity_Vendor extends AppCompatActivity {
         setSupportActionBar(toolbar);
         IV_profile_account_back=findViewById(R.id.account_setting_back);
         CV_vendor_profileimage=findViewById(R.id.CV_vendor_profileimage);
+
+        TV_vendor_profiletmname=findViewById(R.id.TV_vendor_profiletmname);
+        TV_vendor_profilemname=findViewById(R.id.TV_vendor_profilemname);
+        TV_vendor_profiletlname=findViewById(R.id.TV_vendor_profiletlname);
+        TV_vendor_profilelname=findViewById(R.id.TV_vendor_profilelname);
+        view_v_one=findViewById(R.id.view_v_one);
+        view_v_two=findViewById(R.id.view_v_two);
+
         TV_vendor_profile_fname=findViewById(R.id.TV_vendor_profilefname);
         TV_vendor_profile_name=findViewById(R.id.TV_vendor_profilename);
         TV_vendor_profile_email=findViewById(R.id.TV_vendor_profileemail);
@@ -90,10 +102,12 @@ public class Settings_ProfileActivity_Vendor extends AppCompatActivity {
                         JSONObject jObj = new JSONObject(response);
 
                         String status = jObj.getString("Status");
-                        if(status.equals("success")||status.matches("success"))
+                        if(status.equals("Success"))
                         {
                             JSONObject verification = jObj.getJSONObject("Response");
                             s_vendor_p_fname=verification.getString("FirstName");
+                            s_vendor_p_mname=verification.getString("MiddleName");
+                            s_vendor_p_lname=verification.getString("LastName");
                             s_vendor_p_name=verification.getString("UserName");
                             s_vendor_p_email=verification.getString("Email");
                             s_vendor_p_mobile=verification.getString("PhoneNumber");
@@ -109,6 +123,34 @@ public class Settings_ProfileActivity_Vendor extends AppCompatActivity {
                             TV_vendor_profile_mobile.setText(s_vendor_p_mobile);
                             TV_vendor_profile_address.setText(s_vendor_p_address);
                             TV_vendor_profile_country.setText(s_vendor_p_country);
+                         try {
+                             if(s_vendor_p_mname.equals(null)||s_vendor_p_mname.equals(""))
+                             {
+                                 TV_vendor_profiletmname.setVisibility(View.GONE);
+                                 TV_vendor_profilemname.setVisibility(View.GONE);
+                                 view_v_one.setVisibility(View.GONE);
+                             }
+                             else
+                             {
+                                 TV_vendor_profilemname.setText(s_vendor_p_mname);
+                             }
+                             if(s_vendor_p_lname.equals(null)||s_vendor_p_lname.equals(""))
+                             {
+                                 TV_vendor_profiletlname.setVisibility(View.GONE);
+                                 TV_vendor_profilelname.setVisibility(View.GONE);
+                                 view_v_two.setVisibility(View.GONE);
+
+                             }
+                             else
+                             {
+                                 TV_vendor_profilelname.setText(s_vendor_p_lname);
+                             }
+
+                         }catch (Exception e)
+                         {
+                             e.printStackTrace();
+                         }
+
                         }
                         else
                         {

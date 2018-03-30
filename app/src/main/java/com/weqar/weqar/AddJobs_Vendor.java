@@ -82,12 +82,16 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
         TV_vaddjobs_closingdate=findViewById(R.id.tv_vaddjobs_closingdate);
         But_add=findViewById(R.id.but_vaddjobs_add);
         simpleDateFormat = new SimpleDateFormat("dd MM yyyy", Locale.US);
-
         Shared_user_details=getSharedPreferences("user_detail_mode",0);
 
         s_lnw_userid= Shared_user_details.getString("sp_w_userid", null);
         s_lnw_usertoken= Shared_user_details.getString("sp_w_apikey", null);
-
+IV_vaddjobs_back.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        finish();
+    }
+});
         TV_vaddjobs_jobtype.setOnClickListener(new View.OnClickListener()
         {
             @Override

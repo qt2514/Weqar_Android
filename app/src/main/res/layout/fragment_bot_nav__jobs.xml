@@ -88,7 +88,10 @@
         android:divider="@android:color/transparent"
         android:layout_below="@+id/RV_jobs_user"
         android:padding="3dp"
-        android:layout_margin="6dp"
+        android:scrollbars="none"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="70dp"
         />
     <ImageView
         android:id="@+id/IV_noitem_jobs"

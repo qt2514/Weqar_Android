@@ -67,7 +67,7 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
     String s_lnw_userid,s_lnw_usertoken,check_discounttype_vendor_discount;
     String compl_vendor_offertype[] = {"Discount","Offer"};
     Button But_update;
-
+ImageView IB_back;
     int one;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +85,13 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
                 IV_image_discedit=findViewById(R.id.IV_image_discedit);
                  ET_perc_discedit=findViewById(R.id.et_vcomplete_percentage_s);
                  But_update=findViewById(R.id.Disc_edit_butupdate);
+                 IB_back=findViewById(R.id.iv_vaddjobs_back);
+                 IB_back.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         finish();
+                     }
+                 });
                 Intent intent=getIntent();
 
         s_discid=intent.getStringExtra("put_discountid_fordisc_edit");
@@ -477,6 +484,16 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
                     // startActivity(new Intent(ProfileInfo.this, LoginActivity.class));
 
                     Log.i("vendor_professional_response",response);
+                    new PromptDialog(Discount_Edit_Vendor.this)
+                            .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                            .setAnimationEnable(true)
+                            .setTitleText("Discount Edited Successfully")
+                            .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                @Override
+                                public void onClick(PromptDialog dialog) {
+                                    startActivity(new Intent(Discount_Edit_Vendor.this,HomeScreen_vendor.class));
+                                }
+                            }).show();
                 }
             }, new Response.ErrorListener() {
                 @Override

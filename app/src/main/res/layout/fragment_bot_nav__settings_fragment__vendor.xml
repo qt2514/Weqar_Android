@@ -300,6 +300,7 @@
                     android:layout_weight=".5"
                     android:src="@drawable/user_setting_help"/>
                 <TextView
+                    android:id="@+id/WTV_setv_help"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Help"
@@ -308,6 +309,7 @@
                     android:textSize="17sp"
                     android:layout_gravity="center"/>
                 <ImageView
+                    android:id="@+id/WIV_setv_help"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"

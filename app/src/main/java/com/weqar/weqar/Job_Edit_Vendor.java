@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
     String subjectnameids;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
+    ImageView IB_back;
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
     private static final int SECOND_ACTIVITY_REQUEST_CODE_two = 1;
     @Override
@@ -70,6 +72,13 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
         TV_editjob_jobfield=findViewById(R.id.tv_veditjobs_jobfield);
         TV_editjob_closingdate=findViewById(R.id.tv_veditjobs_closingdate);
         BUT_edijob_update=findViewById(R.id.but_veditjobs_update);
+        IB_back=findViewById(R.id.iv_vaddjobs_back);
+        IB_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         Intent intent=getIntent();
 
         s_edijob_jobid=intent.getStringExtra("put_jobid_forjob_edit");
@@ -336,7 +345,7 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
                     new PromptDialog(Job_Edit_Vendor.this)
                             .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
                             .setAnimationEnable(true)
-                            .setTitleText("Job Added Successfully")
+                            .setTitleText("Job Edited Successfully")
                             .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
                                 @Override
                                 public void onClick(PromptDialog dialog) {

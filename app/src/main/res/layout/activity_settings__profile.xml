@@ -86,12 +86,17 @@
                     android:id="@+id/TV_user_profilefname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Shabbir  Annik"
                     android:textColor="@color/colorHint"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="10dp"
                     android:textSize="17sp"/>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorHints"
+                android:layout_marginTop="10dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,23 +105,56 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="User Name"
+                    android:text="Middle Name"
+                    android:id="@+id/TV_user_profiletmname"
                     android:textColor="@color/colorHintss"
                     android:layout_marginTop="16dp"
                     android:textSize="16sp"/>
                 <TextView
-                    android:id="@+id/TV_user_profilename"
+                    android:id="@+id/TV_user_profilemname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Shabbi123"
+                    android:text="Shabbir  Annik"
                     android:textColor="@color/colorHint"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="10dp"
                     android:textSize="17sp"/>
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:id="@+id/view_one"
+                android:background="@color/colorHints"
+                android:layout_marginTop="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last Name"
+                    android:id="@+id/TV_user_profiletlname"
+                    android:textColor="@color/colorHintss"
+                    android:layout_marginTop="16dp"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:id="@+id/TV_user_profilelname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shabbir Annik"
+                    android:textColor="@color/colorHint"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/view_two"
                 android:background="@color/colorHints"
                 android:layout_marginTop="10dp"/>
             <LinearLayout
@@ -141,11 +179,13 @@
                     android:layout_marginBottom="10dp"
                     android:textSize="17sp"/>
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/colorHints"
                 android:layout_marginTop="10dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -154,30 +194,24 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Password"
+                    android:text="User Name"
                     android:textColor="@color/colorHintss"
                     android:layout_marginTop="16dp"
                     android:textSize="16sp"/>
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/TV_user_profilename"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="......."
-                    android:textStyle="bold"
+                    android:text="Shabbi123"
                     android:textColor="@color/colorHint"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="4dp"
                     android:layout_marginBottom="10dp"
                     android:textSize="17sp"/>
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorHints"
-                android:layout_marginTop="10dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
-
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"

@@ -17,6 +17,7 @@ ImageView IV_set_account_back;
         setContentView(R.layout.activity_settings__account);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         IV_set_account_back=findViewById(R.id.set_account_back);
         IV_set_account_back.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -175,7 +175,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                     more_sched.setBackground(R.color.colorHints);
                     more_sched.setWidth(180);
                     more_sched.setTitle("Edit");
-                    more_sched.setIcon(R.drawable.ic_more_horiz_black_24dp);
+                    more_sched.setIcon(R.drawable.ic_edit_black_24dp);
                     more_sched.setTitleSize(12);
                     more_sched.setTitleColor(Color.WHITE);
                     menu.addMenuItem(more_sched);

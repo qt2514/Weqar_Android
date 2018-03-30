@@ -160,6 +160,7 @@
 
     </LinearLayout>
     <Button
+        android:id="@+id/apply_job_user"
         android:layout_width="200dp"
         android:layout_height="40dp"
         android:layout_gravity="center|bottom"
@@ -168,7 +169,7 @@ android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginBottom="20dp"
         android:background="@drawable/but_selected"
-        android:text="Edit"
+        android:text="Apply"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="18sp" />

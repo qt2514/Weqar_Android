@@ -2,11 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.weqar.weqar.Fragments.BotNav_SettingsFragment">
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:id="@+id/relative_layout_profile"
@@ -22,7 +19,6 @@
             android:layout_height="wrap_content"
             android:text="Profile"
             android:textSize="20sp"
-
             android:layout_centerInParent="true"/>
         <ImageView
             android:id="@+id/homescreen_notification"
@@ -31,21 +27,16 @@
             android:layout_alignParentEnd="true"
             android:layout_marginRight="10dp"
             android:layout_centerVertical="true"
-
-            android:background="@drawable/home_toolbar_notification"
-
-            />
+            android:background="@drawable/home_toolbar_notification" />
     </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_below="@+id/relative_layout_profile"
-
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
-
             android:orientation="vertical">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/CV_vendor_profileimage"
@@ -105,15 +96,46 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="User Name"
+                    android:text="Middle Name"
+                    android:id="@+id/TV_vendor_profiletmname"
                     android:textColor="@color/colorHintss"
                     android:layout_marginTop="16dp"
                     android:textSize="16sp"/>
                 <TextView
-                    android:id="@+id/TV_vendor_profilename"
+                    android:id="@+id/TV_vendor_profilemname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Shabbi123"
+                    android:text="Shabbir  Annik"
+                    android:textColor="@color/colorHint"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="17sp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/view_v_one"
+                android:background="@color/colorHints"
+                android:layout_marginTop="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last Name"
+                    android:id="@+id/TV_vendor_profiletlname"
+                    android:textColor="@color/colorHintss"
+                    android:layout_marginTop="16dp"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:id="@+id/TV_vendor_profilelname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shabbir Annik"
                     android:textColor="@color/colorHint"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="10dp"
@@ -122,6 +144,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:id="@+id/view_v_two"
                 android:background="@color/colorHints"
                 android:layout_marginTop="10dp"/>
             <LinearLayout
@@ -159,17 +182,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Password"
+                    android:text="User Name"
                     android:textColor="@color/colorHintss"
                     android:layout_marginTop="16dp"
                     android:textSize="16sp"/>
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/TV_vendor_profilename"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="......."
-                    android:textStyle="bold"
+                    android:text="Shabbi123"
                     android:textColor="@color/colorHint"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="4dp"
                     android:layout_marginBottom="10dp"
                     android:textSize="17sp"/>
             </LinearLayout>
@@ -182,7 +205,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
-
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
@@ -238,10 +260,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
-
                 android:orientation="vertical">
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Country"
@@ -273,7 +293,6 @@
                 android:textSize="18sp"
                 android:layout_marginBottom="100dp"
                 android:layout_marginTop="50dp"
-
                 android:background="@drawable/but_selected"/>
         </LinearLayout>
     </ScrollView>

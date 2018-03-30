@@ -59,10 +59,13 @@ public class SignupActivity extends AppCompatActivity {
                 if (hasFocus)
                 {
                     ET_username.setBackgroundResource( R.drawable.edittext_selected);
+                    ET_username.setTextColor(getResources().getColor(R.color.colorPrimary));
+
                 }
                 else
                 {
                     ET_username.setBackgroundResource( R.drawable.edittext_unselected);
+                    ET_username.setTextColor(getResources().getColor(R.color.colorBlack));
 
                 }
             }
@@ -73,10 +76,13 @@ public class SignupActivity extends AppCompatActivity {
                 if (hasFocus)
                 {
                     ET_emailid.setBackgroundResource( R.drawable.edittext_selected);
+                    ET_emailid.setTextColor(getResources().getColor(R.color.colorPrimary));
+
                 }
                 else
                 {
                     ET_emailid.setBackgroundResource( R.drawable.edittext_unselected);
+                    ET_emailid.setTextColor(getResources().getColor(R.color.colorBlack));
 
                 }
             }
@@ -87,10 +93,13 @@ public class SignupActivity extends AppCompatActivity {
                 if (hasFocus)
                 {
                     ET_password.setBackgroundResource( R.drawable.edittext_selected);
+                    ET_password.setTextColor(getResources().getColor(R.color.colorPrimary));
+
                 }
                 else
                 {
                     ET_password.setBackgroundResource( R.drawable.edittext_unselected);
+                    ET_password.setTextColor(getResources().getColor(R.color.colorBlack));
 
                 }
             }
@@ -101,10 +110,13 @@ public class SignupActivity extends AppCompatActivity {
                 if (hasFocus)
                 {
                     ET_confirmpassword.setBackgroundResource( R.drawable.edittext_selected);
+                    ET_confirmpassword.setTextColor(getResources().getColor(R.color.colorPrimary));
+
                 }
                 else
                 {
                     ET_confirmpassword.setBackgroundResource( R.drawable.edittext_unselected);
+                    ET_confirmpassword.setTextColor(getResources().getColor(R.color.colorBlack));
 
                 }
             }

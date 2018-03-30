@@ -37,11 +37,13 @@ public class Settings_ProfileActivity_User extends AppCompatActivity {
     ImageView IV_profile_account_back;
     CircleImageView CV_user_profileimage;
     TextView TV_user_profile_fname,TV_user_profile_name,TV_user_profile_email,
-            TV_user_profile_mobile,TV_user_profile_address,TV_user_profile_country;
-    String s_user_id,s_user_token,s_user_p_fname,s_user_p_name,s_user_p_email,
+            TV_user_profile_mobile,TV_user_profile_address,TV_user_profile_country,
+            TV_user_profiletmname,TV_user_profilemname,TV_user_profiletlname,TV_user_profilelname;
+    String s_user_id,s_user_token,s_user_p_fname,s_user_p_mname,s_user_p_lname,s_user_p_name,s_user_p_email,
             s_user_p_mobile,s_user_p_address,s_user_p_country,s_user_p_image;
         SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
+    View v_one,v_two;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,13 @@ public class Settings_ProfileActivity_User extends AppCompatActivity {
         IV_profile_account_back=findViewById(R.id.account_setting_back);
         CV_user_profileimage=findViewById(R.id.CV_user_profileimage);
         TV_user_profile_fname=findViewById(R.id.TV_user_profilefname);
+
+        TV_user_profiletmname=findViewById(R.id.TV_user_profiletmname);
+        TV_user_profilemname=findViewById(R.id.TV_user_profilemname);
+        TV_user_profiletlname=findViewById(R.id.TV_user_profiletlname);
+        TV_user_profilelname=findViewById(R.id.TV_user_profilelname);
+        v_one=findViewById(R.id.view_one);
+        v_two=findViewById(R.id.view_two);
         TV_user_profile_name=findViewById(R.id.TV_user_profilename);
         TV_user_profile_email=findViewById(R.id.TV_user_profileemail);
         TV_user_profile_mobile=findViewById(R.id.TV_user_profilemobile);
@@ -90,17 +99,21 @@ public class Settings_ProfileActivity_User extends AppCompatActivity {
                         JSONObject jObj = new JSONObject(response);
 
                         String status = jObj.getString("Status");
-                        if(status.equals("success")||status.matches("success"))
+                        if(status.equals("Success"))
                         {
+
                             JSONObject verification = jObj.getJSONObject("Response");
                             s_user_p_fname=verification.getString("FirstName");
+
+                            s_user_p_mname=verification.getString("MiddleName");
+                            s_user_p_lname=verification.getString("LastName");
                             s_user_p_name=verification.getString("UserName");
                             s_user_p_email=verification.getString("Email");
                             s_user_p_mobile=verification.getString("PhoneNumber");
                             s_user_p_address=verification.getString("Address1");
                             s_user_p_country=verification.getString("Country");
-                            JSONObject verifications = verification.getJSONObject("vendorProfessional");
-                            s_user_p_image=verifications.getString("Logo");
+//                            JSONObject verifications = verification.getJSONObject("vendorProfessional");
+                          s_user_p_image=verification.getString("Image");
                             Picasso.with(Settings_ProfileActivity_User.this).load(Global_URL.Image_url_load+s_user_p_image).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(CV_user_profileimage);
                             TV_user_profile_fname.setText(s_user_p_fname);
                             TV_user_profile_name.setText(s_user_p_name);
@@ -108,6 +121,28 @@ public class Settings_ProfileActivity_User extends AppCompatActivity {
                             TV_user_profile_mobile.setText(s_user_p_mobile);
                             TV_user_profile_address.setText(s_user_p_address);
                             TV_user_profile_country.setText(s_user_p_country);
+                            if(s_user_p_mname.equals(null)||s_user_p_mname.equals(""))
+                            {
+                                TV_user_profiletmname.setVisibility(View.GONE);
+                                TV_user_profilemname.setVisibility(View.GONE);
+                                v_one.setVisibility(View.GONE);
+                            }
+                            else
+                            {
+                                TV_user_profilemname.setText(s_user_p_mname);
+                            }
+                            if(s_user_p_lname.equals(null)||s_user_p_lname.equals(""))
+                            {
+                                TV_user_profiletlname.setVisibility(View.GONE);
+                                TV_user_profilelname.setVisibility(View.GONE);
+                                v_two.setVisibility(View.GONE);
+
+                            }
+                            else
+                            {
+                                TV_user_profilelname.setText(s_user_p_lname);
+                            }
+
                         }
                         else
                         {
