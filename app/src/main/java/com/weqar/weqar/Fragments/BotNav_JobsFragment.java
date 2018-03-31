@@ -3,6 +3,8 @@ package com.weqar.weqar.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,6 +32,7 @@ import com.weqar.weqar.DBJavaClasses.jobscard_list;
 import com.weqar.weqar.DBJavaClasses.jobscard_list_vendor;
 import com.weqar.weqar.DiscountDetails_Vendor;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
+import com.weqar.weqar.HomeScreen;
 import com.weqar.weqar.JavaClasses.RecyclerViewAdapter_Category;
 import com.weqar.weqar.JavaClasses.RecyclerViewAdapter_JobField;
 import com.weqar.weqar.JobDetails_User;
@@ -53,12 +56,12 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static com.thefinestartist.utils.service.ServiceUtil.getSystemService;
 
 
 public class BotNav_JobsFragment extends Fragment {
     ListView GV_jobs_user;
     String s_user_jobfield_name,s_user_jobfield_id;
-
     RecyclerView RV_home_hoizontal_scroll;
     RecyclerView.LayoutManager RecyclerViewLayoutManager;
     RecyclerViewAdapter_JobField RecyclerViewHorizontalAdapter;
@@ -70,30 +73,27 @@ public class BotNav_JobsFragment extends Fragment {
         BotNav_JobsFragment fragment= new BotNav_JobsFragment();
         return fragment;
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_bot_nav__jobs, container, false);
-        GV_jobs_user=view.findViewById(R.id.jobs_vendor_gv);
+
+            GV_jobs_user=view.findViewById(R.id.jobs_vendor_gv);
         RV_home_hoizontal_scroll=view.findViewById(R.id.RV_jobs_user);
         IV_nojobs=view.findViewById(R.id.IV_noitem_jobs);
         RecyclerViewLayoutManager = new LinearLayoutManager(getActivity());
         L_user_jobfield_name= new ArrayList<String>();
         L_user_jobfield_id= new ArrayList<String>();
         RV_home_hoizontal_scroll.setLayoutManager(RecyclerViewLayoutManager);
-
         RecyclerViewHorizontalAdapter = new RecyclerViewAdapter_JobField(L_user_jobfield_id,L_user_jobfield_name,getActivity());
-
         HorizontalLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         RV_home_hoizontal_scroll.setLayoutManager(HorizontalLayout);
         RV_home_hoizontal_scroll.setHorizontalScrollBarEnabled(false);
         String URLLL = Global_URL.user_show_jobs;
         new kilomilo().execute(URLLL);
         getUserJobfields();
-return view;
+
+        return view;
     }
 
     public class MovieAdap extends ArrayAdapter {
@@ -101,7 +101,6 @@ return view;
         private int resource;
         Context context;
         private LayoutInflater inflater;
-
         MovieAdap(Context context, int resource, List<jobscard_list> objects) {
             super(context, resource, objects);
             movieModelList = objects;
@@ -109,70 +108,55 @@ return view;
             this.resource = resource;
             inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
         }
-
         @Override
         public int getViewTypeCount() {
             return 1;
         }
-
         @Override
         public int getItemViewType(int position) {
             return position;
         }
-
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             final MovieAdap.ViewHolder holder;
             if (convertView == null) {
                 convertView = inflater.inflate(resource, null);
                 holder = new MovieAdap.ViewHolder();
-
                 holder.text_jobtype = (TextView) convertView.findViewById(R.id.fag_jobs_type_user);
                 holder.textjobfield = convertView.findViewById(R.id.fag_jobs_field_user);
                 holder.textdesc = convertView.findViewById(R.id.fag_jobs_desc_user);
                 holder.textdeadline = convertView.findViewById(R.id.fag_jobs_deadline_user);
                 holder.IV_logo=convertView.findViewById(R.id.IV_logo_jobuser);
                 convertView.setTag(holder);
-            }//ino
-
-            else {
+            }
+            else
+            {
                 holder = (MovieAdap.ViewHolder) convertView.getTag();
             }
             jobscard_list ccitacc = movieModelList.get(position);
-
             holder.text_jobtype.setText(ccitacc.getJobType());
             holder.textjobfield.setText(ccitacc.getJobField());
-            holder.textdesc.setText(ccitacc.getDescription());
+            holder.textdesc.setText(ccitacc.getName());
             String first=ccitacc.getClosingDate();
             String second=first.substring(0,10);
             holder.textdeadline.setText("Deadline "+second);
-
             try {
-
                 Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getLogo()).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(holder.IV_logo);
-
             } catch (Exception e) {
-
                 e.printStackTrace();
             }
-
-
             return convertView;
         }
-
         class ViewHolder {
             public TextView text_jobtype,textjobfield,textdesc,textdeadline;
             public CircleImageView IV_logo;
         }
     }
-
     public class kilomilo extends AsyncTask<String, String, List<jobscard_list>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
-
         @Override
         protected List<jobscard_list> doInBackground(String... params) {
             HttpURLConnection connection = null;
@@ -215,13 +199,10 @@ return view;
             }
             return null;
         }
-
         @Override
         protected void onPostExecute(final List<jobscard_list> movieMode) {
             super.onPostExecute(movieMode);
-
             if((movieMode != null) && (movieMode.size()>0) &&getActivity()!=null ){
-
                 MovieAdap adapter = new MovieAdap(getActivity(), R.layout.content_jobs_user, movieMode);
                 GV_jobs_user.setAdapter(adapter);
                 GV_jobs_user.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -231,14 +212,13 @@ return view;
                         Intent intent = new Intent(getActivity(),JobDetails_User.class);
                         intent.putExtra("put_jobs_user_logo",item.getLogo());
                         intent.putExtra("put_jobs_user_jobtype",item.getJobField());
+                        intent.putExtra("put_jobs_user_jobname",item.getName());
                         intent.putExtra("put_jobs_user_jobfield",item.getJobType());
                         intent.putExtra("put_jobs_user_deadline",item.getClosingDate());
                         intent.putExtra("put_jobs_user_desc",item.getDescription());
                         startActivity(intent);
                     }
                 });
-
-
                 adapter.notifyDataSetChanged();
             }
             else
@@ -246,16 +226,12 @@ return view;
                 GV_jobs_user.setVisibility(View.INVISIBLE);
                 IV_nojobs.setVisibility(View.VISIBLE);
             }
-
-
-
         }
     }
     public void getUserJobfields()
     {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, Global_URL.Vendor_getjobfield, new Response.Listener<String>() {
-
             public void onResponse(String response) {
                 try {
 
@@ -265,15 +241,11 @@ return view;
                         JSONObject object = jsonArray.getJSONObject(i);
                         s_user_jobfield_name= object.getString("Description");
                         s_user_jobfield_id= object.getString("Id");
-
                         L_user_jobfield_id.add(String.valueOf(s_user_jobfield_id));
                         L_user_jobfield_name.add(String.valueOf(s_user_jobfield_name));
-
-
                     }
                     RV_home_hoizontal_scroll.setAdapter(RecyclerViewHorizontalAdapter);
                 }
-
                 catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -281,22 +253,23 @@ return view;
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
         }) {
             @Override
             public String getBodyContentType() {
-
                 return "application/json; charset=utf-8";
             }
-
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 return headers;
             }
         };
-
         requestQueue.add(stringRequest);
+    }
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

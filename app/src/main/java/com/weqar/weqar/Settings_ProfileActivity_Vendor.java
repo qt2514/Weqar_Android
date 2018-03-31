@@ -1,6 +1,10 @@
 package com.weqar.weqar;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -51,34 +55,50 @@ View view_v_one,view_v_two;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings__profile__vendor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        IV_profile_account_back=findViewById(R.id.account_setting_back);
-        CV_vendor_profileimage=findViewById(R.id.CV_vendor_profileimage);
+        setSupportActionBar(toolbar);        if (isConnectedToNetwork()) {
 
-        TV_vendor_profiletmname=findViewById(R.id.TV_vendor_profiletmname);
-        TV_vendor_profilemname=findViewById(R.id.TV_vendor_profilemname);
-        TV_vendor_profiletlname=findViewById(R.id.TV_vendor_profiletlname);
-        TV_vendor_profilelname=findViewById(R.id.TV_vendor_profilelname);
-        view_v_one=findViewById(R.id.view_v_one);
-        view_v_two=findViewById(R.id.view_v_two);
 
-        TV_vendor_profile_fname=findViewById(R.id.TV_vendor_profilefname);
-        TV_vendor_profile_name=findViewById(R.id.TV_vendor_profilename);
-        TV_vendor_profile_email=findViewById(R.id.TV_vendor_profileemail);
-        TV_vendor_profile_mobile=findViewById(R.id.TV_vendor_profilemobile);
-        TV_vendor_profile_address=findViewById(R.id.TV_vendor_profileaddress);
-        TV_vendor_profile_country=findViewById(R.id.TV_vendor_profilecountry);
-        IV_profile_account_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        Shared_user_details=getSharedPreferences("user_detail_mode",0);
+            IV_profile_account_back = findViewById(R.id.account_setting_back);
+            CV_vendor_profileimage = findViewById(R.id.CV_vendor_profileimage);
 
-        s_vendor_id= Shared_user_details.getString("sp_w_userid", null);
-        s_vendor_token= Shared_user_details.getString("sp_w_apikey", null);
-        getmydet(s_vendor_id);
+            TV_vendor_profiletmname = findViewById(R.id.TV_vendor_profiletmname);
+            TV_vendor_profilemname = findViewById(R.id.TV_vendor_profilemname);
+            TV_vendor_profiletlname = findViewById(R.id.TV_vendor_profiletlname);
+            TV_vendor_profilelname = findViewById(R.id.TV_vendor_profilelname);
+            view_v_one = findViewById(R.id.view_v_one);
+            view_v_two = findViewById(R.id.view_v_two);
+
+            TV_vendor_profile_fname = findViewById(R.id.TV_vendor_profilefname);
+            TV_vendor_profile_name = findViewById(R.id.TV_vendor_profilename);
+            TV_vendor_profile_email = findViewById(R.id.TV_vendor_profileemail);
+            TV_vendor_profile_mobile = findViewById(R.id.TV_vendor_profilemobile);
+            TV_vendor_profile_address = findViewById(R.id.TV_vendor_profileaddress);
+            TV_vendor_profile_country = findViewById(R.id.TV_vendor_profilecountry);
+            IV_profile_account_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            Shared_user_details = getSharedPreferences("user_detail_mode", 0);
+
+            s_vendor_id = Shared_user_details.getString("sp_w_userid", null);
+            s_vendor_token = Shared_user_details.getString("sp_w_apikey", null);
+            getmydet(s_vendor_id);
+        }
+        else
+        {
+
+            setContentView(R.layout.content_if_nointernet);
+            ImageView but_retry = findViewById(R.id.nointernet_retry);
+            but_retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Settings_ProfileActivity_Vendor.this, Settings_ProfileActivity_Vendor.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
     }
     public void getmydet(String susername)
@@ -211,5 +231,9 @@ View view_v_one,view_v_two;
         }
 
     }
-
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
 }

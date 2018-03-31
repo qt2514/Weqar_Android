@@ -1,8 +1,11 @@
 package com.weqar.weqar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -30,11 +33,13 @@ import com.android.volley.toolbox.Volley;
 import com.tsongkha.spinnerdatepicker.DatePickerDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
+import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.BatchUpdateException;
@@ -57,59 +62,73 @@ public class AddEvents_Vendor extends AppCompatActivity implements DatePickerDia
     SharedPreferences.Editor editor;
     String s_lnw_userid, s_lnw_usertoken;
     ImageView IV_back;
-
+int check_image_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_events__vendor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        TV_eventstart = findViewById(R.id.et_addevent_startdate);
-        TV_evenetend = findViewById(R.id.et_addevent_enddate);
-        ET_contactname = findViewById(R.id.et_addevent_contactperson);
-        ET_title = findViewById(R.id.et_addevent_title);
-        ET_amount = findViewById(R.id.et_addevent_amount);
-        ET_descrition = findViewById(R.id.et_addevent_desc);
-        IV_imageupload = findViewById(R.id.iv_addevent_image);
-        But_upolad = findViewById(R.id.but_addevent_add);
-        Shared_user_details = getSharedPreferences("user_detail_mode", 0);
-        IV_back=findViewById(R.id.iv_vaddjobs_back);
-        IV_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        if (isConnectedToNetwork()) {
 
-        s_lnw_userid = Shared_user_details.getString("sp_w_userid", null);
-        s_lnw_usertoken = Shared_user_details.getString("sp_w_apikey", null);
-        TV_eventstart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                one = 1;
-                showDate(2018, 0, 1, R.style.DatePickerSpinner);
-            }
-        });
-        TV_evenetend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                one = 2;
-                showDate(2018, 0, 1, R.style.DatePickerSpinner);
-            }
-        });
-        IV_imageupload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, 1006);
-            }
-        });
-        But_upolad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callmetoupload_addevnts();
-            }
-        });
+            TV_eventstart = findViewById(R.id.et_addevent_startdate);
+            TV_evenetend = findViewById(R.id.et_addevent_enddate);
+            ET_contactname = findViewById(R.id.et_addevent_contactperson);
+            ET_title = findViewById(R.id.et_addevent_title);
+            ET_amount = findViewById(R.id.et_addevent_amount);
+            ET_descrition = findViewById(R.id.et_addevent_desc);
+            IV_imageupload = findViewById(R.id.iv_addevent_image);
+            But_upolad = findViewById(R.id.but_addevent_add);
+            Shared_user_details = getSharedPreferences("user_detail_mode", 0);
+            IV_back = findViewById(R.id.iv_vaddjobs_back);
+            IV_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            s_lnw_userid = Shared_user_details.getString("sp_w_userid", null);
+            s_lnw_usertoken = Shared_user_details.getString("sp_w_apikey", null);
+            TV_eventstart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    one = 1;
+                    showDate(2018, 0, 1, R.style.DatePickerSpinner);
+                }
+            });
+            TV_evenetend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    one = 2;
+                    showDate(2018, 0, 1, R.style.DatePickerSpinner);
+                }
+            });
+            IV_imageupload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(i, 1006);
+                }
+            });
+            But_upolad.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callmetoupload_addevnts();
+                }
+            });
+        }
+        else
+        {
+            setContentView(R.layout.content_if_nointernet);
+            ImageView but_retry = findViewById(R.id.nointernet_retry);
+            but_retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(AddEvents_Vendor.this, AddEvents_Vendor.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     @VisibleForTesting
@@ -122,12 +141,10 @@ public class AddEvents_Vendor extends AppCompatActivity implements DatePickerDia
                 .build()
                 .show();
     }
-
     @Override
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
         String date = (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
-
         if (one == 1) {
             TV_eventstart.setText(date);
 
@@ -136,36 +153,40 @@ public class AddEvents_Vendor extends AppCompatActivity implements DatePickerDia
 
         }
     }
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == 1006 && resultCode == RESULT_OK && data != null) {
-
             Uri imageUri = data.getData();
+
+            assert imageUri != null;
+            UCrop.of( imageUri,  Uri.fromFile(new File(getCacheDir(), ".png")))
+                    .withAspectRatio(3 , 2)
+                    .start(AddEvents_Vendor.this);
+            check_image_id=1006;
+        }
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1006) {
+            final Uri resultUri = UCrop.getOutput(data);
+            Bitmap bitmap = null;
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
                 IV_imageupload.setImageBitmap(bitmap);
                 upload_vendor_complete_image_s(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
         }
-
     }
-
     private void upload_vendor_complete_image_s(final Bitmap bitmap) {
-
         Bitmap immagex = bitmap;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
         String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-
-
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
-
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("extension", "JPG");
             jsonBody.put("content", imageEncoded);
@@ -176,8 +197,6 @@ public class AddEvents_Vendor extends AppCompatActivity implements DatePickerDia
                         JSONObject jObj = new JSONObject(response);
                         s_image = jObj.getString("Response");
                         Log.i("user_vendor_complete_image_response", response);
-
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -190,10 +209,8 @@ public class AddEvents_Vendor extends AppCompatActivity implements DatePickerDia
             }) {
                 @Override
                 public String getBodyContentType() {
-
                     return "application/json; charset=utf-8";
                 }
-
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
@@ -202,12 +219,10 @@ public class AddEvents_Vendor extends AppCompatActivity implements DatePickerDia
                     headers.put("x-api-key", s_lnw_usertoken);
                     return headers;
                 }
-
                 @Override
                 public byte[] getBody() throws AuthFailureError {
                     try {
                         return requestBody == null ? null : requestBody.getBytes("utf-8");
-
                     } catch (UnsupportedEncodingException uee) {
                         VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
                         return null;
@@ -219,7 +234,6 @@ public class AddEvents_Vendor extends AppCompatActivity implements DatePickerDia
             e.printStackTrace();
         }
     }
-
     public void callmetoupload_addevnts() {
 
         if (TV_eventstart.getText().toString().equals("")) {
@@ -364,5 +378,10 @@ public class AddEvents_Vendor extends AppCompatActivity implements DatePickerDia
         }catch (JSONException e){
 
         }
+    }
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

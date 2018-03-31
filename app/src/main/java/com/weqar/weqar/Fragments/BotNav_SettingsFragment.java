@@ -53,7 +53,6 @@ public class BotNav_SettingsFragment extends Fragment {
         session = new SessionManager(getActivity());
         Shared_user_details=getActivity().getSharedPreferences("user_detail_mode",0);
         editor = Shared_user_details.edit();
-
         s_lnw_usermailid=  Shared_user_details.getString("sp_w_useremail", null);
         s_lnw_usertype=  Shared_user_details.getString("sp_w_usertype", null);
         s_lnw_userid= Shared_user_details.getString("sp_w_userid", null);
@@ -62,93 +61,70 @@ public class BotNav_SettingsFragment extends Fragment {
         s_lnw_image=Shared_user_details.getString("sp_w_image",null);
         TV_user_name.setText(s_lnw_username);
         TV_user_email.setText(s_lnw_usermailid);
-
         try {
-
             Picasso.with(getActivity()).load(Global_URL.Image_url_load+s_lnw_image).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(CV_uersset_image);
-
         } catch (Exception e) {
-
             e.printStackTrace();
         }
-
-
-
         IV_set_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),Settings_ProfileActivity_User.class));
-
-
             }
         });
         TV_set_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),Settings_ProfileActivity_User.class));
-
             }
         });
         IV_set_account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),Settings_AccountActivity.class));
-
             }
         });
         TV_set_account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),Settings_AccountActivity.class));
-
             }
         });
         WTV_set_help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),Settings_HelpActivity.class));
-
             }
         });
         WIV_set_help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),Settings_HelpActivity.class));
-
             }
         });
-
         IV_set_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(),LoginActivity.class);
                 session.setLogin(false);
-
-
                 editor.clear();
                 editor.apply();
                 editor.commit();
                 startActivity(intent);
-
-
             }
         });
         TV_set_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(),LoginActivity.class);
-
                 session.setLogin(false);
-
                 editor.clear();
                 editor.apply();
                 editor.commit();
                 startActivity(intent);
                 getActivity().finish();
-
             }
         });
-
         return  view;
     }
 //    public void callmetogetDetails(String susername)

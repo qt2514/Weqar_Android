@@ -183,7 +183,6 @@
                 android:gravity="start"
                 android:padding="10dp"
                 android:textColor="#000"
-                android:maxLength="21"
                 android:lines="3"
                 android:maxLines="3"
 

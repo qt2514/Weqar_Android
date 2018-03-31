@@ -77,7 +77,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/appbar_homescreen"
-        android:layout_marginBottom="10dp"
         />
 
     <ListView
@@ -86,7 +85,6 @@
         android:id="@+id/disc_vendor_gv"
         android:layout_below="@+id/home_hoizontal_scroll"
         android:padding="3dp"
-        android:layout_marginTop="10dp"
         android:divider="@android:color/transparent"
 android:scrollbars="none"
         android:layout_marginBottom="70dp"

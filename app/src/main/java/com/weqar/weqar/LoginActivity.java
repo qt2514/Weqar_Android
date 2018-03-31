@@ -53,12 +53,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_login);
-        ET_username=findViewById(R.id.login_username);
-        ET_password=findViewById(R.id.login_password);
-        But_newaxccount=findViewById(R.id.but_newaccount);
-        But_login=findViewById(R.id.login_but);
-        login_loading=findViewById(R.id.loading_login);
-
+        ET_username = findViewById(R.id.login_username);
+        ET_password = findViewById(R.id.login_password);
+        But_newaxccount = findViewById(R.id.but_newaccount);
+        But_login = findViewById(R.id.login_but);
+        login_loading = findViewById(R.id.loading_login);
 
 
         session = new SessionManager(getApplicationContext());
@@ -67,17 +66,15 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, ProfileInfo.class);
             startActivity(intent);
         }
+        if (isConnectedToNetwork()) {
         ET_username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
-                {
-                    ET_username.setBackgroundResource( R.drawable.edittext_selected);
+                if (hasFocus) {
+                    ET_username.setBackgroundResource(R.drawable.edittext_selected);
                     ET_username.setTextColor(getResources().getColor(R.color.colorPrimary));
-                }
-                else
-                {
-                    ET_username.setBackgroundResource( R.drawable.edittext_unselected);
+                } else {
+                    ET_username.setBackgroundResource(R.drawable.edittext_unselected);
                     ET_username.setTextColor(getResources().getColor(R.color.colorBlack));
 
                 }
@@ -86,14 +83,11 @@ public class LoginActivity extends AppCompatActivity {
         ET_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
-                {
-                    ET_password.setBackgroundResource( R.drawable.edittext_selected);
+                if (hasFocus) {
+                    ET_password.setBackgroundResource(R.drawable.edittext_selected);
                     ET_password.setTextColor(getResources().getColor(R.color.colorPrimary));
-                }
-                else
-                {
-                    ET_password.setBackgroundResource( R.drawable.edittext_unselected);
+                } else {
+                    ET_password.setBackgroundResource(R.drawable.edittext_unselected);
                     ET_password.setTextColor(getResources().getColor(R.color.colorBlack));
 
                 }
@@ -102,15 +96,14 @@ public class LoginActivity extends AppCompatActivity {
         But_newaxccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,SignupActivity.class));
+                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
             }
         });
         But_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isConnectedToNetwork()) {
-                    if(ET_username.getText().toString().equals(""))
-                    {
+
+                    if (ET_username.getText().toString().equals("")) {
                         new PromptDialog(LoginActivity.this)
                                 .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
                                 .setAnimationEnable(true)
@@ -120,11 +113,9 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onClick(PromptDialog dialog) {
                                         dialog.dismiss();
                                     }
-                                }).show();                    }
-                    else
-                    {
-                        if(ET_password.getText().toString().equals(""))
-                        {
+                                }).show();
+                    } else {
+                        if (ET_password.getText().toString().equals("")) {
                             new PromptDialog(LoginActivity.this)
                                     .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
                                     .setAnimationEnable(true)
@@ -135,38 +126,35 @@ public class LoginActivity extends AppCompatActivity {
                                             dialog.dismiss();
                                         }
                                     }).show();
-                        }
-                        else
-                        {
-                            S_username=ET_username.getText().toString();
-                            S_password=ET_password.getText().toString();
-                            signin_verif(S_username,S_password);
-                                login_loading.setVisibility(View.VISIBLE);
-                                login_loading.show();
+                        } else {
+                            S_username = ET_username.getText().toString();
+                            S_password = ET_password.getText().toString();
+                            signin_verif(S_username, S_password);
+                            login_loading.setVisibility(View.VISIBLE);
+                            login_loading.show();
 //                            startActivity(new Intent(LoginActivity.this,ProfileInfo.class));
 
                         }
                     }
-
-
-                }
-                else
-                {
-                    new PromptDialog(LoginActivity.this)
-                        .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
-                        .setAnimationEnable(true)
-                        .setTitleText("Please Check Your Network Connection")
-                        .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                            @Override
-                            public void onClick(PromptDialog dialog) {
-                                dialog.dismiss();
-                            }
-                        }).show();
-
-                }
-
             }
         });
+    }
+         else
+        {
+
+
+            setContentView(R.layout.content_if_nointernet);
+            ImageView but_retry = findViewById(R.id.nointernet_retry);
+            but_retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+
+        }
     }
     private boolean isConnectedToNetwork() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -216,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
                                     .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
                                     .setAnimationEnable(true)
                                     .setTitleText("Login Success")
-                                    .setContentText("Welcome to Weqar")
+
 
                                     .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
                                         @Override

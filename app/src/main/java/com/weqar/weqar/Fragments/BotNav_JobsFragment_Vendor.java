@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -38,6 +40,8 @@ import com.weqar.weqar.DBJavaClasses.jobscard_list;
 import com.weqar.weqar.DBJavaClasses.jobscard_list_vendor;
 import com.weqar.weqar.Discount_Edit_Vendor;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
+import com.weqar.weqar.HomeScreen;
+import com.weqar.weqar.HomeScreen_vendor;
 import com.weqar.weqar.JobDetails_User;
 import com.weqar.weqar.JobDetails_Vendor;
 import com.weqar.weqar.Job_Edit_Vendor;
@@ -65,6 +69,7 @@ import cn.refactor.lib.colordialog.PromptDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static com.thefinestartist.utils.service.ServiceUtil.getSystemService;
 
 
 public class BotNav_JobsFragment_Vendor extends Fragment {
@@ -74,23 +79,22 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
         BotNav_JobsFragment_Vendor fragment= new BotNav_JobsFragment_Vendor();
         return fragment;
     }
-
     ImageView IV_addjobs_vendor;
     String s_vendor_disc,s_vendor_token;
     SwipeMenuListView GV_vendor_view;
-    ImageView IV_nojobs;  jobscard_list_vendor ccitacc;
-
+    ImageView IV_nojobs;
+    jobscard_list_vendor ccitacc;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+                             Bundle savedInstanceState)
+    {
         View view= inflater.inflate(R.layout.fragment_bot_nav__jobs_fragment__vendor, container, false);
-        Shared_user_details=getActivity().getSharedPreferences("user_detail_mode",0);
+
+            Shared_user_details=getActivity().getSharedPreferences("user_detail_mode",0);
         s_vendor_disc=  Shared_user_details.getString("weqar_uid", null);
         s_vendor_token=  Shared_user_details.getString("weqar_token", null);
-
         IV_nojobs=view.findViewById(R.id.IV_noitem_jobs);
-GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
+        GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
         IV_addjobs_vendor=view.findViewById(R.id.homescreen_addjobs);
         IV_addjobs_vendor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,10 +105,8 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
         });
         new kilomilo().execute(Global_URL.Vendor_showownjobs);
 
-
         return view;
     }
-
     public class MovieAdap extends ArrayAdapter
     {
         private List<jobscard_list_vendor> movieModelList;
@@ -147,12 +149,10 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
                 holder = (MovieAdap.ViewHolder) convertView.getTag();
             }
              ccitacc = movieModelList.get(position);
-
             holder.text_jobtype.setText(ccitacc.getJobType());
             holder.text_jobfield.setText(ccitacc.getJobField());
-            holder.text_jobdesc.setText(ccitacc.getDescription());
+            holder.text_jobdesc.setText(ccitacc.getName());
             String first=ccitacc.getClosingDate();
-
             String second=first.substring(0,10);
             holder.text_jobdeadline.setText("Deadline "+second);
             try
@@ -163,8 +163,6 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
             {
                 e.printStackTrace();
             }
-
-
             SwipeMenuCreator creator = new SwipeMenuCreator()
             {
                 @Override
@@ -294,7 +292,6 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
         protected void onPostExecute(final List<jobscard_list_vendor> movieMode) {
             super.onPostExecute(movieMode);
             if((movieMode != null) && (movieMode.size()>0) &&getActivity()!=null ){
-//                GV_vendor_view.setVisibility(View.VISIBLE);
                MovieAdap adapter = new MovieAdap(getActivity(), R.layout.content_jobs_vendor_card, movieMode);
                 GV_vendor_view.setAdapter(adapter);
                 GV_vendor_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -304,6 +301,7 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
                         Intent intent = new Intent(getActivity(),JobDetails_Vendor.class);
                         intent.putExtra("put_jobs_vendor_logo",item.getLogo());
                         intent.putExtra("put_jobs_vendor_jobtype",item.getJobType());
+                        intent.putExtra("put_jobs_vendor_name",item.getName());
                         intent.putExtra("put_jobs_vendor_jobfield",item.getJobField());
                         intent.putExtra("put_jobs_vendor_deadline",item.getClosingDate());
                         intent.putExtra("put_jobs_vendor_desc",item.getDescription());
@@ -327,12 +325,8 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
 
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("Id", id);
-
-
             final String requestBody = jsonBody.toString();
-
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_job_delete, new Response.Listener<String>() {
-
                 public void onResponse(String response) {
                     new PromptDialog(getActivity())
                             .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
@@ -341,9 +335,6 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
                             .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
                                 @Override
                                 public void onClick(PromptDialog dialog) {
-
-
-
                                     AppCompatActivity activity = (AppCompatActivity) getActivity();
                                     Fragment myFragment = new BotNav_JobsFragment_Vendor();
                                     activity.getSupportFragmentManager().beginTransaction()
@@ -355,16 +346,12 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
-
                 }
             }) {
                 @Override
                 public String getBodyContentType() {
-
                     return "application/json; charset=utf-8";
                 }
-
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
@@ -373,28 +360,25 @@ GV_vendor_view=view.findViewById(R.id.weqar_vendor_addjobs);
                     headers.put("x-api-type","Android");
                     headers.put("x-api-key",s_vendor_token);
                     return headers;
-
                 }
-
                 @Override
                 public byte[] getBody() throws AuthFailureError {
                     try {
                         return requestBody == null ? null : requestBody.getBytes("utf-8");
-
                     } catch (UnsupportedEncodingException uee) {
                         VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
                         return null;
                     }
                 }
-
-
-
-
             };
-
             requestQueue.add(stringRequest);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

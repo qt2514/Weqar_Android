@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -41,6 +43,8 @@ import com.weqar.weqar.DBJavaClasses.discountcard_list_vendor;
 import com.weqar.weqar.DiscountDetails_Vendor;
 import com.weqar.weqar.Discount_Edit_Vendor;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
+import com.weqar.weqar.HomeScreen;
+import com.weqar.weqar.HomeScreen_vendor;
 import com.weqar.weqar.LoginActivity;
 import com.weqar.weqar.ProfileInfo;
 import com.weqar.weqar.R;
@@ -65,6 +69,7 @@ import cn.refactor.lib.colordialog.PromptDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static com.thefinestartist.utils.service.ServiceUtil.getSystemService;
 
 public class BotNav_DiscountsFragment_Vendor  extends Fragment
 {
@@ -84,21 +89,21 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                              Bundle savedInstanceState)
     {
         View view= inflater.inflate(R.layout.fragment_bot_nav__discounts_fragment__vendor, container, false);
-        Shared_user_details=getActivity().getSharedPreferences("user_detail_mode",0);
-        s_vendor_disc=  Shared_user_details.getString("weqar_uid", null);
-        s_vendor_token=  Shared_user_details.getString("weqar_token", null);
 
-        GV_vendor_view=view.findViewById(R.id.disc_vendor_gv);
-        IV_adddiscount_vendor=view.findViewById(R.id.homescreen_adddiscount);
-        IV_nodiscount_items=view.findViewById(R.id.IV_noitem_disc);
-        IV_adddiscount_vendor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                startActivity(new Intent(getActivity(),AddDiscount_Vendor.class));
-            }
-        });
-        new kilomilo().execute(Global_URL.Vendor_showown_discounts);
+            Shared_user_details = getActivity().getSharedPreferences("user_detail_mode", 0);
+            s_vendor_disc = Shared_user_details.getString("weqar_uid", null);
+            s_vendor_token = Shared_user_details.getString("weqar_token", null);
+            GV_vendor_view = view.findViewById(R.id.disc_vendor_gv);
+            IV_adddiscount_vendor = view.findViewById(R.id.homescreen_adddiscount);
+            IV_nodiscount_items = view.findViewById(R.id.IV_noitem_disc);
+            IV_adddiscount_vendor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getActivity(), AddDiscount_Vendor.class));
+                }
+            });
+            new kilomilo().execute(Global_URL.Vendor_showown_discounts);
+
         return view;
     }
     public class MovieAdap extends ArrayAdapter
@@ -149,22 +154,15 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
             Integer kk=k/20;
             Float g=(float) kk;
             holder.RB_vendor_rating.setRating(g);
-
-            String htmlAsString = ccitacc.getDescription();
-            Spanned htmlAsSpanned = Html.fromHtml(htmlAsString);
-            holder.texttwo_desc.setText(htmlAsSpanned);
+            String second=ccitacc.getEndDate().substring(0,10);
+            holder.texttwo_desc.setText("End Date: "+second);
             try
             {
                 Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getImage()).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(holder.menuimage);
-
-
                 Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getLogo()).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(holder.RIV_logo);
             }catch (Exception e){
-
                 e.printStackTrace();
             }
-
-
             SwipeMenuCreator creator = new SwipeMenuCreator()
             {
                 @Override
@@ -295,7 +293,6 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
         protected void onPostExecute(final List<discountcard_list_vendor> movieMode) {
             super.onPostExecute(movieMode);
             if((movieMode != null) && (movieMode.size()>0)&&getActivity()!=null ){
-
               GV_vendor_view.setVisibility(View.VISIBLE);
                 MovieAdap adapter = new MovieAdap(getActivity(), R.layout.fragment_discountcard_vendor, movieMode);
                 GV_vendor_view.setAdapter(adapter);
@@ -309,6 +306,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                         intent.putExtra("put_title",item.getTitle());
                         intent.putExtra("put_per",item.getPercentage());
                         intent.putExtra("put_desc",item.getDescription());
+                        intent.putExtra("put_enddate",item.getEndDate());
                         startActivity(intent);
                     }
                 });
@@ -322,18 +320,12 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
     }
     public void callmetodeleteiscount(String id)
     {
-
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("Id", id);
-
-
             final String requestBody = jsonBody.toString();
-
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_delete_discounts, new Response.Listener<String>() {
-
                 public void onResponse(String response) {
                     new PromptDialog(getActivity())
                             .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
@@ -342,9 +334,6 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                             .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
                                 @Override
                                 public void onClick(PromptDialog dialog) {
-
-
-
                                     AppCompatActivity activity = (AppCompatActivity) getActivity();
                                     Fragment myFragment = new BotNav_DiscountsFragment_Vendor();
                                     activity.getSupportFragmentManager().beginTransaction()
@@ -356,16 +345,12 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
-
                 }
             }) {
                 @Override
                 public String getBodyContentType() {
-
                     return "application/json; charset=utf-8";
                 }
-
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
@@ -374,28 +359,26 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                     headers.put("x-api-type","Android");
                     headers.put("x-api-key",s_vendor_token);
                     return headers;
-
                 }
-
                 @Override
                 public byte[] getBody() throws AuthFailureError {
                     try {
                         return requestBody == null ? null : requestBody.getBytes("utf-8");
-
                     } catch (UnsupportedEncodingException uee) {
                         VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
                         return null;
                     }
                 }
-
-
-
-
             };
 
             requestQueue.add(stringRequest);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

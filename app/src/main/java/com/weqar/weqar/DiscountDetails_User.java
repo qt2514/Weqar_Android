@@ -1,7 +1,10 @@
 package com.weqar.weqar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -47,7 +50,8 @@ public class DiscountDetails_User extends AppCompatActivity {
     List<String> L_disc_edt_percentage;
     List<String> L_disc_det_title;
     List<String> L_det_det_logo;
-    String s_disc_det_id,s_disc_det_desc,s_disc_det_image,s_disc_edt_percentage,s_disc_det_title,s_det_det_logo;
+    List<String> L_det_det_enddate;
+    String s_disc_det_id,s_disc_det_desc,s_disc_det_image,s_disc_edt_percentage,s_disc_det_title,s_det_det_logo,s_disc_det_enddate;
     String s_lnw_usermailid,s_lnw_discount_id;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
@@ -57,32 +61,49 @@ public class DiscountDetails_User extends AppCompatActivity {
         setContentView(R.layout.activity_discount_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        IV_discount_details_back=findViewById(R.id.discount_details_back);
-        RV_discdet_user=findViewById(R.id.discountdet_rv_user);
-        IV_discount_details_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        L_disc_det_id= new ArrayList<String>();
-        L_disc_det_desc= new ArrayList<String>();
-        L_disc_det_image= new ArrayList<String>();
-        L_disc_edt_percentage= new ArrayList<String>();
-        L_disc_det_title= new ArrayList<String>();
-        L_det_det_logo= new ArrayList<String>();
-        Shared_user_details=getSharedPreferences("user_detail_mode",0);
-        s_lnw_usermailid= Shared_user_details.getString("weqar_token", null);
-        Intent intent=getIntent();
-        s_lnw_discount_id=intent.getStringExtra("put_disc_id");
-        RecyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext());
-        RV_discdet_user.setLayoutManager(RecyclerViewLayoutManager);
-        RecyclerViewHorizontalAdapter = new RecyclerViewAdapter_DiscountDetails_User(L_disc_det_id,L_disc_det_desc,L_disc_det_image,
-                L_disc_edt_percentage,L_disc_det_title,L_det_det_logo,this);
-        HorizontalLayout = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-        RV_discdet_user.setLayoutManager(HorizontalLayout);
-        RV_discdet_user.setHorizontalScrollBarEnabled(false);
-        getUserCompletesubscription();
+        if (isConnectedToNetwork()) {
+
+            IV_discount_details_back = findViewById(R.id.discount_details_back);
+            RV_discdet_user = findViewById(R.id.discountdet_rv_user);
+            IV_discount_details_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+            L_disc_det_id = new ArrayList<String>();
+            L_disc_det_desc = new ArrayList<String>();
+            L_disc_det_image = new ArrayList<String>();
+            L_disc_edt_percentage = new ArrayList<String>();
+            L_disc_det_title = new ArrayList<String>();
+            L_det_det_logo = new ArrayList<String>();
+            L_det_det_enddate = new ArrayList<String>();
+            Shared_user_details = getSharedPreferences("user_detail_mode", 0);
+            s_lnw_usermailid = Shared_user_details.getString("weqar_token", null);
+            Intent intent = getIntent();
+            s_lnw_discount_id = intent.getStringExtra("put_disc_id");
+            RecyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext());
+            RV_discdet_user.setLayoutManager(RecyclerViewLayoutManager);
+            RecyclerViewHorizontalAdapter = new RecyclerViewAdapter_DiscountDetails_User(L_disc_det_id, L_disc_det_desc, L_disc_det_image,
+                    L_disc_edt_percentage, L_disc_det_title, L_det_det_logo,L_det_det_enddate, this);
+            HorizontalLayout = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+            RV_discdet_user.setLayoutManager(HorizontalLayout);
+            RV_discdet_user.setHorizontalScrollBarEnabled(false);
+            getUserCompletesubscription();
+        }
+        else
+        {
+
+            setContentView(R.layout.content_if_nointernet);
+            ImageView but_retry = findViewById(R.id.nointernet_retry);
+            but_retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(DiscountDetails_User.this, HomeScreen.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
     public void getUserCompletesubscription()
     {
@@ -98,15 +119,24 @@ public class DiscountDetails_User extends AppCompatActivity {
                         s_disc_det_id= object.getString("Id");
                         s_disc_det_desc= object.getString("Description");
                         s_disc_det_image= object.getString("Image");
+                        s_disc_det_enddate= object.getString("EndDate");
                         s_disc_edt_percentage= object.getString("Percentage");
                         s_disc_det_title= object.getString("Title");
                         s_det_det_logo= object.getString("Logo");
-                        L_disc_det_id.add(String.valueOf(s_disc_det_id));
-                        L_disc_det_desc.add(String.valueOf(s_disc_det_desc));
-                        L_disc_det_image.add(String.valueOf(s_disc_det_image));
-                        L_disc_edt_percentage.add(String.valueOf(s_disc_edt_percentage));
-                        L_disc_det_title.add(String.valueOf(s_disc_det_title));
-                        L_det_det_logo.add(String.valueOf(s_det_det_logo));
+                        try
+                        {
+                            L_disc_det_id.add(String.valueOf(s_disc_det_id));
+                            L_disc_det_desc.add(String.valueOf(s_disc_det_desc));
+                            L_disc_det_image.add(String.valueOf(s_disc_det_image));
+                            L_disc_edt_percentage.add(String.valueOf(s_disc_edt_percentage));
+                            L_disc_det_title.add(String.valueOf(s_disc_det_title));
+                            L_det_det_logo.add(String.valueOf(s_det_det_logo));
+                            L_det_det_enddate.add(String.valueOf(s_disc_det_enddate));
+                        }catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+
                     }
                     RV_discdet_user.setAdapter(RecyclerViewHorizontalAdapter);
                 }
@@ -133,5 +163,10 @@ public class DiscountDetails_User extends AppCompatActivity {
             }
         };
         requestQueue.add(stringRequest);
+    } private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
+
 }

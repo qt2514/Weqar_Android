@@ -64,7 +64,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/disc_desc_titlet"
+                            android:id="@+id/disc_desc_titletwo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"

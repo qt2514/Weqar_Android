@@ -4,9 +4,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="25dp"
-    android:layout_marginLeft="25dp"
     android:layout_below="@+id/appbar_vendoraddjobs"
-    android:layout_marginRight="25dp">
+   >
     <ScrollView
         android:layout_marginBottom="10dp"
 
@@ -17,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="50dp"
-
+android:paddingRight="20dp"
+            android:paddingLeft="20dp"
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
@@ -66,27 +66,29 @@
                 android:background="@drawable/selector_bg_edit"
                 android:paddingBottom="5dp" />
             <android.support.design.widget.TextInputLayout
+
                 android:textColorHint="@color/colorBlack"
                 android:theme="@style/TextLabel"
-
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1.4"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="100dp">
                 <EditText
+                    android:id="@+id/et_vaddjobs_companyinfo"
                     android:textSize="16sp"
                     android:hint="Company Info"
-
-                    android:id="@+id/et_vaddjobs_companyinfo"
+                    android:gravity="start"
+                    android:padding="10dp"
                     android:textColor="#000"
+                    android:lines="3"
+                    android:maxLines="3"
+
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textEmailAddress"
-                    android:background="@drawable/selector_bg_edit"
+                    android:inputType="text|textMultiLine|textCapSentences"                 android:background="@drawable/selector_bg_edit"
                     android:textCursorDrawable="@drawable/bg_input_cursor"
                     android:paddingBottom="2dp" />
             </android.support.design.widget.TextInputLayout>
+
             <TextView
                 android:textSize="16sp"
                 android:hint="Opening Date"
@@ -111,31 +113,29 @@
                 android:background="@drawable/selector_bg_edit"
                 android:paddingBottom="7dp" />
             <android.support.design.widget.TextInputLayout
-            android:textColorHint="@color/colorBlack"
-            android:theme="@style/TextLabel"
 
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1.4"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="100dp">
-            <EditText
-                android:textSize="16sp"
-                android:hint="Description"
-                android:maxLength="21"
-                android:lines="3"
-                android:gravity="start"
-                android:padding="5dp"
-                android:maxLines="3"
-                android:id="@+id/et_vaddjobs_desc"
-                android:textColor="#000"
+                android:textColorHint="@color/colorBlack"
+                android:theme="@style/TextLabel"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textEmailAddress"
-                android:background="@drawable/selector_bg_edit"
-                android:textCursorDrawable="@drawable/bg_input_cursor"
-                android:paddingBottom="2dp" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="100dp">
+                <EditText
+                    android:id="@+id/et_vaddjobs_desc"
+                    android:textSize="16sp"
+                    android:hint="Description"
+                    android:gravity="start"
+                    android:padding="10dp"
+                    android:textColor="#000"
+                    android:lines="3"
+                    android:maxLines="3"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text|textMultiLine|textCapSentences"                 android:background="@drawable/selector_bg_edit"
+                    android:textCursorDrawable="@drawable/bg_input_cursor"
+                    android:paddingBottom="2dp" />
+            </android.support.design.widget.TextInputLayout>
+
             <Button
                 android:id="@+id/but_vaddjobs_add"
                 android:layout_width="wrap_content"

@@ -1,7 +1,10 @@
 package com.weqar.weqar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.FloatingActionButton;
@@ -65,72 +68,87 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
         setContentView(R.layout.activity_job__edit__vendor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ET_editjobs_title=findViewById(R.id.et_veditjobs_title);
-        ET_editjobs_description=findViewById(R.id.et_veditjobs_description);
-        ET_editjobs_compnayinfo=findViewById(R.id.et_veditjobs_companyinfo);
-        TV_editjob_jobtype=findViewById(R.id.tv_veditjobs_jobtype);
-        TV_editjob_jobfield=findViewById(R.id.tv_veditjobs_jobfield);
-        TV_editjob_closingdate=findViewById(R.id.tv_veditjobs_closingdate);
-        BUT_edijob_update=findViewById(R.id.but_veditjobs_update);
-        IB_back=findViewById(R.id.iv_vaddjobs_back);
-        IB_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        Intent intent=getIntent();
+        if (isConnectedToNetwork()) {
 
-        s_edijob_jobid=intent.getStringExtra("put_jobid_forjob_edit");
-        s_edijob_jobname=intent.getStringExtra("put_jobname_forjob_edit");
-        s_editjob_type =intent.getStringExtra("put_jobtype_forjob_edit");
-        s_editjob_field=intent.getStringExtra("put_jobfield_forjob_edit");
-        s_editjob_descritiio=intent.getStringExtra("put_jobdesc_forjob_edit");
-        s_editjob_compnayinfo =intent.getStringExtra("put_companyinfo_forjob_edit");
-        s_editjob_clpsingdate=intent.getStringExtra("put_closingdate_forjob_edit");
-        Shared_user_details=getSharedPreferences("user_detail_mode",0);
-        s_lnw_userid= Shared_user_details.getString("sp_w_userid", null);
-        s_lnw_usertoken= Shared_user_details.getString("sp_w_apikey", null);
+            ET_editjobs_title = findViewById(R.id.et_veditjobs_title);
+            ET_editjobs_description = findViewById(R.id.et_veditjobs_description);
+            ET_editjobs_compnayinfo = findViewById(R.id.et_veditjobs_companyinfo);
+            TV_editjob_jobtype = findViewById(R.id.tv_veditjobs_jobtype);
+            TV_editjob_jobfield = findViewById(R.id.tv_veditjobs_jobfield);
+            TV_editjob_closingdate = findViewById(R.id.tv_veditjobs_closingdate);
+            BUT_edijob_update = findViewById(R.id.but_veditjobs_update);
+            IB_back = findViewById(R.id.iv_vaddjobs_back);
+            IB_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            Intent intent = getIntent();
 
-        ET_editjobs_title.setText(s_edijob_jobname);
-        ET_editjobs_description.setText(s_editjob_descritiio);
-        ET_editjobs_compnayinfo.setText(s_editjob_compnayinfo);
-        TV_editjob_jobtype.setText(s_editjob_type);
-        TV_editjob_jobfield.setText(s_editjob_field);
-        TV_editjob_closingdate.setText(s_editjob_clpsingdate);
-        BUT_edijob_update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callmetoeditjob();
+            s_edijob_jobid = intent.getStringExtra("put_jobid_forjob_edit");
+            s_edijob_jobname = intent.getStringExtra("put_jobname_forjob_edit");
+            s_editjob_type = intent.getStringExtra("put_jobtype_forjob_edit");
+            s_editjob_field = intent.getStringExtra("put_jobfield_forjob_edit");
+            s_editjob_descritiio = intent.getStringExtra("put_jobdesc_forjob_edit");
+            s_editjob_compnayinfo = intent.getStringExtra("put_companyinfo_forjob_edit");
+            s_editjob_clpsingdate = intent.getStringExtra("put_closingdate_forjob_edit");
+            Shared_user_details = getSharedPreferences("user_detail_mode", 0);
+            s_lnw_userid = Shared_user_details.getString("sp_w_userid", null);
+            s_lnw_usertoken = Shared_user_details.getString("sp_w_apikey", null);
 
-            }
-        });
-        TV_editjob_jobtype.setOnClickListener(new View.OnClickListener()
+            ET_editjobs_title.setText(s_edijob_jobname);
+            ET_editjobs_description.setText(s_editjob_descritiio);
+            ET_editjobs_compnayinfo.setText(s_editjob_compnayinfo);
+            TV_editjob_jobtype.setText(s_editjob_type);
+            TV_editjob_jobfield.setText(s_editjob_field);
+            TV_editjob_closingdate.setText(s_editjob_clpsingdate);
+            BUT_edijob_update.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callmetoeditjob();
+
+                }
+            });
+            TV_editjob_jobtype.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Job_Edit_Vendor.this, MultiSpinner_Vendor_JobType.class);
+                    startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
+                }
+            });
+
+            TV_editjob_jobfield.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Job_Edit_Vendor.this, MultiSpinner_Vendor_JobField.class);
+                    startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE_two);
+                }
+            });
+
+            TV_editjob_closingdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDate(2018, 0, 1, R.style.DatePickerSpinner);
+                }
+            });
+        }
+        else
         {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(Job_Edit_Vendor.this, MultiSpinner_Vendor_JobType.class);
-                startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
-            }
-        });
 
-        TV_editjob_jobfield.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(Job_Edit_Vendor.this, MultiSpinner_Vendor_JobField.class);
-                startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE_two);
-            }
-        });
 
-        TV_editjob_closingdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDate(2018, 0, 1, R.style.DatePickerSpinner);
-            }
-        });
+            setContentView(R.layout.content_if_nointernet);
+            ImageView but_retry = findViewById(R.id.nointernet_retry);
+            but_retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Job_Edit_Vendor.this, HomeScreen_vendor.class);
+                    startActivity(intent);
+                }
+            });
+
+
+        }
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -393,5 +411,10 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
         }catch (JSONException e){
 
         }
+    }
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

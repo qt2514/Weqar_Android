@@ -34,10 +34,11 @@ public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapt
     private List<String> u_list_per;
     private List<String> u_list_title;
     private List<String> u_list_logo;
+    private List<String> u_list_enddate;
 
     public class MyView extends RecyclerView.ViewHolder {
 
-        TextView TV_descdet_title,TV_disc_desc;
+        TextView TV_descdet_title,TV_disc_desc,TV_title_two;
         RatingBar RB_rating_userisc;
         ImageView IV_image;
         CircleImageView CV_logo;
@@ -46,6 +47,7 @@ public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapt
             super(view);
 
             TV_descdet_title = view.findViewById(R.id.disc_desc_title);
+            TV_title_two = view.findViewById(R.id.disc_desc_titletwo);
             TV_disc_desc = view.findViewById(R.id.disc_dec_det);
             RB_rating_userisc = view.findViewById(R.id.disc_desc_rating);
             IV_image = view.findViewById(R.id.disc_det_image);
@@ -63,6 +65,7 @@ public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapt
                                                     List<String> horizontalList_per,
                                                     List<String> horizontalList_title,
                                                     List<String> horizontalList_logo,
+                                                    List<String> horizontalList_enddate,
 
 
                                                     Context context) {
@@ -72,6 +75,7 @@ public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapt
         this.u_list_per = horizontalList_per;
         this.u_list_title = horizontalList_title;
         this.u_list_logo = horizontalList_logo;
+        this.u_list_enddate = horizontalList_enddate;
 
 
         this.context=context;
@@ -91,6 +95,9 @@ public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapt
         //   Picasso.with(context).load(list.get(position)).fit().into(holder.textView);
      context = holder.TV_descdet_title.getContext();
         holder.TV_descdet_title.setText(u_list_per.get(position)+"% "+u_list_title.get(position));
+        String second=u_list_enddate.get(position).substring(0,10);
+        holder.TV_title_two.setText("End Date: "+second);
+
         holder.TV_disc_desc.setText(u_list_desc.get(position));
         String gg=u_list_per.get(position);
         Integer k=Integer.parseInt(gg);

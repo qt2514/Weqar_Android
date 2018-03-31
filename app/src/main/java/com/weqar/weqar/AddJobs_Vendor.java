@@ -1,8 +1,11 @@
 package com.weqar.weqar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -72,65 +75,75 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
         setContentView(R.layout.activity_add_jobs__vendor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        IV_vaddjobs_back=findViewById(R.id.iv_vaddjobs_back);
-        ET_vaddjobs_title=findViewById(R.id.et_vaddjobs_title);
-        ET_vaddjobs_desc=findViewById(R.id.et_vaddjobs_desc);
-        ET_vaddjobs_companyinfo=findViewById(R.id.et_vaddjobs_companyinfo);
-        TV_vaddjobs_jobtype=findViewById(R.id.tv_vaddjobs_jobtype);
-        TV_vaddjobs_jobfield=findViewById(R.id.tv_vaddjobs_jobfield);
-        TV_vaddjobs_openingdate=findViewById(R.id.tv_vaddjobs_openingdate);
-        TV_vaddjobs_closingdate=findViewById(R.id.tv_vaddjobs_closingdate);
-        But_add=findViewById(R.id.but_vaddjobs_add);
-        simpleDateFormat = new SimpleDateFormat("dd MM yyyy", Locale.US);
-        Shared_user_details=getSharedPreferences("user_detail_mode",0);
+        if (isConnectedToNetwork()) {
 
-        s_lnw_userid= Shared_user_details.getString("sp_w_userid", null);
-        s_lnw_usertoken= Shared_user_details.getString("sp_w_apikey", null);
-IV_vaddjobs_back.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        finish();
-    }
-});
-        TV_vaddjobs_jobtype.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(AddJobs_Vendor.this, MultiSpinner_Vendor_JobType.class);
-                startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
-            }
-        });
+            IV_vaddjobs_back = findViewById(R.id.iv_vaddjobs_back);
+            ET_vaddjobs_title = findViewById(R.id.et_vaddjobs_title);
+            ET_vaddjobs_desc = findViewById(R.id.et_vaddjobs_desc);
+            ET_vaddjobs_companyinfo = findViewById(R.id.et_vaddjobs_companyinfo);
+            TV_vaddjobs_jobtype = findViewById(R.id.tv_vaddjobs_jobtype);
+            TV_vaddjobs_jobfield = findViewById(R.id.tv_vaddjobs_jobfield);
+            TV_vaddjobs_openingdate = findViewById(R.id.tv_vaddjobs_openingdate);
+            TV_vaddjobs_closingdate = findViewById(R.id.tv_vaddjobs_closingdate);
+            But_add = findViewById(R.id.but_vaddjobs_add);
+            simpleDateFormat = new SimpleDateFormat("dd MM yyyy", Locale.US);
+            Shared_user_details = getSharedPreferences("user_detail_mode", 0);
 
-        TV_vaddjobs_jobfield.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(AddJobs_Vendor.this, MultiSpinner_Vendor_JobField.class);
-                startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE_two);
-            }
-        });
-        TV_vaddjobs_openingdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                one=1;
-                showDate(2018, 0, 1, R.style.DatePickerSpinner);
-            }
-        });
-        TV_vaddjobs_closingdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                one=2;
-                showDate(2018, 0, 1, R.style.DatePickerSpinner);
-            }
-        });
-        But_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callmetoupload_addjob();
-            }
-        });
+            s_lnw_userid = Shared_user_details.getString("sp_w_userid", null);
+            s_lnw_usertoken = Shared_user_details.getString("sp_w_apikey", null);
+            IV_vaddjobs_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            TV_vaddjobs_jobtype.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(AddJobs_Vendor.this, MultiSpinner_Vendor_JobType.class);
+                    startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
+                }
+            });
+
+            TV_vaddjobs_jobfield.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(AddJobs_Vendor.this, MultiSpinner_Vendor_JobField.class);
+                    startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE_two);
+                }
+            });
+            TV_vaddjobs_openingdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    one = 1;
+                    showDate(2018, 0, 1, R.style.DatePickerSpinner);
+                }
+            });
+            TV_vaddjobs_closingdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    one = 2;
+                    showDate(2018, 0, 1, R.style.DatePickerSpinner);
+                }
+            });
+            But_add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callmetoupload_addjob();
+                }
+            });
+        }else {
+            setContentView(R.layout.content_if_nointernet);
+            ImageView but_retry = findViewById(R.id.nointernet_retry);
+            but_retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(AddJobs_Vendor.this, AddJobs_Vendor.class);
+                    startActivity(intent);
+                }
+            });
+
+        }
 
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -402,5 +415,10 @@ IV_vaddjobs_back.setOnClickListener(new View.OnClickListener() {
 
      }
  }
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
  }
 

@@ -22,19 +22,13 @@
             android:layout_height="170dp" >
         <RelativeLayout
             android:id="@+id/relative_discountone"
-
-
             android:layout_width="wrap_content"
             android:layout_height="170dp">
             <ImageView
                 android:id="@+id/roundimg_one"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
-
-
                 android:background="@drawable/rounded_two"
-
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
@@ -90,7 +84,7 @@
                 android:focusableInTouchMode="false"
                 />
             <TextView
-                android:id="@+id/textViewu"
+                android:id="@+id/text_enddate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/TV_disc_percentage"
@@ -114,7 +108,7 @@
                     style="?android:attr/ratingBarStyleIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textViewu"
+                    android:layout_below="@+id/text_enddate"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="3dp"
 
@@ -151,7 +145,7 @@
                         android:layout_marginStart="29dp"
                         android:layout_toEndOf="@+id/IV_disc_image"
                         android:background="@drawable/but_selected"
-
+                        android:visibility="invisible"
                         android:text="Unfollow"
                         android:textAllCaps="false"
                         android:textColor="@color/colorWhite"
@@ -165,6 +159,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignEnd="@+id/button"
                         android:layout_below="@+id/TV_disc_percentage"
+                        android:visibility="invisible"
 
                         android:layout_marginTop="25dp"
                         android:clickable="false"

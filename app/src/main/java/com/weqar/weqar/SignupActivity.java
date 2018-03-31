@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -53,6 +54,7 @@ public class SignupActivity extends AppCompatActivity {
         B_sel_vendor=findViewById(R.id.Signup_But_vendor);
         context=this;
         S_user_type="user";
+
         ET_username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -252,16 +254,17 @@ public class SignupActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    new PromptDialog(SignupActivity.this)
-                            .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
-                            .setAnimationEnable(true)
-                            .setTitleText("Please Check Your Internet")
-                            .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                                @Override
-                                public void onClick(PromptDialog dialog) {
-                                    dialog.dismiss();
-                                }
-                            }).show();
+
+                    setContentView(R.layout.content_if_nointernet);
+                    ImageView but_retry = findViewById(R.id.nointernet_retry);
+                    but_retry.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(SignupActivity.this, SignupActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
                 }
             }
         });

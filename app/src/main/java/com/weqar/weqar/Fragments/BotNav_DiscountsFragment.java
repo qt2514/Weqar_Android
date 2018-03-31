@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,8 +39,10 @@ import com.weqar.weqar.DBJavaClasses.discountcard_list_vendor;
 import com.weqar.weqar.DiscountDetails_User;
 import com.weqar.weqar.DiscountDetails_Vendor;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
+import com.weqar.weqar.HomeScreen;
 import com.weqar.weqar.JavaClasses.ImageConverter;
 import com.weqar.weqar.JavaClasses.RecyclerViewAdapter_Category;
+import com.weqar.weqar.LoginActivity;
 import com.weqar.weqar.R;
 
 import org.json.JSONArray;
@@ -59,6 +63,7 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static com.thefinestartist.utils.service.ServiceUtil.getSystemService;
 
 public class BotNav_DiscountsFragment extends Fragment {
     String s_vendor_getho_name,s_vendor_getho_id;
@@ -71,74 +76,67 @@ Context c;
     List<String> L_vendor_hor_id;
     List<String> L_vendor_hor_name;
     ImageView IV_nodisc;
-    public static BotNav_DiscountsFragment newInstance() {
+    public static BotNav_DiscountsFragment newInstance()
+    {
         BotNav_DiscountsFragment fragment= new BotNav_DiscountsFragment();
-
         return fragment;
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-         c = getActivity().getApplicationContext();
-        View view= inflater.inflate(R.layout.fragment_bot_nav__discounts, container, false);
-        GV_disc_user=view.findViewById(R.id.disc_vendor_gv);
-        String URLLL = Global_URL.user_show_discount;
-         new kilomilo().execute(URLLL);
-        RV_home_hoizontal_scroll=view.findViewById(R.id.home_hoizontal_scroll);
-        L_vendor_hor_id= new ArrayList<String>();
-        L_vendor_hor_name= new ArrayList<String>();
-IV_nodisc=view.findViewById(R.id.IV_noitem_disc);
-        RecyclerViewLayoutManager = new LinearLayoutManager(getActivity());
+        View view = inflater.inflate(R.layout.fragment_bot_nav__discounts, container, false);
 
-        RV_home_hoizontal_scroll.setLayoutManager(RecyclerViewLayoutManager);
+            c = getActivity().getApplicationContext();
+            GV_disc_user = view.findViewById(R.id.disc_vendor_gv);
+            String URLLL = Global_URL.user_show_discount;
+            new kilomilo().execute(URLLL);
+            RV_home_hoizontal_scroll = view.findViewById(R.id.home_hoizontal_scroll);
+            L_vendor_hor_id = new ArrayList<String>();
+            L_vendor_hor_name = new ArrayList<String>();
+            IV_nodisc = view.findViewById(R.id.IV_noitem_disc);
+            RecyclerViewLayoutManager = new LinearLayoutManager(getActivity());
+            RV_home_hoizontal_scroll.setLayoutManager(RecyclerViewLayoutManager);
+            RecyclerViewHorizontalAdapter = new RecyclerViewAdapter_Category(L_vendor_hor_id, L_vendor_hor_name, getActivity());
+            HorizontalLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+            RV_home_hoizontal_scroll.setLayoutManager(HorizontalLayout);
+            RV_home_hoizontal_scroll.setHorizontalScrollBarEnabled(false);
+            getUserCompletesubscription();
 
-        RecyclerViewHorizontalAdapter = new RecyclerViewAdapter_Category(L_vendor_hor_id,L_vendor_hor_name,getActivity());
 
-        HorizontalLayout = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        RV_home_hoizontal_scroll.setLayoutManager(HorizontalLayout);
-        RV_home_hoizontal_scroll.setHorizontalScrollBarEnabled(false);
-        getUserCompletesubscription();
         return view;
-    }
 
-    public class MovieAdap extends ArrayAdapter {
+    }
+      public class MovieAdap extends ArrayAdapter {
         private List<discountcard_list> movieModelList;
         private int resource;
         Context context;
         private LayoutInflater inflater;
-
-        MovieAdap(Context context, int resource, List<discountcard_list> objects) {
+           MovieAdap(Context context, int resource, List<discountcard_list> objects) {
             super(context, resource, objects);
             movieModelList = objects;
             this.context = context;
             this.resource = resource;
             inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
         }
-
         @Override
         public int getViewTypeCount() {
             return 1;
         }
-
         @Override
         public int getItemViewType(int position) {
             return position;
         }
-
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             final ViewHolder holder;
             if (convertView == null) {
                 convertView = inflater.inflate(resource, null);
                 holder = new ViewHolder();
-
                 holder.textone = (TextView) convertView.findViewById(R.id.TV_disc_percentage);
+                holder.TV_enddate = (TextView) convertView.findViewById(R.id.text_enddate);
                 holder.menuimage = convertView.findViewById(R.id.roundimg_one);
                 holder.RIV_logo = convertView.findViewById(R.id.roundedImageView);
-
                 holder.ratingbar=convertView.findViewById(R.id.RB_vendr_rating);
                 convertView.setTag(holder);
             }//ino
@@ -153,38 +151,30 @@ IV_nodisc=view.findViewById(R.id.IV_noitem_disc);
             Integer kk=k/20;
             Float g=(float) kk;
             holder.ratingbar.setRating(g);
+            String second=ccitacc.getEndDate().substring(0,10);
+            holder.TV_enddate.setText("End Date: "+second);
             String ing=ccitacc.getImage().trim();
             String ings=ccitacc.getLogo().trim();
-
-
             try
             {
                 Picasso.with(context).load(Global_URL.Image_url_load+ings).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(holder.RIV_logo);
-                Picasso.with(context).load(Global_URL.Image_url_load+ings).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(holder.menuimage);
-
+                Picasso.with(context).load(Global_URL.Image_url_load+ing).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(holder.menuimage);
             }catch (Exception e){}
-
-
-
             return convertView;
         }
-
         class ViewHolder {
-            public TextView textone;
+            public TextView textone,TV_enddate;
             private ImageView menuimage;
             private CircleImageView RIV_logo;
             RatingBar ratingbar;
         }
     }
-
     @SuppressLint("StaticFieldLeak")
     public class kilomilo extends AsyncTask<String, String, List<discountcard_list>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
-
         @Override
         protected List<discountcard_list> doInBackground(String... params) {
             HttpURLConnection connection = null;
@@ -308,5 +298,9 @@ IV_nodisc=view.findViewById(R.id.IV_noitem_disc);
 
         requestQueue.add(stringRequest);
     }
-
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
 }

@@ -1,6 +1,10 @@
 package com.weqar.weqar;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -49,33 +53,53 @@ public class Settings_ProfileActivity_User extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings__profile);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        IV_profile_account_back=findViewById(R.id.account_setting_back);
-        CV_user_profileimage=findViewById(R.id.CV_user_profileimage);
-        TV_user_profile_fname=findViewById(R.id.TV_user_profilefname);
+        setSupportActionBar(toolbar);        if (isConnectedToNetwork()) {
 
-        TV_user_profiletmname=findViewById(R.id.TV_user_profiletmname);
-        TV_user_profilemname=findViewById(R.id.TV_user_profilemname);
-        TV_user_profiletlname=findViewById(R.id.TV_user_profiletlname);
-        TV_user_profilelname=findViewById(R.id.TV_user_profilelname);
-        v_one=findViewById(R.id.view_one);
-        v_two=findViewById(R.id.view_two);
-        TV_user_profile_name=findViewById(R.id.TV_user_profilename);
-        TV_user_profile_email=findViewById(R.id.TV_user_profileemail);
-        TV_user_profile_mobile=findViewById(R.id.TV_user_profilemobile);
-        TV_user_profile_address=findViewById(R.id.TV_user_profileaddress);
-        TV_user_profile_country=findViewById(R.id.TV_user_profilecountry);
-        IV_profile_account_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        Shared_user_details=getSharedPreferences("user_detail_mode",0);
 
-        s_user_id= Shared_user_details.getString("sp_w_userid", null);
-        s_user_token= Shared_user_details.getString("sp_w_apikey", null);
-        getmydet(s_user_id);
+            IV_profile_account_back = findViewById(R.id.account_setting_back);
+            CV_user_profileimage = findViewById(R.id.CV_user_profileimage);
+            TV_user_profile_fname = findViewById(R.id.TV_user_profilefname);
+
+            TV_user_profiletmname = findViewById(R.id.TV_user_profiletmname);
+            TV_user_profilemname = findViewById(R.id.TV_user_profilemname);
+            TV_user_profiletlname = findViewById(R.id.TV_user_profiletlname);
+            TV_user_profilelname = findViewById(R.id.TV_user_profilelname);
+            v_one = findViewById(R.id.view_one);
+            v_two = findViewById(R.id.view_two);
+            TV_user_profile_name = findViewById(R.id.TV_user_profilename);
+            TV_user_profile_email = findViewById(R.id.TV_user_profileemail);
+            TV_user_profile_mobile = findViewById(R.id.TV_user_profilemobile);
+            TV_user_profile_address = findViewById(R.id.TV_user_profileaddress);
+            TV_user_profile_country = findViewById(R.id.TV_user_profilecountry);
+            IV_profile_account_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            Shared_user_details = getSharedPreferences("user_detail_mode", 0);
+
+            s_user_id = Shared_user_details.getString("sp_w_userid", null);
+            s_user_token = Shared_user_details.getString("sp_w_apikey", null);
+            getmydet(s_user_id);
+        }
+
+        else
+        {
+
+
+            setContentView(R.layout.content_if_nointernet);
+            ImageView but_retry = findViewById(R.id.nointernet_retry);
+            but_retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Settings_ProfileActivity_User.this, Settings_ProfileActivity_User.class);
+                    startActivity(intent);
+                }
+            });
+
+
+        }
 
     }
     public void getmydet(String susername)
@@ -202,5 +226,10 @@ public class Settings_ProfileActivity_User extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    } private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
+
 }

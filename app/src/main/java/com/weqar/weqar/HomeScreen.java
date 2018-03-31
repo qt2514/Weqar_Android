@@ -1,6 +1,9 @@
 package com.weqar.weqar;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentTransaction;
@@ -31,33 +34,46 @@ public class HomeScreen extends AppCompatActivity {
         setContentView(R.layout.activity_home_screen);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        bottomBar = findViewById(R.id.bottomBar);
-        bottomBar.setDefaultTab(R.id.botnav_event);
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelected(@IdRes int tabId) {
-                android.support.v4.app.Fragment selectedFragment = null;
-                if (tabId == R.id.botnav_event) {
-                    selectedFragment = BotNav_EventsFragment.newInstance();
-                }
-                else if (tabId == R.id.botnav_discount) {
-                    selectedFragment = BotNav_DiscountsFragment.newInstance();
+        if (isConnectedToNetwork()) {
 
-                }
-                else if (tabId == R.id.botnav_jobs) {
-                    selectedFragment = BotNav_JobsFragment.newInstance();
+            bottomBar = findViewById(R.id.bottomBar);
+            bottomBar.setDefaultTab(R.id.botnav_event);
+            bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+                @Override
+                public void onTabSelected(@IdRes int tabId) {
+                    android.support.v4.app.Fragment selectedFragment = null;
+                    if (tabId == R.id.botnav_event) {
+                        selectedFragment = BotNav_EventsFragment.newInstance();
+                    } else if (tabId == R.id.botnav_discount) {
+                        selectedFragment = BotNav_DiscountsFragment.newInstance();
 
-                }
+                    } else if (tabId == R.id.botnav_jobs) {
+                        selectedFragment = BotNav_JobsFragment.newInstance();
 
-                else if (tabId == R.id.botnav_settings) {
-                    selectedFragment = BotNav_SettingsFragment.newInstance();
+                    } else if (tabId == R.id.botnav_settings) {
+                        selectedFragment = BotNav_SettingsFragment.newInstance();
 
+                    }
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.contentContainer, selectedFragment);
+                    transaction.commit();
                 }
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.contentContainer, selectedFragment);
-                transaction.commit();
-            }
-        });
+            });
+        }
+        else
+        {
+
+
+            setContentView(R.layout.content_if_nointernet);
+            ImageView but_retry = findViewById(R.id.nointernet_retry);
+            but_retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(HomeScreen.this, HomeScreen.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -83,5 +99,10 @@ public class HomeScreen extends AppCompatActivity {
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
+    }
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

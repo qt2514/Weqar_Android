@@ -1,9 +1,12 @@
 package com.weqar.weqar;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -37,12 +40,14 @@ import com.weqar.weqar.DBHandlers.SessionManager;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.JavaClasses.ImageUtil;
 import com.weqar.weqar.JavaClasses.RecyclerViewAdapter;
+import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -102,6 +107,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     private SessionManager session;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
+    int check_image_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -213,281 +219,366 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
 
 
 
+        if (isConnectedToNetwork()) {
+            if (session.isLoggedIn()) {
+                if (s_lnw_usertype.equals("user")) {
+                    if (s_ln_tab1) {
+                        if (s_ln_tab2) {
+                            if (s_ln_tab3) {
 
-        if(session.isLoggedIn()) {
-            if (s_lnw_usertype.equals("user")) {
-                if (s_ln_tab1) {
-                    if (s_ln_tab2) {
-                        if (s_ln_tab3) {
+                                startActivity(new Intent(ProfileInfo.this, HomeScreen.class));
 
-                            startActivity(new Intent(ProfileInfo.this, HomeScreen.class));
-
+                            } else {
+                                toolbar.setTitle("Subscription");
+                                getUserCompletesubscription();
+                                scrollView_personal.setVisibility(View.INVISIBLE);
+                                scrollView_professional.setVisibility(View.INVISIBLE);
+                                but_complete.setVisibility(View.VISIBLE);
+                                scrollView_complete.setVisibility(View.VISIBLE);
+                                IV_personal.setImageResource(R.drawable.profile_basic_three);
+                                IV_professional.setImageResource(R.drawable.profile_professional_three);
+                                IV_complete.setImageResource(R.drawable.profile_complete_two);
+                                view1.setBackgroundResource(R.color.colorAccent);
+                                view2.setBackgroundResource(R.color.colorAccent);
+                                view3.setBackgroundResource(R.color.colorAccent);
+                            }
                         } else {
-                            toolbar.setTitle("Subscription");
-                            getUserCompletesubscription();
+                            toolbar.setTitle("Professional");
                             scrollView_personal.setVisibility(View.INVISIBLE);
-                            scrollView_professional.setVisibility(View.INVISIBLE);
-                            but_complete.setVisibility(View.VISIBLE);
-                            scrollView_complete.setVisibility(View.VISIBLE);
+                            scrollView_professional.setVisibility(View.VISIBLE);
+                            scrollView_complete.setVisibility(View.INVISIBLE);
                             IV_personal.setImageResource(R.drawable.profile_basic_three);
-                            IV_professional.setImageResource(R.drawable.profile_professional_three);
-                            IV_complete.setImageResource(R.drawable.profile_complete_two);
+                            IV_professional.setImageResource(R.drawable.profile_professional_two);
+                            IV_complete.setImageResource(R.drawable.profile_complete_one);
                             view1.setBackgroundResource(R.color.colorAccent);
                             view2.setBackgroundResource(R.color.colorAccent);
-                            view3.setBackgroundResource(R.color.colorAccent);
                         }
                     } else {
-                        toolbar.setTitle("Professional");
-                        scrollView_personal.setVisibility(View.INVISIBLE);
-                        scrollView_professional.setVisibility(View.VISIBLE);
-                        scrollView_complete.setVisibility(View.INVISIBLE);
-                        IV_personal.setImageResource(R.drawable.profile_basic_three);
-                        IV_professional.setImageResource(R.drawable.profile_professional_two);
-                        IV_complete.setImageResource(R.drawable.profile_complete_one);
-                        view1.setBackgroundResource(R.color.colorAccent);
-                        view2.setBackgroundResource(R.color.colorAccent);
-                    }
-                } else {
-                    toolbar.setTitle("Basic Infos");
-                    scrollView_personal.setVisibility(View.VISIBLE);
-                    scrollView_professional.setVisibility(View.INVISIBLE);
-                    scrollView_complete.setVisibility(View.INVISIBLE);
-                    view1.setBackgroundResource(R.color.colorAccent);
-                }
-            } else if (s_lnw_usertype.equals("vendor") ) {
-                IV_basic_image.setVisibility(View.GONE);
-                IV_bas.setVisibility(View.GONE);
-                if (s_ln_tab1 && s_ln_tab2 )
-                {
-                    Intent intent = new Intent(ProfileInfo.this, HomeScreen_vendor.class);
-                    editor = Shared_user_details.edit();
-                    editor.putString("weqar_uid",s_lnw_userid);
-                    editor.putString("weqar_token",s_lnw_usertoken);
-                    editor.apply();
-                    editor.commit();
-                    startActivity(intent);
-                }
-                else {
-
-                    if (!s_ln_tab1) {
-                        toolbar.setTitle("Basic Info");
+                        toolbar.setTitle("Basic Infos");
                         scrollView_personal.setVisibility(View.VISIBLE);
                         scrollView_professional.setVisibility(View.INVISIBLE);
                         scrollView_complete.setVisibility(View.INVISIBLE);
                         view1.setBackgroundResource(R.color.colorAccent);
-                    } else if (!s_ln_tab2) {
-                        toolbar.setTitle("Verification");
-                        scrollview_vendor_professional.setVisibility(View.VISIBLE);
-                        scrollView_personal.setVisibility(View.INVISIBLE);
-                        scrollView_professional.setVisibility(View.INVISIBLE);
-                        scrollView_complete.setVisibility(View.INVISIBLE);
-                        IV_personal.setImageResource(R.drawable.profile_basic_three);
-                        IV_professional.setImageResource(R.drawable.profile_professional_two);
-                        IV_complete.setImageResource(R.drawable.profile_complete_one);
-                        view1.setBackgroundResource(R.color.colorAccent);
-                        view2.setBackgroundResource(R.color.colorAccent);
+                    }
+                } else if (s_lnw_usertype.equals("vendor")) {
+                    IV_basic_image.setVisibility(View.GONE);
+                    IV_bas.setVisibility(View.GONE);
+                    if (s_ln_tab1 && s_ln_tab2) {
+                        Intent intent = new Intent(ProfileInfo.this, HomeScreen_vendor.class);
+                        editor = Shared_user_details.edit();
+                        editor.putString("weqar_uid", s_lnw_userid);
+                        editor.putString("weqar_token", s_lnw_usertoken);
+                        editor.apply();
+                        editor.commit();
+                        startActivity(intent);
+                    } else {
+
+                        if (!s_ln_tab1) {
+                            toolbar.setTitle("Basic Info");
+                            scrollView_personal.setVisibility(View.VISIBLE);
+                            scrollView_professional.setVisibility(View.INVISIBLE);
+                            scrollView_complete.setVisibility(View.INVISIBLE);
+                            view1.setBackgroundResource(R.color.colorAccent);
+                        } else if (!s_ln_tab2) {
+                            toolbar.setTitle("Verification");
+                            scrollview_vendor_professional.setVisibility(View.VISIBLE);
+                            scrollView_personal.setVisibility(View.INVISIBLE);
+                            scrollView_professional.setVisibility(View.INVISIBLE);
+                            scrollView_complete.setVisibility(View.INVISIBLE);
+                            IV_personal.setImageResource(R.drawable.profile_basic_three);
+                            IV_professional.setImageResource(R.drawable.profile_professional_two);
+                            IV_complete.setImageResource(R.drawable.profile_complete_one);
+                            view1.setBackgroundResource(R.color.colorAccent);
+                            view2.setBackgroundResource(R.color.colorAccent);
+                        }
                     }
                 }
             }
-        }
-               Calendar now = Calendar.getInstance();
-        dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
-                ProfileInfo.this,
-                now.get(Calendar.YEAR),
-                now.get(Calendar.MONTH),
-                now.get(Calendar.DAY_OF_MONTH)
-        );
-        focuschange();
-        ET_Prof_valid.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Random r = new Random();
+            Calendar now = Calendar.getInstance();
+            dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
+                    ProfileInfo.this,
+                    now.get(Calendar.YEAR),
+                    now.get(Calendar.MONTH),
+                    now.get(Calendar.DAY_OF_MONTH)
+            );
+            focuschange();
+            ET_Prof_valid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Random r = new Random();
 
-                int randomNumber = r.nextInt(5);
+                    int randomNumber = r.nextInt(5);
 
-                dpd.show(getFragmentManager(), String.valueOf(randomNumber));
-                dpd.setTitle("Valid Date");
-            }
-        });
-        ET_vprof_category.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(ProfileInfo.this, MultiSpinner_Vendor_Category.class);
-                startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
-            }
-        });
-
-        IV_basic_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, 1002);
-            }
-        });
-
-        IV_prof_uploadfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, 100);
-            }
-        });
-        IV_vendor_professional_companylogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, 1001);
-            }
-        });
-
-        IV_vcomplete_imageupload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, 1005);
-            }
-        });
-        B_saveandcontinue_personal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callmetouploadbasic();
-              //  getmydet(s_lnw_userid);
-
-            }
-        });
-        B_professional_next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callmetouploadprofessional();
-                //getmydet(s_lnw_userid);
-
-
-
-            }
-        });
-        B_vendorprofessional_next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callmetouploadprofessional_vendor();
-                //getmydet(s_lnw_userid);
-
-
-            }
-        });
-        but_complete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-             callmetouploadusercomplete();
-            //    getmydet(s_lnw_userid);
-
-            }
-        });
-        SP_vendor_com_planchoose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                S_vcomple_plantype_sel = parent.getItemAtPosition(position).toString();
-        getvendor_plannameid(position);
-
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        SP_vendor_com_offertype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                 S_vcomple_offertype_sel = parent.getItemAtPosition(position).toString();
-                if(S_vcomple_offertype_sel.equals("Discount")||S_vcomple_offertype_sel.matches("Discount"))
-                {
-                    ET_vcomplete_percentage.setVisibility(View.VISIBLE);
-                    TIL_vcomplete_percentage.setVisibility(View.VISIBLE);
-                } else if(S_vcomple_offertype_sel.equals("Offer")||S_vcomple_offertype_sel.matches("Offer"))
-                {
-                    ET_vcomplete_percentage.setVisibility(View.INVISIBLE);
-                    TIL_vcomplete_percentage.setVisibility(View.INVISIBLE);
+                    dpd.show(getFragmentManager(), String.valueOf(randomNumber));
+                    dpd.setTitle("Valid Date");
                 }
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        TV_vcomplete_skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                count_on_skip_forvendor="1";
-                Intent intent=new Intent(ProfileInfo.this,HomeScreen_vendor.class);
-                editor = Shared_user_details.edit();
-                editor.putString("weqar_uid",s_lnw_userid);
-                editor.putString("weqar_token",s_lnw_usertoken);
-                editor.apply();
-                editor.commit();
-                startActivity(intent);
-            }
-        });
-        B_vcomplete_complete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-             callmetouploadvendorcomplete();
-            }
-        });
+            });
+            ET_vprof_category.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ProfileInfo.this, MultiSpinner_Vendor_Category.class);
+                    startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
+                }
+            });
+
+            IV_basic_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(i, 1002);
+                }
+            });
+
+            IV_prof_uploadfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(i, 100);
+                }
+            });
+            IV_vendor_professional_companylogo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(i, 1001);
+                }
+            });
+
+            IV_vcomplete_imageupload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(i, 1005);
+                }
+            });
+            B_saveandcontinue_personal.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callmetouploadbasic();
+                    //  getmydet(s_lnw_userid);
+
+                }
+            });
+            B_professional_next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callmetouploadprofessional();
+                    //getmydet(s_lnw_userid);
+
+
+                }
+            });
+            B_vendorprofessional_next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callmetouploadprofessional_vendor();
+                    //getmydet(s_lnw_userid);
+
+
+                }
+            });
+            but_complete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    callmetouploadusercomplete();
+                    //    getmydet(s_lnw_userid);
+
+                }
+            });
+            SP_vendor_com_planchoose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    S_vcomple_plantype_sel = parent.getItemAtPosition(position).toString();
+                    getvendor_plannameid(position);
+
+                }
+
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            SP_vendor_com_offertype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    S_vcomple_offertype_sel = parent.getItemAtPosition(position).toString();
+                    if (S_vcomple_offertype_sel.equals("Discount") || S_vcomple_offertype_sel.matches("Discount")) {
+                        ET_vcomplete_percentage.setVisibility(View.VISIBLE);
+                        TIL_vcomplete_percentage.setVisibility(View.VISIBLE);
+                    } else if (S_vcomple_offertype_sel.equals("Offer") || S_vcomple_offertype_sel.matches("Offer")) {
+                        ET_vcomplete_percentage.setVisibility(View.INVISIBLE);
+                        TIL_vcomplete_percentage.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+            TV_vcomplete_skip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    count_on_skip_forvendor = "1";
+                    Intent intent = new Intent(ProfileInfo.this, HomeScreen_vendor.class);
+                    editor = Shared_user_details.edit();
+                    editor.putString("weqar_uid", s_lnw_userid);
+                    editor.putString("weqar_token", s_lnw_usertoken);
+                    editor.apply();
+                    editor.commit();
+                    startActivity(intent);
+                }
+            });
+            B_vcomplete_complete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callmetouploadvendorcomplete();
+                }
+            });
+        }
+        else
+        {
+            setContentView(R.layout.content_if_nointernet);
+            ImageView but_retry = findViewById(R.id.nointernet_retry);
+            but_retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ProfileInfo.this, ProfileInfo.class);
+                    startActivity(intent);
+                }
+            });
+
+
+        }
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1002 && resultCode == RESULT_OK && data != null) {
+//
+//            Uri imageUri = data.getData();
+//            try {
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+//                IV_bas.setImageBitmap(bitmap);
+//                basic_image(bitmap);
+//            }
+//            catch (IOException e) {
+//                e.printStackTrace();
+//            }
 
             Uri imageUri = data.getData();
+
+            assert imageUri != null;
+            UCrop.of( imageUri,  Uri.fromFile(new File(getCacheDir(), ".png")))
+                    .withAspectRatio(3 , 2)
+                    .start(ProfileInfo.this);
+            check_image_id=1002;
+        }
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1002) {
+            final Uri resultUri = UCrop.getOutput(data);
+            Bitmap bitmap = null;
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
                 IV_bas.setImageBitmap(bitmap);
                 basic_image(bitmap);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
         }
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
-
+//
+//            Uri imageUri = data.getData();
+//            try {
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+//                IV_prof_uploadfile.setImageBitmap(bitmap);
+//                upload_user_profimage(bitmap);
+//            }
+//            catch (IOException e) {
+//                e.printStackTrace();
+//            }
             Uri imageUri = data.getData();
+
+            assert imageUri != null;
+            UCrop.of( imageUri,  Uri.fromFile(new File(getCacheDir(), ".png")))
+                    .withAspectRatio(3 , 2)
+                    .start(ProfileInfo.this);
+            check_image_id=100;
+        }
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==100) {
+            final Uri resultUri = UCrop.getOutput(data);
+            Bitmap bitmap = null;
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
                 IV_prof_uploadfile.setImageBitmap(bitmap);
-                upload_user_profimage(bitmap);
-            }
-            catch (IOException e) {
+           upload_user_profimage(bitmap);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
         }
         if (requestCode == 1001 && resultCode == RESULT_OK && data != null) {
 
             Uri imageUri = data.getData();
+
+            assert imageUri != null;
+            UCrop.of( imageUri,  Uri.fromFile(new File(getCacheDir(), ".png")))
+                    .withAspectRatio(1 , 1)
+                    .start(ProfileInfo.this);
+            check_image_id=1001;
+
+        }
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1001) {
+            final Uri resultUri = UCrop.getOutput(data);
+            Bitmap bitmap = null;
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
                 IV_vendor_professional_companylogo.setImageBitmap(bitmap);
                 upload_vendor_companylogo(bitmap);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
         }
         if (requestCode == 1005 && resultCode == RESULT_OK && data != null) {
-
+//            Uri imageUri = data.getData();
+//
+//            try {
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+//                IV_vcomplete_imageupload.setImageBitmap(bitmap);
+//                upload_vendor_complete_image(bitmap);
+//            }
+//            catch (IOException e) {
+//                e.printStackTrace();
+//            }
             Uri imageUri = data.getData();
+
+            assert imageUri != null;
+            UCrop.of( imageUri,  Uri.fromFile(new File(getCacheDir(), ".png")))
+                    .withAspectRatio(3 , 2)
+                    .start(ProfileInfo.this);
+            check_image_id=1005;
+        }
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1005) {
+            final Uri resultUri = UCrop.getOutput(data);
+            Bitmap bitmap = null;
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
                 IV_vcomplete_imageupload.setImageBitmap(bitmap);
                 upload_vendor_complete_image(bitmap);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
         }
         if (requestCode == SECOND_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
@@ -1793,94 +1884,6 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
 
         }
     }
-//    public void getmydet(String susername)
-//    {
-//
-//        try {
-//            RequestQueue requestQueue = Volley.newRequestQueue(this);
-//
-//            JSONObject jsonBody = new JSONObject();
-//            jsonBody.put("Id", susername);
-//
-//
-//
-//            final String requestBody = jsonBody.toString();
-//
-//            StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.getDetails, new Response.Listener<String>() {
-//
-//                public void onResponse(String response) {
-//                    try {
-//
-//                        JSONObject jObj = new JSONObject(response);
-//
-//                        String status = jObj.getString("Status");
-//                        if(status.equals("success")||status.matches("success"))
-//                        {
-//                            JSONObject verification = jObj.getJSONObject("Response");
-//
-//                            s_ln_tab1=verification.getBoolean("Tab1");
-//                            s_ln_tab2=verification.getBoolean("Tab2");
-//                            s_ln_tab3=verification.getBoolean("Tab3");
-//
-//                        }
-//                        else
-//                        {
-//
-//
-//                        }
-//
-//
-//                        //finish();
-//                    }
-//                    catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//
-//
-//                }
-//            }) {
-//                @Override
-//                public String getBodyContentType() {
-//
-//                    return "application/json; charset=utf-8";
-//                }
-//
-//                @Override
-//                public Map<String, String> getHeaders() throws AuthFailureError {
-//                    HashMap<String, String> headers = new HashMap<String, String>();
-//                    //// headers.put("Content-Type", "application/json");
-//                    // headers.put("x-tutor-app-id", "tutor-app-android");
-//                    return headers;
-//
-//                }
-//
-//                @Override
-//                public byte[] getBody() throws AuthFailureError {
-//                    try {
-//                        return requestBody == null ? null : requestBody.getBytes("utf-8");
-//
-//                    } catch (UnsupportedEncodingException uee) {
-//                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-//                        return null;
-//                    }
-//                }
-//
-//
-//
-//
-//            };
-//
-//            requestQueue.add(stringRequest);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
 
     public void focuschange()
     {
@@ -2097,5 +2100,10 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 }
             }
         });
+    }
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

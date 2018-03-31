@@ -111,34 +111,28 @@ public class BotNav_SettingsFragment_Vendor extends Fragment {
                 PreferenceManager.getDefaultSharedPreferences(getActivity()).
                         edit().clear().apply();
                 startActivity(intent);
-
-
             }
         });
         TV_set_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(),LoginActivity.class);
-
                 session.setLogin(false);
                 PreferenceManager.getDefaultSharedPreferences(getActivity()).
                         edit().clear().apply();
                 startActivity(intent);
-
             }
         });
         WTV_setv_help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),Settings_HelpActivity.class));
-
             }
         });
         WIV_setv_help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),Settings_HelpActivity.class));
-
             }
         });
 
@@ -146,52 +140,35 @@ public class BotNav_SettingsFragment_Vendor extends Fragment {
     }
     public void getmydet(String susername)
     {
-
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("Id", susername);
-
-
-
             final String requestBody = jsonBody.toString();
-
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.getDetails, new Response.Listener<String>() {
-
                 public void onResponse(String response) {
                     try {
-
                         JSONObject jObj = new JSONObject(response);
-
                         String status = jObj.getString("Status");
                         if (status.equals("Success")) {
                             JSONObject verification = jObj.getJSONObject("Response");
-
                             JSONObject verifications = verification.getJSONObject("vendorProfessional");
                             s_vendor_p_image = verifications.getString("Logo");
                             Picasso.with(getActivity()).load(Global_URL.Image_url_load + s_vendor_p_image).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(CV_uersset_image);
-                            //        Toast.makeText(Settings_ProfileActivity_Vendor.this, s_vendor_p_email, Toast.LENGTH_SHORT).show();
-
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
-
                 }
             }) {
                 @Override
                 public String getBodyContentType() {
-
                     return "application/json; charset=utf-8";
                 }
-
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
@@ -199,29 +176,20 @@ public class BotNav_SettingsFragment_Vendor extends Fragment {
                     //headers.put("content-Type", "application/json");
                     headers.put("x-api-key",s_lnw_usertoken);
                     return headers;
-
                 }
-
                 @Override
                 public byte[] getBody() throws AuthFailureError {
                     try {
                         return requestBody == null ? null : requestBody.getBytes("utf-8");
-
                     } catch (UnsupportedEncodingException uee) {
                         VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
                         return null;
                     }
                 }
-
-
-
-
             };
-
             requestQueue.add(stringRequest);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 }

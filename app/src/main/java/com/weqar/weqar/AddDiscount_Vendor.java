@@ -1,9 +1,12 @@
 package com.weqar.weqar;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -36,12 +39,14 @@ import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.JavaClasses.ImageUtil;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
+import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -51,6 +56,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.refactor.lib.colordialog.PromptDialog;
+
+import static com.thefinestartist.utils.service.ServiceUtil.getSystemService;
 
 
 public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
@@ -79,7 +86,7 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
     ImageView IV_set_account_back;
-
+    int check_image_id;
     int one;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,160 +95,169 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Add Discount");
         setSupportActionBar(toolbar);
-        SV_adddisc_firstpage=findViewById(R.id.scrollview_first_adddisc);
-        SV_adddisc_secondpage=findViewById(R.id.scrollview_second_adddisc);
-        SP_vendor_com_planchoose=findViewById(R.id.vendor_complete_plan);
-        SP_vendor_com_offertype=findViewById(R.id.SP_vcomplete_offertype);
-        TIL_vcomplete_percentage=findViewById(R.id.TIV_vcomplete_percentage);
-        ET_vcomplete_percentage=findViewById(R.id.et_vcomplete_percentage);
-        ET_vcomplete_disctitle=findViewById(R.id.et_vcomplete_disctitle);
-        ET_vcomplete_discdesc=findViewById(R.id.et_vcomplete_discdesc);
-        IV_vcomplete_imageupload=findViewById(R.id.IV_vcomplefileupload);
-        B_vcomplete_complete=findViewById(R.id.B_vcomplete_complete);
-        TV_vcomplete_skip=findViewById(R.id.TV_vcomplete_skipnow);
-        et_adddiscount_startdate=findViewById(R.id.et_adddiscount_startdate);
-        et_adddiscount_enddate=findViewById(R.id.et_adddiscount_enddate);
-        SP_vcomplete_offertype_s=findViewById(R.id.SP_vcomplete_offertype_s);
-        et_vcomplete_percentage_s=findViewById(R.id.et_vcomplete_percentage_s);
-        et_vcomplete_disctitle_s=findViewById(R.id.et_vcomplete_disctitle_s);
-        et_vcomplete_discdesc_s=findViewById(R.id.et_vcomplete_discdesc_s);
-        IV_vcomplefileupload_s=findViewById(R.id.IV_vcomplefileupload_s);
-        TIV_vcomplete_percentage_s=findViewById(R.id.TIV_vcomplete_percentage_s);
-        B_vcomplete_completed_s=findViewById(R.id.B_vcomplete_completed_s);
+        if (isConnectedToNetwork()) {
 
-        IV_set_account_back=findViewById(R.id.addjobs_back);
-        IV_set_account_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+            SV_adddisc_firstpage = findViewById(R.id.scrollview_first_adddisc);
+            SV_adddisc_secondpage = findViewById(R.id.scrollview_second_adddisc);
+            SP_vendor_com_planchoose = findViewById(R.id.vendor_complete_plan);
+            SP_vendor_com_offertype = findViewById(R.id.SP_vcomplete_offertype);
+            TIL_vcomplete_percentage = findViewById(R.id.TIV_vcomplete_percentage);
+            ET_vcomplete_percentage = findViewById(R.id.et_vcomplete_percentage);
+            ET_vcomplete_disctitle = findViewById(R.id.et_vcomplete_disctitle);
+            ET_vcomplete_discdesc = findViewById(R.id.et_vcomplete_discdesc);
+            IV_vcomplete_imageupload = findViewById(R.id.IV_vcomplefileupload);
+            B_vcomplete_complete = findViewById(R.id.B_vcomplete_complete);
+            TV_vcomplete_skip = findViewById(R.id.TV_vcomplete_skipnow);
+            et_adddiscount_startdate = findViewById(R.id.et_adddiscount_startdate);
+            et_adddiscount_enddate = findViewById(R.id.et_adddiscount_enddate);
+            SP_vcomplete_offertype_s = findViewById(R.id.SP_vcomplete_offertype_s);
+            et_vcomplete_percentage_s = findViewById(R.id.et_vcomplete_percentage_s);
+            et_vcomplete_disctitle_s = findViewById(R.id.et_vcomplete_disctitle_s);
+            et_vcomplete_discdesc_s = findViewById(R.id.et_vcomplete_discdesc_s);
+            IV_vcomplefileupload_s = findViewById(R.id.IV_vcomplefileupload_s);
+            TIV_vcomplete_percentage_s = findViewById(R.id.TIV_vcomplete_percentage_s);
+            B_vcomplete_completed_s = findViewById(R.id.B_vcomplete_completed_s);
+
+            IV_set_account_back = findViewById(R.id.addjobs_back);
+            IV_set_account_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+
+            TV_vcomplete_skip.setVisibility(View.INVISIBLE);
+            Shared_user_details = getSharedPreferences("user_detail_mode", 0);
+            TinyDB tinydb = new TinyDB(this);
+            s_check_discount = tinydb.getBoolean("hgffh");
+
+            s_lnw_userid = Shared_user_details.getString("sp_w_userid", null);
+            s_lnw_usertoken = Shared_user_details.getString("sp_w_apikey", null);
+
+
+            getVendorplan();
+
+            if (s_check_discount) {
+                SV_adddisc_secondpage.setVisibility(View.VISIBLE);
+                SV_adddisc_firstpage.setVisibility(View.INVISIBLE);
+
+            } else {
+                SV_adddisc_firstpage.setVisibility(View.VISIBLE);
+                SV_adddisc_secondpage.setVisibility(View.INVISIBLE);
             }
-        });
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, compl_vendor_offertype);
+            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+            SP_vendor_com_offertype.setAdapter(spinnerArrayAdapter);
+            SP_vendor_com_planchoose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        TV_vcomplete_skip.setVisibility(View.INVISIBLE);
-        Shared_user_details=getSharedPreferences("user_detail_mode",0);
-        TinyDB tinydb = new TinyDB(this);
-        s_check_discount=tinydb.getBoolean("hgffh");
+                    S_vcomple_plantype_sel = parent.getItemAtPosition(position).toString();
+                    getvendor_plannameid(position);
 
-        s_lnw_userid= Shared_user_details.getString("sp_w_userid", null);
-        s_lnw_usertoken= Shared_user_details.getString("sp_w_apikey", null);
+                }
+
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            SP_vendor_com_offertype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    S_vcomple_offertype_sel = parent.getItemAtPosition(position).toString();
+                    if (S_vcomple_offertype_sel.equals("Discount") || S_vcomple_offertype_sel.matches("Discount")) {
+                        check_discounttype_vendor_discount_o = "1";
+                        ET_vcomplete_percentage.setVisibility(View.VISIBLE);
+                        TIL_vcomplete_percentage.setVisibility(View.VISIBLE);
+                    } else if (S_vcomple_offertype_sel.equals("Offer") || S_vcomple_offertype_sel.matches("Offer")) {
+                        check_discounttype_vendor_discount_o = "2";
+                        ET_vcomplete_percentage.setVisibility(View.INVISIBLE);
+                        TIL_vcomplete_percentage.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+            ArrayAdapter<String> spinnerArrayAdapters = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, compl_vendor_offertype);
+            spinnerArrayAdapters.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+            SP_vcomplete_offertype_s.setAdapter(spinnerArrayAdapters);
+            SP_vcomplete_offertype_s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    s_disc_offertype = parent.getItemAtPosition(position).toString();
+                    if (s_disc_offertype.equals("Discount") || s_disc_offertype.matches("Discount")) {
+                        check_discounttype_vendor_discount = "1";
+                        et_vcomplete_percentage_s.setVisibility(View.VISIBLE);
+                        TIV_vcomplete_percentage_s.setVisibility(View.VISIBLE);
+                    } else if (s_disc_offertype.equals("Offer") || s_disc_offertype.matches("Offer")) {
+                        check_discounttype_vendor_discount = "2";
+                        et_vcomplete_percentage_s.setVisibility(View.INVISIBLE);
+                        TIV_vcomplete_percentage_s.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+            IV_vcomplete_imageupload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(i, 1005);
+                }
+            });
+            B_vcomplete_complete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callmetouploadvendorcomplete();
+                }
+            });
 
 
-        getVendorplan();
+            //second
+            IV_vcomplefileupload_s.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(i, 1006);
+                }
+            });
 
-        if(s_check_discount)
-        {
-            SV_adddisc_secondpage.setVisibility(View.VISIBLE);
-            SV_adddisc_firstpage.setVisibility(View.INVISIBLE);
+            et_adddiscount_startdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    one = 1;
+                    showDate(2018, 0, 1, R.style.DatePickerSpinner);
+                }
+            });
+            et_adddiscount_enddate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    one = 2;
+                    showDate(2018, 0, 1, R.style.DatePickerSpinner);
+                }
+            });
+            B_vcomplete_completed_s.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callmetoupload_seconddiscount();
 
+                }
+            });
         }
         else
         {
-            SV_adddisc_firstpage.setVisibility(View.VISIBLE);
-            SV_adddisc_secondpage.setVisibility(View.INVISIBLE);
+            setContentView(R.layout.content_if_nointernet);
+            ImageView but_retry = findViewById(R.id.nointernet_retry);
+            but_retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(AddDiscount_Vendor.this, AddDiscount_Vendor.class);
+                    startActivity(intent);
+                }
+            });
         }
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, compl_vendor_offertype);
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-        SP_vendor_com_offertype.setAdapter(spinnerArrayAdapter);
-        SP_vendor_com_planchoose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                S_vcomple_plantype_sel = parent.getItemAtPosition(position).toString();
-                getvendor_plannameid(position);
-
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        SP_vendor_com_offertype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                S_vcomple_offertype_sel= parent.getItemAtPosition(position).toString();
-                if(S_vcomple_offertype_sel.equals("Discount")||S_vcomple_offertype_sel.matches("Discount"))
-                {
-                    check_discounttype_vendor_discount_o="1";
-                    ET_vcomplete_percentage.setVisibility(View.VISIBLE);
-                    TIL_vcomplete_percentage.setVisibility(View.VISIBLE);
-                } else if(S_vcomple_offertype_sel.equals("Offer")||S_vcomple_offertype_sel.matches("Offer"))
-                {
-                    check_discounttype_vendor_discount_o="2";
-                    ET_vcomplete_percentage.setVisibility(View.INVISIBLE);
-                    TIL_vcomplete_percentage.setVisibility(View.INVISIBLE);
-                }
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        ArrayAdapter<String> spinnerArrayAdapters = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, compl_vendor_offertype);
-        spinnerArrayAdapters.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-        SP_vcomplete_offertype_s.setAdapter(spinnerArrayAdapters);
-        SP_vcomplete_offertype_s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                s_disc_offertype= parent.getItemAtPosition(position).toString();
-                if(s_disc_offertype.equals("Discount")||s_disc_offertype.matches("Discount"))
-                {
-                    check_discounttype_vendor_discount="1";
-                    et_vcomplete_percentage_s.setVisibility(View.VISIBLE);
-                    TIV_vcomplete_percentage_s.setVisibility(View.VISIBLE);
-                } else if(s_disc_offertype.equals("Offer")||s_disc_offertype.matches("Offer"))
-                {
-                    check_discounttype_vendor_discount="2";
-                    et_vcomplete_percentage_s.setVisibility(View.INVISIBLE);
-                    TIV_vcomplete_percentage_s.setVisibility(View.INVISIBLE);
-                }
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        IV_vcomplete_imageupload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, 1005);
-            }
-        });
-        B_vcomplete_complete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callmetouploadvendorcomplete();
-            }
-        });
-
-
-
-
-        //second
-        IV_vcomplefileupload_s.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, 1006);
-            }
-        });
-
-        et_adddiscount_startdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                one=1;
-                showDate(2018, 0, 1, R.style.DatePickerSpinner);
-            }
-        });
-        et_adddiscount_enddate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                one=2;
-                showDate(2018, 0, 1, R.style.DatePickerSpinner);
-            }
-        });
-        B_vcomplete_completed_s.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callmetoupload_seconddiscount();
-
-            }
-        });
 
     }
 
@@ -468,28 +484,69 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
 
         if (requestCode == 1005 && resultCode == RESULT_OK && data != null) {
 
+//            Uri imageUri = data.getData();
+//            try {
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+//                IV_vcomplete_imageupload.setImageBitmap(bitmap);
+//                upload_vendor_complete_image(bitmap);
+//            }
+//            catch (IOException e) {
+//                e.printStackTrace();
+//            }
             Uri imageUri = data.getData();
+
+            assert imageUri != null;
+            UCrop.of( imageUri,  Uri.fromFile(new File(getCacheDir(), ".png")))
+                    .withAspectRatio(3 , 2)
+                    .start(AddDiscount_Vendor.this);
+            check_image_id=1005;
+        }
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1005) {
+            final Uri resultUri = UCrop.getOutput(data);
+            Bitmap bitmap = null;
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
                 IV_vcomplete_imageupload.setImageBitmap(bitmap);
-                upload_vendor_complete_image(bitmap);
-            }
-            catch (IOException e) {
+              upload_vendor_complete_image(bitmap);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
 
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
+        }
        else if (requestCode == 1006 && resultCode == RESULT_OK && data != null) {
 
+//            Uri imageUri = data.getData();
+//            try {
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+//                IV_vcomplefileupload_s.setImageBitmap(bitmap);
+//                upload_vendor_complete_image_s(bitmap);
+//            }
+//            catch (IOException e) {
+//                e.printStackTrace();
+//            }
             Uri imageUri = data.getData();
+
+            assert imageUri != null;
+            UCrop.of( imageUri,  Uri.fromFile(new File(getCacheDir(), ".png")))
+                    .withAspectRatio(3 , 2)
+                    .start(AddDiscount_Vendor.this);
+            check_image_id=1006;
+        }
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1005) {
+            final Uri resultUri = UCrop.getOutput(data);
+            Bitmap bitmap = null;
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
                 IV_vcomplefileupload_s.setImageBitmap(bitmap);
-                upload_vendor_complete_image_s(bitmap);
-            }
-            catch (IOException e) {
+              upload_vendor_complete_image_s(bitmap);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
         }
 
     }
@@ -820,5 +877,9 @@ startActivity(new Intent(AddDiscount_Vendor.this,HomeScreen_vendor.class));
 
         }
     }
-
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
 }
