@@ -285,6 +285,7 @@
                     android:layout_weight=".2"
                     android:src="@drawable/ic_navigate_next_black_24dp"/>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -348,6 +349,7 @@
                     android:paddingLeft="2dp"
                     android:src="@drawable/user_setting_tellafriend"/>
                 <TextView
+                    android:id="@+id/settings_vendor_share_TV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" Tell a Friend"
@@ -356,12 +358,29 @@
                     android:textSize="17sp"
                     android:layout_gravity="center"/>
                 <ImageView
+                    android:id="@+id/settings_vendor_share_IV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:layout_gravity="end"
                     android:layout_weight=".1"
                     android:src="@drawable/ic_navigate_next_black_24dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:weightSum="2"
+                android:orientation="horizontal">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1.65"
+                    android:background="@color/colorWhite"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight=".5"
+                    android:background="@color/colorHints"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"

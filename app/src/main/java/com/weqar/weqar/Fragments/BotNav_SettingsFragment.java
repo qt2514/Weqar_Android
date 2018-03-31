@@ -27,8 +27,8 @@ public class BotNav_SettingsFragment extends Fragment {
         BotNav_SettingsFragment fragment= new BotNav_SettingsFragment();
         return fragment;
     }
-    ImageView IV_set_profile,IV_set_account,IV_set_logout,WIV_set_help;
-    TextView TV_set_profile,TV_set_account,TV_set_logout,TV_user_name,TV_user_email,WTV_set_help;
+    ImageView IV_set_profile,IV_set_account,IV_set_logout,WIV_set_help,IV_setv_share;
+    TextView TV_set_profile,TV_set_account,TV_set_logout,TV_user_name,TV_user_email,WTV_set_help,TV_setv_share;
     SessionManager session;
     CircleImageView CV_uersset_image;
     SharedPreferences Shared_user_details;
@@ -45,6 +45,10 @@ public class BotNav_SettingsFragment extends Fragment {
         TV_set_account=view.findViewById(R.id.WTV_set_account);
         IV_set_logout = view.findViewById(R.id.IV_set_u_logout);
         TV_set_logout = view.findViewById(R.id.TV_set_u_logout);
+
+        IV_setv_share = view.findViewById(R.id.share_IV);
+        TV_setv_share = view.findViewById(R.id.share_TV);
+
         TV_user_name=view.findViewById(R.id.Settings_user_name);
         TV_user_email=view.findViewById(R.id.Settings_user_email);
         WTV_set_help=view.findViewById(R.id.WTV_set_help);
@@ -124,6 +128,26 @@ public class BotNav_SettingsFragment extends Fragment {
                 startActivity(intent);
                 getActivity().finish();
             }
+        });
+        IV_setv_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = "I am happy with this app.Please click the link to download \n https://play.google.com/store/apps/details?id=com.ringaapp.ringapartner&hl=en";
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Weqar");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, " This is about service"));            }
+        });
+        TV_setv_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = "I am happy with this app.Please click the link to download \n https://play.google.com/store/apps/details?id=com.ringaapp.ringapartner&hl=en";
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Weqar");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, " This is about service"));            }
         });
         return  view;
     }

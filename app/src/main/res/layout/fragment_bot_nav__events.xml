@@ -9,11 +9,10 @@
         android:id="@+id/appbar_homescreen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        app:elevation="0dp"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:visibility="invisible"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -29,31 +28,47 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
                     android:background="@drawable/home_filter"
                     android:backgroundTint="@color/colorHintss" />
+
                 <EditText
                     android:id="@+id/homescreen_search"
-                    android:layout_width="248dp"
+                    android:layout_width="230dp"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@+id/homescreen_filter"
+                    android:background="@drawable/editext_lightborder_unsel"
+                    android:backgroundTint="@color/colorHintss"
+                    android:drawableLeft="@drawable/ic_search_black_24dp"
                     android:gravity="start"
-                    android:layout_centerHorizontal="true"
                     android:hint="Search"
                     android:padding="4dp"
-                    android:textColorHint="@color/colorHints"
-                    android:drawableLeft="@drawable/ic_search_black_24dp"
-                    android:background="@drawable/editext_lightborder_unsel"
-                    android:backgroundTint="@color/colorHintss"/>
+                    android:textColor="@color/colorBlack"
+                    android:textColorHint="@color/colorHints" />
+
+                <ImageView
+                    android:id="@+id/homescreen_nav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_alignTop="@+id/homescreen_notification"
+                    android:layout_marginStart="9dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/homescreen_search"
+                    android:background="@drawable/ic_near_me_black_24dp"
+                    android:backgroundTint="@color/colorHintss" />
 
                 <ImageView
                     android:id="@+id/homescreen_notification"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginRight="10dp"
                     android:layout_centerVertical="true"
-
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/homescreen_filter"
+                    android:layout_marginEnd="7dp"
                     android:background="@drawable/home_toolbar_notification"
-                  />
+                    />
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
@@ -62,8 +77,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
+        android:layout_below="@+id/appbar_homescreen"
 
-        android:src="@drawable/event_noitems_images"
+        android:background="@drawable/event_noitems_images"
         />
 
 </RelativeLayout>
