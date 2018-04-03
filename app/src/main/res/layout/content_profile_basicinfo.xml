@@ -169,30 +169,46 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/spiner_border"
                 app:hintText="Select Your Gender"/>
-            <android.support.design.widget.TextInputLayout
 
-                android:textColorHint="@color/colorBlack"
-                android:theme="@style/TextLabel"
-                android:layout_marginTop="20dp"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
-            <EditText
-                android:id="@+id/et_address"
-                android:textSize="16sp"
-                android:hint="Address"
-                android:gravity="start"
-                android:padding="10dp"
-                android:textColor="#000"
-                android:lines="3"
-                android:maxLines="3"
+                android:scrollbars="vertical"
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
 
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="text|textMultiLine|textCapSentences"                 android:background="@drawable/selector_bg_edit"
-                android:textCursorDrawable="@drawable/bg_input_cursor"
-                android:paddingBottom="2dp" />
-            </android.support.design.widget.TextInputLayout>
+                    android:textColorHint="@color/colorBlack"
+                    android:theme="@style/TextLabel"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/et_address"
+                        android:textSize="16sp"
+                        android:hint="Address"
+                        android:gravity="start"
+                        android:padding="10dp"
+                        android:textColor="#000"
+                        android:lines="4"
+                        android:editable="true"
+                        android:enabled="true"
+                        android:minLines="4"
+                        android:maxLines="4"
+                        android:isScrollContainer="true"
+                        android:focusable="true"
 
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text|textMultiLine|textCapSentences"
+                        android:background="@drawable/selector_bg_edit"
+                        android:textCursorDrawable="@drawable/bg_input_cursor"
+                        android:paddingBottom="2dp" />
+
+
+                </android.support.design.widget.TextInputLayout>
+            </ScrollView>
 
             <android.support.design.widget.TextInputLayout
 

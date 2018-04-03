@@ -144,13 +144,17 @@
                     android:textCursorDrawable="@drawable/bg_input_cursor"
                     android:paddingBottom="2dp" />
             </android.support.design.widget.TextInputLayout>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:scrollbars="vertical"
+                android:layout_height="wrap_content">
             <android.support.design.widget.TextInputLayout
 
                 android:textColorHint="@color/colorBlack"
                 android:theme="@style/TextLabel"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
+                android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_desc_discedit"
                     android:textSize="16sp"
@@ -158,16 +162,27 @@
                     android:gravity="start"
                     android:padding="10dp"
                     android:textColor="#000"
-                    android:lines="3"
-                    android:maxLines="3"
+                    android:lines="6"
+                    android:editable="true"
+                    android:enabled="true"
+                    android:minLines="6"
+                    android:maxLines="6"
+                    android:isScrollContainer="true"
+                    android:focusable="true"
 
+                    android:overScrollMode="always"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="text|textMultiLine|textCapSentences"                 android:background="@drawable/selector_bg_edit"
+                    android:inputType="text|textMultiLine|textCapSentences"
+                    android:background="@drawable/selector_bg_edit"
                     android:textCursorDrawable="@drawable/bg_input_cursor"
                     android:paddingBottom="2dp" />
-            </android.support.design.widget.TextInputLayout>
 
+
+            </android.support.design.widget.TextInputLayout>
+    </ScrollView>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

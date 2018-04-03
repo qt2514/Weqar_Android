@@ -136,7 +136,7 @@ public class BotNav_JobsFragment extends Fragment {
             jobscard_list ccitacc = movieModelList.get(position);
             holder.text_jobtype.setText(ccitacc.getJobType());
             holder.textjobfield.setText(ccitacc.getJobField());
-            holder.textdesc.setText(ccitacc.getName());
+            holder.textdesc.setText(ccitacc.getDescription());
             String first=ccitacc.getClosingDate();
             String second=first.substring(0,10);
             holder.textdeadline.setText("Deadline "+second);

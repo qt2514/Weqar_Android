@@ -65,30 +65,46 @@ android:paddingRight="20dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/selector_bg_edit"
                 android:paddingBottom="5dp" />
-            <android.support.design.widget.TextInputLayout
 
-                android:textColorHint="@color/colorBlack"
-                android:theme="@style/TextLabel"
-                android:layout_marginTop="20dp"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
-                <EditText
-                    android:id="@+id/et_vaddjobs_companyinfo"
-                    android:textSize="16sp"
-                    android:hint="Company Info"
-                    android:gravity="start"
-                    android:padding="10dp"
-                    android:textColor="#000"
-                    android:lines="3"
-                    android:maxLines="3"
+                android:scrollbars="vertical"
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
 
+                    android:textColorHint="@color/colorBlack"
+                    android:theme="@style/TextLabel"
+                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="text|textMultiLine|textCapSentences"                 android:background="@drawable/selector_bg_edit"
-                    android:textCursorDrawable="@drawable/bg_input_cursor"
-                    android:paddingBottom="2dp" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/et_vaddjobs_companyinfo"
+                        android:textSize="16sp"
+                        android:hint="Company Info"
+                        android:gravity="start"
+                        android:padding="10dp"
+                        android:textColor="#000"
+                        android:lines="6"
+                        android:editable="true"
+                        android:enabled="true"
+                        android:minLines="6"
+                        android:maxLines="6"
+                        android:isScrollContainer="true"
+                        android:focusable="true"
 
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text|textMultiLine|textCapSentences"
+                        android:background="@drawable/selector_bg_edit"
+                        android:textCursorDrawable="@drawable/bg_input_cursor"
+                        android:paddingBottom="2dp" />
+
+
+                </android.support.design.widget.TextInputLayout>
+            </ScrollView>
             <TextView
                 android:textSize="16sp"
                 android:hint="Opening Date"
@@ -112,30 +128,47 @@ android:paddingRight="20dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/selector_bg_edit"
                 android:paddingBottom="7dp" />
-            <android.support.design.widget.TextInputLayout
 
-                android:textColorHint="@color/colorBlack"
-                android:theme="@style/TextLabel"
-                android:layout_marginTop="20dp"
+
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
-                <EditText
-                    android:id="@+id/et_vaddjobs_desc"
-                    android:textSize="16sp"
-                    android:hint="Description"
-                    android:gravity="start"
-                    android:padding="10dp"
-                    android:textColor="#000"
-                    android:lines="3"
-                    android:maxLines="3"
+                android:scrollbars="vertical"
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
 
+                    android:textColorHint="@color/colorBlack"
+                    android:theme="@style/TextLabel"
+                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="text|textMultiLine|textCapSentences"                 android:background="@drawable/selector_bg_edit"
-                    android:textCursorDrawable="@drawable/bg_input_cursor"
-                    android:paddingBottom="2dp" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/et_vaddjobs_desc"
+                        android:textSize="16sp"
+                        android:hint="Description"
+                        android:gravity="start"
+                        android:padding="10dp"
+                        android:textColor="#000"
+                        android:lines="6"
+                        android:editable="true"
+                        android:enabled="true"
+                        android:minLines="6"
+                        android:maxLines="6"
+                        android:isScrollContainer="true"
+                        android:focusable="true"
 
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text|textMultiLine|textCapSentences"
+                        android:background="@drawable/selector_bg_edit"
+                        android:textCursorDrawable="@drawable/bg_input_cursor"
+                        android:paddingBottom="2dp" />
+
+
+                </android.support.design.widget.TextInputLayout>
+            </ScrollView>
             <Button
                 android:id="@+id/but_vaddjobs_add"
                 android:layout_width="wrap_content"

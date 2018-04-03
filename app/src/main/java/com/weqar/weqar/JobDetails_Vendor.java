@@ -69,12 +69,12 @@ public class JobDetails_Vendor extends AppCompatActivity {
             } catch (Exception e) {
             }
 
-            But_job_vendor_edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(JobDetails_Vendor.this, Job_Edit_Vendor.class));
-                }
-            });
+//            But_job_vendor_edit.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    startActivity(new Intent(JobDetails_Vendor.this, Job_Edit_Vendor.class));
+//                }
+//            });
         } else
         {
 

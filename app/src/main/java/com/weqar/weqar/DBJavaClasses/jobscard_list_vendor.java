@@ -18,6 +18,8 @@ public class jobscard_list_vendor implements Parcelable{
     String ClosingDate;
     String JobType;
     String CompanyInfo;
+    String JobFieldId;
+    String  JobTypeId;
 
     protected jobscard_list_vendor(Parcel in) {
         Id = in.readString();
@@ -30,6 +32,8 @@ public class jobscard_list_vendor implements Parcelable{
         ClosingDate = in.readString();
         JobType = in.readString();
         CompanyInfo = in.readString();
+        JobFieldId = in.readString();
+        JobTypeId = in.readString();
     }
 
     @Override
@@ -44,6 +48,8 @@ public class jobscard_list_vendor implements Parcelable{
         dest.writeString(ClosingDate);
         dest.writeString(JobType);
         dest.writeString(CompanyInfo);
+        dest.writeString(JobFieldId);
+        dest.writeString(JobTypeId);
     }
 
     @Override
@@ -141,5 +147,21 @@ public class jobscard_list_vendor implements Parcelable{
 
     public void setCompanyInfo(String companyInfo) {
         CompanyInfo = companyInfo;
+    }
+
+    public String getJobFieldId() {
+        return JobFieldId;
+    }
+
+    public void setJobFieldId(String jobFieldId) {
+        JobFieldId = jobFieldId;
+    }
+
+    public String getJobTypeId() {
+        return JobTypeId;
+    }
+
+    public void setJobTypeId(String jobTypeId) {
+        JobTypeId = jobTypeId;
     }
 }

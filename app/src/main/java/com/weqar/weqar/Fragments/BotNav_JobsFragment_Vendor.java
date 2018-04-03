@@ -36,6 +36,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.weqar.weqar.AddJobs_Vendor;
+import com.weqar.weqar.DBJavaClasses.discountcard_list_vendor;
 import com.weqar.weqar.DBJavaClasses.jobscard_list;
 import com.weqar.weqar.DBJavaClasses.jobscard_list_vendor;
 import com.weqar.weqar.Discount_Edit_Vendor;
@@ -84,6 +85,7 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
     SwipeMenuListView GV_vendor_view;
     ImageView IV_nojobs;
     jobscard_list_vendor ccitacc;
+    List<jobscard_list_vendor> milokilo;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -151,7 +153,7 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
              ccitacc = movieModelList.get(position);
             holder.text_jobtype.setText(ccitacc.getJobType());
             holder.text_jobfield.setText(ccitacc.getJobField());
-            holder.text_jobdesc.setText(ccitacc.getName());
+            holder.text_jobdesc.setText(ccitacc.getDescription());
             String first=ccitacc.getClosingDate();
             String second=first.substring(0,10);
             holder.text_jobdeadline.setText("Deadline "+second);
@@ -193,20 +195,26 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
             {
                 @Override
                 public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                    final jobscard_list_vendor job_selected_item = milokilo.get(position);
+
                     switch (index) {
                         case 0:
                             Intent intent=new Intent(getActivity(),Job_Edit_Vendor.class);
-                            intent.putExtra("put_jobid_forjob_edit",ccitacc.getId());
-                            intent.putExtra("put_jobname_forjob_edit",ccitacc.getName());
-                            intent.putExtra("put_jobtype_forjob_edit",ccitacc.getJobType());
-                            intent.putExtra("put_jobfield_forjob_edit",ccitacc.getJobField());
-                            intent.putExtra("put_jobdesc_forjob_edit",ccitacc.getDescription());
-                            intent.putExtra("put_companyinfo_forjob_edit",ccitacc.getCompanyInfo());
-                            intent.putExtra("put_closingdate_forjob_edit",ccitacc.getClosingDate());
+                            intent.putExtra("put_jobid_forjob_edit",job_selected_item.getId());
+                            intent.putExtra("put_jobname_forjob_edit",job_selected_item.getName());
+                            intent.putExtra("put_jobtype_forjob_edit",job_selected_item.getJobType());
+                            intent.putExtra("put_jobfield_forjob_edit",job_selected_item.getJobField());
+
+                            intent.putExtra("put_jobtypeid_forjob_edit",job_selected_item.getJobTypeId());
+                            intent.putExtra("put_jobfieldid_forjob_edit",job_selected_item.getJobFieldId());
+
+                            intent.putExtra("put_jobdesc_forjob_edit",job_selected_item.getDescription());
+                            intent.putExtra("put_companyinfo_forjob_edit",job_selected_item.getCompanyInfo());
+                            intent.putExtra("put_closingdate_forjob_edit",job_selected_item.getClosingDate());
                             startActivity(intent);
                             break;
                         case 1:
-                            String ed=ccitacc.getId();
+                            String ed=job_selected_item.getId();
                             callmetodeleteiscount(ed);
                             break;
                     }
@@ -264,7 +272,7 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
                 JSONObject parentObject = new JSONObject(finalJson);
                 JSONObject ed = parentObject.getJSONObject("Response");
                 JSONArray parentArray = ed.getJSONArray("Data");
-                List<jobscard_list_vendor> milokilo = new ArrayList<>();
+                 milokilo = new ArrayList<>();
                 Gson gson = new Gson();
                 for (int i = 0; i < parentArray.length(); i++) {
                     JSONObject finalObject = parentArray.getJSONObject(i);

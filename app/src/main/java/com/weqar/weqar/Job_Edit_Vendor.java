@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -90,6 +91,10 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
             s_edijob_jobname = intent.getStringExtra("put_jobname_forjob_edit");
             s_editjob_type = intent.getStringExtra("put_jobtype_forjob_edit");
             s_editjob_field = intent.getStringExtra("put_jobfield_forjob_edit");
+
+            subjectnameid = intent.getStringExtra("put_jobtypeid_forjob_edit");
+            subjectnameids = intent.getStringExtra("put_jobfieldid_forjob_edit");
+
             s_editjob_descritiio = intent.getStringExtra("put_jobdesc_forjob_edit");
             s_editjob_compnayinfo = intent.getStringExtra("put_companyinfo_forjob_edit");
             s_editjob_clpsingdate = intent.getStringExtra("put_closingdate_forjob_edit");
@@ -103,6 +108,36 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
             TV_editjob_jobtype.setText(s_editjob_type);
             TV_editjob_jobfield.setText(s_editjob_field);
             TV_editjob_closingdate.setText(s_editjob_clpsingdate);
+
+
+            ET_editjobs_compnayinfo.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (v.getId() == R.id.et_veditjobs_companyinfo) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                            case MotionEvent.ACTION_UP:
+                                v.getParent().requestDisallowInterceptTouchEvent(false);
+                                break;
+                        }
+                    }
+                    return false;
+                }
+            });
+            ET_editjobs_description.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (v.getId() == R.id.et_veditjobs_description) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                            case MotionEvent.ACTION_UP:
+                                v.getParent().requestDisallowInterceptTouchEvent(false);
+                                break;
+                        }
+                    }
+                    return false;
+                }
+            });
             BUT_edijob_update.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -26,7 +26,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-android:padding="4dp"
+android:padding="2dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -44,7 +44,6 @@ android:padding="4dp"
                     android:text="Monthly"
                     android:textStyle="bold"
                     android:textSize="20dp"
-                    android:layout_marginTop="25dp"
                     android:textColor="#000"/>
                 <TextView
                     android:id="@+id/grade_amount"
@@ -65,9 +64,11 @@ android:padding="4dp"
                     android:gravity="center"
                     android:text="The term originally referred to messages sent using the Short Message Service (SMS). It has grown beyond alphanumeric text to include multimedia messages (known as MMS) containing digital images, videos, and sound content, as well as ideograms known as emoji (happy faces, sad faces, and other icons)."
                     android:textSize="16dp"
-                    android:padding="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="35dp"
+                    android:layout_marginTop="5dp"
                     android:textColor="#000" />
 
 

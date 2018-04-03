@@ -1,5 +1,6 @@
 package com.weqar.weqar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -64,16 +66,17 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
     TextInputLayout TIV_user_disc_edit;
     EditText ET_title_discedit,ET_desc_discedit,ET_perc_discedit;
     ImageView IV_image_discedit;
-    String s_discid,s_planid,s_plantype,s_offdertype,s_sdate,s_edate,s_title,s_desc,s_image,s_images,s_percentage,s_final_offer;
+    String s_discid,s_planid,s_plantype,s_offdertype,s_sdate,s_edate,s_title,s_desc,s_image,s_percentage,s_final_offer;
     private JSONArray result;
     ArrayList<String> vendor_plan = new ArrayList<String>();
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
-    String s_lnw_userid,s_lnw_usertoken,check_discounttype_vendor_discount;
+    String s_lnw_userid,s_lnw_usertoken;
     String compl_vendor_offertype[] = {"Discount","Offer"};
     Button But_update;
-ImageView IB_back;
+    ImageView IB_back;
     int one,check_image_id;
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +112,9 @@ ImageView IB_back;
             s_percentage = intent.getStringExtra("put_discountper_fordisc_edit");
             s_sdate = intent.getStringExtra("put_discountsdate_fordisc_edit");
             s_edate = intent.getStringExtra("put_discountedate_fordisc_edit");
+
+
+
             Shared_user_details = getSharedPreferences("user_detail_mode", 0);
             s_lnw_userid = Shared_user_details.getString("sp_w_userid", null);
             s_lnw_usertoken = Shared_user_details.getString("sp_w_apikey", null);
@@ -117,8 +123,14 @@ ImageView IB_back;
             if (s_offdertype.equals("1")) {
                 SP_offertype_discedit.setTitle("Discount");
 
+                TIV_user_disc_edit.setVisibility(View.VISIBLE);
+                ET_perc_discedit.setVisibility(View.VISIBLE);
+
+
             } else {
                 SP_offertype_discedit.setTitle("Offer");
+                TIV_user_disc_edit.setVisibility(View.INVISIBLE);
+                ET_perc_discedit.setVisibility(View.INVISIBLE);
             }
             String sdatetrim = s_sdate.substring(0, 10);
             String edatetrim = s_edate.substring(0, 10);
@@ -129,7 +141,21 @@ ImageView IB_back;
             ET_title_discedit.setText(s_title);
             ET_desc_discedit.setText(s_desc);
             ET_perc_discedit.setText(s_percentage);
-            ET_desc_discedit.setText(s_desc);
+
+            ET_desc_discedit.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (v.getId() == R.id.et_desc_discedit) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                            case MotionEvent.ACTION_UP:
+                                v.getParent().requestDisallowInterceptTouchEvent(false);
+                                break;
+                        }
+                    }
+                    return false;
+                }
+            });
             Picasso.with(this).load(Global_URL.Image_url_load + s_image).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(IV_image_discedit);
 
             SP_plan_discedit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -173,11 +199,11 @@ ImageView IB_back;
 
                     s_final_offer = parent.getItemAtPosition(position).toString();
                     if (s_final_offer.equals("Discount") || s_final_offer.matches("Discount")) {
-                        check_discounttype_vendor_discount = "1";
+                        s_offdertype = "1";
                         ET_perc_discedit.setVisibility(View.VISIBLE);
                         TIV_user_disc_edit.setVisibility(View.VISIBLE);
                     } else if (s_final_offer.equals("Offer") || s_final_offer.matches("Offer")) {
-                        check_discounttype_vendor_discount = "2";
+                        s_offdertype = "2";
                         ET_perc_discedit.setVisibility(View.INVISIBLE);
                         TIV_user_disc_edit.setVisibility(View.INVISIBLE);
                     }
@@ -293,16 +319,6 @@ ImageView IB_back;
             super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1006 && resultCode == RESULT_OK && data != null) {
 
-//                Uri imageUri = data.getData();
-//                try {
-//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-//                    IV_image_discedit.setImageBitmap(bitmap);
-//                    upload_vendor_complete_image_s(bitmap);
-//                }
-//                catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
             Uri imageUri = data.getData();
 
             assert imageUri != null;
@@ -348,7 +364,7 @@ ImageView IB_back;
                     try
                     {
                         JSONObject jObj = new JSONObject(response);
-                        s_images=jObj.getString("Response");
+                        s_image=jObj.getString("Response");
                         Log.i("user_vendor_complete_image_response",response);
 
 
@@ -425,7 +441,7 @@ ImageView IB_back;
             else {
                 try
                 {
-                    if (check_discounttype_vendor_discount.equals(""))
+                    if (s_offdertype.equals(""))
                     {
                         new PromptDialog(Discount_Edit_Vendor.this)
                                 .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
@@ -470,7 +486,7 @@ ImageView IB_back;
                             }
                             else
                             {
-                                if(s_images.equals(""))
+                                if(s_image.equals(""))
                                 {
                                     new PromptDialog(Discount_Edit_Vendor.this)
                                             .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
@@ -491,7 +507,7 @@ ImageView IB_back;
                                     String stitles=ET_title_discedit.getText().toString();
                                     String sdescs=ET_desc_discedit.getText().toString();
                                     callmetoupload_seconddiscount_url(s_discid,sdescs,sdates,edates,
-                                            s_images,spercs,check_discounttype_vendor_discount,s_plantype,stitles);
+                                            s_image,spercs,s_offdertype,s_plantype,stitles);
                                 }
                             }
                         }

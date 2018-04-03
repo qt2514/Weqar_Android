@@ -5,13 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="25dp"
     android:layout_marginLeft="25dp"
-    android:layout_marginRight="25dp">
-    <ScrollView
-        android:layout_marginBottom="10dp"
+    android:layout_below="@+id/basic_profile_img"
 
-        android:layout_width="match_parent"
-        android:layout_below="@+id/basic_profile_img"
-        android:layout_height="match_parent">
+    android:layout_marginRight="25dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -85,29 +82,46 @@ android:id="@+id/TIV_vcomplete_percentage"
                     android:textCursorDrawable="@drawable/bg_input_cursor"
                     android:paddingBottom="2dp" />
             </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
 
-                android:textColorHint="@color/colorBlack"
-                android:theme="@style/TextLabel"
-                android:layout_marginTop="20dp"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
-                <EditText
-                    android:id="@+id/et_vcomplete_discdesc"
-                    android:textSize="16sp"
-                    android:hint="Description"
-                    android:gravity="start"
-                    android:padding="10dp"
-                    android:textColor="#000"
-                    android:lines="3"
-                    android:maxLines="3"
+                android:scrollbars="vertical"
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
 
+                    android:textColorHint="@color/colorBlack"
+                    android:theme="@style/TextLabel"
+                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="text|textMultiLine|textCapSentences"                 android:background="@drawable/selector_bg_edit"
-                    android:textCursorDrawable="@drawable/bg_input_cursor"
-                    android:paddingBottom="2dp" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/et_vcomplete_discdesc"
+                        android:textSize="16sp"
+                        android:hint="Description"
+                        android:gravity="start"
+                        android:padding="10dp"
+                        android:textColor="#000"
+                        android:lines="6"
+                        android:editable="true"
+                        android:enabled="true"
+                        android:minLines="6"
+                        android:maxLines="6"
+                        android:isScrollContainer="true"
+                        android:focusable="true"
+
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text|textMultiLine|textCapSentences"
+                        android:background="@drawable/selector_bg_edit"
+                        android:textCursorDrawable="@drawable/bg_input_cursor"
+                        android:paddingBottom="2dp" />
+
+
+                </android.support.design.widget.TextInputLayout>
+            </ScrollView>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -158,5 +172,4 @@ android:id="@+id/TIV_vcomplete_percentage"
                     android:textColor="@color/colorWhite" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
 </RelativeLayout>

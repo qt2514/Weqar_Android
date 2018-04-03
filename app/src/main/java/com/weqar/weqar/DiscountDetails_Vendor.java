@@ -23,7 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DiscountDetails_Vendor extends AppCompatActivity {
 TextView TV_disc_desc_titlet,TV_disc_desc_title,TV_disc_desc_desc;
 RatingBar disc_desc_rating;
-String s_disc_desc_title,s_disc_desc_desc,s_disc_desc_rating,s_disc_image,s_disc_logo,s_disc_enddate;
+String s_disc_desc_title,s_disc_desc_desc,s_disc_desc_rating,s_disc_image,s_disc_logo,s_disc_enddate,s_type;
 ImageView IV_disc_back_vendor,IV_discdet_image;
 CircleImageView CV_discdet_logo;
 
@@ -52,6 +52,7 @@ CircleImageView CV_discdet_logo;
             Intent intent = getIntent();
             s_disc_desc_title = intent.getStringExtra("put_title");
             s_disc_image = intent.getStringExtra("put_image");
+            s_type = intent.getStringExtra("put_type");
             s_disc_logo = intent.getStringExtra("put_logo");
             s_disc_desc_rating = intent.getStringExtra("put_per");
             s_disc_desc_desc = intent.getStringExtra("put_desc");
@@ -60,7 +61,18 @@ CircleImageView CV_discdet_logo;
             Integer kk = k / 10;
             Float g = (float) kk;
             disc_desc_rating.setRating(g);
-            TV_disc_desc_title.setText(s_disc_desc_rating + "% " + s_disc_desc_title);
+
+            if(s_type.equals("1"))
+            {
+                TV_disc_desc_title.setText(s_disc_desc_rating + "% " + s_disc_desc_title);
+
+            }
+            else
+            {
+                TV_disc_desc_title.setText(s_disc_desc_title);
+
+            }
+
             String second=s_disc_enddate.substring(0,10);
             TV_disc_desc_desc.setText(s_disc_desc_desc);
             TV_disc_desc_titlet.setText("End Date: "+second);

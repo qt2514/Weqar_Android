@@ -100,7 +100,7 @@ public class BotNav_SettingsFragment_Vendor extends Fragment {
             public void onClick(View v) {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBody = "I am happy with this app.Please click the link to download \n https://play.google.com/store/apps/details?id=com.ringaapp.ringapartner&hl=en";
+                String shareBody = "I am happy with this app.Please click the link to download \n https://play.google.com/store/search?q=weqar&hl=en";
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Weqar");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, " This is about service"));            }
@@ -110,7 +110,7 @@ public class BotNav_SettingsFragment_Vendor extends Fragment {
             public void onClick(View v) {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                String shareBody = "I am happy with this app.Please click the link to download \n https://play.google.com/store/apps/details?id=com.ringaapp.ringapartner&hl=en";
+                String shareBody = "I am happy with this app.Please click the link to download \n https://play.google.com/store/search?q=weqar&hl=en";
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Weqar");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, " This is about service"));            }

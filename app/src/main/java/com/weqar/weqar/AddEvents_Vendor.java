@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -89,6 +90,21 @@ int check_image_id;
             });
             s_lnw_userid = Shared_user_details.getString("sp_w_userid", null);
             s_lnw_usertoken = Shared_user_details.getString("sp_w_apikey", null);
+
+            ET_descrition.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (v.getId() == R.id.et_addevent_desc) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                            case MotionEvent.ACTION_UP:
+                                v.getParent().requestDisallowInterceptTouchEvent(false);
+                                break;
+                        }
+                    }
+                    return false;
+                }
+            });
             TV_eventstart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -144,8 +144,17 @@ Context c;
                 holder = (ViewHolder) convertView.getTag();
             }
             discountcard_list ccitacc = movieModelList.get(position);
+            String getdiscount_type= ccitacc.getDiscountType();
+            if(getdiscount_type.equals("1"))
+            {
+                holder.textone.setText(ccitacc.getPercentage()+"% "+ccitacc.getTitle());
 
-            holder.textone.setText(ccitacc.getPercentage()+"% "+ccitacc.getTitle());
+            }
+            else
+            {
+                holder.textone.setText(ccitacc.getTitle());
+
+            }
             String gg=ccitacc.getPercentage();
             Integer k=Integer.parseInt(gg);
             Integer kk=k/20;

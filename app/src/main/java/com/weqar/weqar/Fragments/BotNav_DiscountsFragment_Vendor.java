@@ -79,6 +79,8 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
     SharedPreferences Shared_user_details;
     ImageView IV_nodiscount_items;
     SharedPreferences.Editor editor;
+    List<discountcard_list_vendor> milokilo;
+
     public static BotNav_DiscountsFragment_Vendor newInstance()
     {
         BotNav_DiscountsFragment_Vendor fragment= new BotNav_DiscountsFragment_Vendor();
@@ -148,7 +150,17 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                 holder = (ViewHolder) convertView.getTag();
             }
             final discountcard_list_vendor ccitacc = movieModelList.get(position);
-            holder.textone.setText(ccitacc.getPercentage()+"% "+ccitacc.getTitle());
+            String getdiscount_type= ccitacc.getDiscountType();
+            if(getdiscount_type.equals("1"))
+            {
+                holder.textone.setText(ccitacc.getPercentage()+"% "+ccitacc.getTitle());
+
+            }
+            else
+            {
+                holder.textone.setText(ccitacc.getTitle());
+
+            }
             String gg=ccitacc.getPercentage();
             Integer k=Integer.parseInt(gg);
             Integer kk=k/20;
@@ -193,22 +205,25 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
             {
                 @Override
                 public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                    final discountcard_list_vendor schedule_history_list = milokilo.get(position);
+
                     switch (index) {
                         case 0:
                             Intent intent=new Intent(getActivity(),Discount_Edit_Vendor.class);
-                            intent.putExtra("put_discountid_fordisc_edit",ccitacc.getId());
-                            intent.putExtra("put_discounttype_fordisc_edit",ccitacc.getDiscountType());
-                            intent.putExtra("put_discounttitle_fordisc_edit",ccitacc.getTitle());
-                            intent.putExtra("put_discountdesc_fordisc_edit",ccitacc.getDescription());
-                            intent.putExtra("put_discountimage_fordisc_edit",ccitacc.getImage());
-                            intent.putExtra("put_discountper_fordisc_edit",ccitacc.getPercentage());
-                            intent.putExtra("put_discountsdate_fordisc_edit",ccitacc.getStartDate());
-                            intent.putExtra("put_discountedate_fordisc_edit",ccitacc.getEndDate());
+                            intent.putExtra("put_discountid_fordisc_edit",schedule_history_list.getId());
+                            intent.putExtra("put_discounttype_fordisc_edit",schedule_history_list.getDiscountType());
+                            intent.putExtra("put_discounttitle_fordisc_edit",schedule_history_list.getTitle());
+                            intent.putExtra("put_discountdesc_fordisc_edit",schedule_history_list.getDescription());
+                            intent.putExtra("put_discountimage_fordisc_edit",schedule_history_list.getImage());
+                            intent.putExtra("put_discountper_fordisc_edit",schedule_history_list.getPercentage());
+                            intent.putExtra("put_discountsdate_fordisc_edit",schedule_history_list.getStartDate());
+                            intent.putExtra("put_discountedate_fordisc_edit",schedule_history_list.getEndDate());
                             startActivity(intent);
                             break;
                         case 1:
-                            String ed=ccitacc.getId();
-                            callmetodeleteiscount(ed);
+                            String ed=schedule_history_list.getId();
+                           // Toast.makeText(getActivity(), schedule_history_list.getTitle(), Toast.LENGTH_SHORT).show();
+                           callmetodeleteiscount(ed);
                             break;
                     }
                     return false;
@@ -265,7 +280,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                 JSONObject parentObject = new JSONObject(finalJson);
                 JSONObject ed = parentObject.getJSONObject("Response");
                 JSONArray parentArray = ed.getJSONArray("Data");
-                List<discountcard_list_vendor> milokilo = new ArrayList<>();
+              milokilo = new ArrayList<>();
                 Gson gson = new Gson();
                 for (int i = 0; i < parentArray.length(); i++) {
                     JSONObject finalObject = parentArray.getJSONObject(i);
@@ -304,6 +319,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                         intent.putExtra("put_image",item.getImage());
                         intent.putExtra("put_logo",item.getLogo());
                         intent.putExtra("put_title",item.getTitle());
+                        intent.putExtra("put_type",item.getDiscountType());
                         intent.putExtra("put_per",item.getPercentage());
                         intent.putExtra("put_desc",item.getDescription());
                         intent.putExtra("put_enddate",item.getEndDate());

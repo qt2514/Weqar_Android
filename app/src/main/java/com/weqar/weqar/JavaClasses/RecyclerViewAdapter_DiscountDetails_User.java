@@ -35,6 +35,7 @@ public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapt
     private List<String> u_list_title;
     private List<String> u_list_logo;
     private List<String> u_list_enddate;
+    private List<String> u_list_type;
 
     public class MyView extends RecyclerView.ViewHolder {
 
@@ -66,6 +67,7 @@ public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapt
                                                     List<String> horizontalList_title,
                                                     List<String> horizontalList_logo,
                                                     List<String> horizontalList_enddate,
+                                                    List<String> horizontalList_type,
 
 
                                                     Context context) {
@@ -76,6 +78,7 @@ public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapt
         this.u_list_title = horizontalList_title;
         this.u_list_logo = horizontalList_logo;
         this.u_list_enddate = horizontalList_enddate;
+        this.u_list_type = horizontalList_type;
 
 
         this.context=context;
@@ -94,7 +97,17 @@ public class RecyclerViewAdapter_DiscountDetails_User extends RecyclerView.Adapt
     public void onBindViewHolder(final MyView holder, final int position) {
         //   Picasso.with(context).load(list.get(position)).fit().into(holder.textView);
      context = holder.TV_descdet_title.getContext();
-        holder.TV_descdet_title.setText(u_list_per.get(position)+"% "+u_list_title.get(position));
+        String getdiscount_type= u_list_type.get(position);
+        if(getdiscount_type.equals("1"))
+        {
+            holder.TV_descdet_title.setText(u_list_per.get(position)+"% "+u_list_title.get(position));
+
+        }
+        else
+        {
+            holder.TV_descdet_title.setText(u_list_title.get(position));
+
+        }
         String second=u_list_enddate.get(position).substring(0,10);
         holder.TV_title_two.setText("End Date: "+second);
 

@@ -94,6 +94,8 @@
                             android:layout_weight="1"
                             android:drawableEnd="@drawable/ic_navigate_next_black_24dp"
                             android:gravity="start"
+                            android:maxLines="4"
+                            android:maxEms="30"
                             android:text="Text messaging, or texting, is the act of composing and sending electronic messages, typically consisting "
                             android:textColor="@color/colorHintss"
                             android:textSize="13sp" />

@@ -18,6 +18,7 @@ public class discountcard_list implements Parcelable{
     String Modifiedon;
     String Title;
     String Logo;
+    String DiscountType;
 
     protected discountcard_list(Parcel in) {
         Id = in.readString();
@@ -30,6 +31,27 @@ public class discountcard_list implements Parcelable{
         Modifiedon = in.readString();
         Title = in.readString();
         Logo = in.readString();
+        DiscountType = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(Id);
+        dest.writeString(Description);
+        dest.writeString(Image);
+        dest.writeString(Percentage);
+        dest.writeString(StartDate);
+        dest.writeString(EndDate);
+        dest.writeString(CreatedOn);
+        dest.writeString(Modifiedon);
+        dest.writeString(Title);
+        dest.writeString(Logo);
+        dest.writeString(DiscountType);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<discountcard_list> CREATOR = new Creator<discountcard_list>() {
@@ -124,22 +146,11 @@ public class discountcard_list implements Parcelable{
         Logo = logo;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getDiscountType() {
+        return DiscountType;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(Id);
-        dest.writeString(Description);
-        dest.writeString(Image);
-        dest.writeString(Percentage);
-        dest.writeString(StartDate);
-        dest.writeString(EndDate);
-        dest.writeString(CreatedOn);
-        dest.writeString(Modifiedon);
-        dest.writeString(Title);
-        dest.writeString(Logo);
+    public void setDiscountType(String discountType) {
+        DiscountType = discountType;
     }
 }

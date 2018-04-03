@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -188,12 +189,39 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         s_lnw_usertype=  Shared_user_details.getString("sp_w_usertype", null);
         s_lnw_userid= Shared_user_details.getString("sp_w_userid", null);
         s_lnw_usertoken= Shared_user_details.getString("sp_w_apikey", null);
-//getmydet(s_lnw_userid);
+
         s_ln_tab1=  Shared_user_details.getBoolean("login_tab1",false);
         s_ln_tab2=  Shared_user_details.getBoolean("login_tab2",false);
         s_ln_tab3=  Shared_user_details.getBoolean("login_tab3",false);
 
-
+        ET_address.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v.getId() == R.id.et_address) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                        case MotionEvent.ACTION_UP:
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
+        ET_vcomplete_discdesc.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v.getId() == R.id.et_vcomplete_discdesc) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                        case MotionEvent.ACTION_UP:
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
         ET_emailid.setText(s_lnw_usermailid);
         getVendorplan();
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, compl_vendor_offertype);

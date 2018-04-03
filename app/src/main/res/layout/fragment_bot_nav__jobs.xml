@@ -75,11 +75,10 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/RV_jobs_user"
-
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/appbar_homescreen"
-        />
+        android:layout_below="@+id/appbar_homescreen"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -90,8 +89,7 @@
         android:scrollbars="none"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
-        android:layout_marginBottom="70dp"
-        />
+        android:layout_marginBottom="70dp" />
     <ImageView
         android:id="@+id/IV_noitem_jobs"
         android:layout_width="wrap_content"

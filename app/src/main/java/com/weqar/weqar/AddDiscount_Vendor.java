@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -88,6 +89,7 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
     ImageView IV_set_account_back;
     int check_image_id;
     int one;
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,7 +136,37 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
             s_lnw_userid = Shared_user_details.getString("sp_w_userid", null);
             s_lnw_usertoken = Shared_user_details.getString("sp_w_apikey", null);
 
+            ET_vcomplete_discdesc.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (v.getId() == R.id.et_vcomplete_discdesc) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                            case MotionEvent.ACTION_UP:
+                                v.getParent().requestDisallowInterceptTouchEvent(false);
+                                break;
+                        }
+                    }
+                    return false;
+                }
 
+            });
+
+
+            et_vcomplete_discdesc_s.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (v.getId() == R.id.et_vcomplete_discdesc_s) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                            case MotionEvent.ACTION_UP:
+                                v.getParent().requestDisallowInterceptTouchEvent(false);
+                                break;
+                        }
+                    }
+                    return false;
+                }
+            });
             getVendorplan();
 
             if (s_check_discount) {
@@ -534,11 +566,15 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
                     .start(AddDiscount_Vendor.this);
             check_image_id=1006;
         }
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1005) {
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1006) {
             final Uri resultUri = UCrop.getOutput(data);
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                
+
+
+
                 IV_vcomplefileupload_s.setImageBitmap(bitmap);
               upload_vendor_complete_image_s(bitmap);
             } catch (IOException e) {
