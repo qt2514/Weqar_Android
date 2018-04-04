@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                     ET_username.setTextColor(getResources().getColor(R.color.colorBlack));
 
                 }
+
             }
         });
         ET_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
