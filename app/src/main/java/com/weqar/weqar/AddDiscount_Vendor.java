@@ -435,15 +435,18 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
                                         }
                                     }).show();
                         } else {
-                            S_vcomplete_percentage = ET_vcomplete_percentage.getText().toString();
-                            S_vcomplete_title = ET_vcomplete_disctitle.getText().toString();
-                            s_vcomplete_description = ET_vcomplete_discdesc.getText().toString();
-                            callmetouploadvendorcomplete_url(s_vcomplete_description,s_images,s_lnw_userid
-                                    , S_vcomplete_title, S_vcomplete_percentage, serviceuid, S_vcomple_offertype_sel);
-                            Intent intent=new Intent(AddDiscount_Vendor.this,HomeScreen_vendor.class);
-                            TinyDB tinydb = new TinyDB(this);
-                            tinydb.putBoolean("hgffh", true);
-                            startActivity(intent);
+
+                                S_vcomplete_percentage = ET_vcomplete_percentage.getText().toString();
+                                S_vcomplete_title = ET_vcomplete_disctitle.getText().toString();
+                                s_vcomplete_description = ET_vcomplete_discdesc.getText().toString();
+                                callmetouploadvendorcomplete_url(s_vcomplete_description,s_images,s_lnw_userid
+                                        , S_vcomplete_title, S_vcomplete_percentage, serviceuid, S_vcomple_offertype_sel);
+                                Intent intent=new Intent(AddDiscount_Vendor.this,HomeScreen_vendor.class);
+                                TinyDB tinydb = new TinyDB(this);
+                                tinydb.putBoolean("hgffh", true);
+                                startActivity(intent);
+
+
                         }
                     }
                 }
@@ -812,18 +815,20 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
                             }
                             else
                             {
-                                  s_disc_startdate=et_adddiscount_startdate.getText().toString();
+
+                                    s_disc_startdate=et_adddiscount_startdate.getText().toString();
                                     s_disc_enddate=et_adddiscount_enddate.getText().toString();
                                     s_disc_percentage=et_vcomplete_percentage_s.getText().toString();
                                     s_disc_title=et_vcomplete_disctitle_s.getText().toString();
                                     s_disc_desc=et_vcomplete_discdesc_s.getText().toString();
 
 
-                                callmetoupload_seconddiscount_url(s_disc_desc,s_lnw_userid,s_image,s_disc_title,
-                                        s_disc_startdate,s_disc_enddate,s_disc_percentage,check_discounttype_vendor_discount);
+                                    callmetoupload_seconddiscount_url(s_disc_desc,s_lnw_userid,s_image,s_disc_title,
+                                            s_disc_startdate,s_disc_enddate,s_disc_percentage,check_discounttype_vendor_discount);
 
 
-startActivity(new Intent(AddDiscount_Vendor.this,HomeScreen_vendor.class));
+                                    startActivity(new Intent(AddDiscount_Vendor.this,HomeScreen_vendor.class));
+
 
                             }
 

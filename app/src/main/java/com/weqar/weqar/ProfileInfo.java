@@ -67,7 +67,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileInfo extends AppCompatActivity implements com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener{
     EditText ET_fname,ET_mname,ET_lname,ET_emailid,ET_mobile,ET_address,ET_country,
     ET_Prof_cidno,ET_Prof_memno,ET_vprof_businescontect,ET_vprof_businesemail,ET_vprof_websitel,ET_vcomplete_percentage,
-    ET_vcomplete_disctitle,ET_vcomplete_discdesc;
+    ET_vcomplete_disctitle,ET_vcomplete_discdesc,ET_vrpof_company;
     TextView ET_vprof_category,ET_Prof_valid,TV_vcomplete_skip;
     SearchableSpinner SP_mobilepin,SP_gender_sel,SP_vendor_com_planchoose,SP_vendor_com_offertype;
     ScrollView scrollView_personal,scrollView_professional,scrollview_vendor_professional,scrollView_complete,scrollView_vendor_complete;
@@ -80,7 +80,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     Toolbar toolbar;
     String s_fname,s_mname,s_lname,s_mobilepin,s_mobile,s_address,s_emailid,s_country,
     s_prof_cidno,s_prof_memno,s_prof_valid,s_vprof_category,s_vprof_buscontact,s_vprof_busemail,s_vprof_websitelink,
-    svendor_busimail;
+    svendor_busimail,svendor_comapny;
     String s_lnw_userid,s_lnw_useremail,s_lnw_usertype,s_res_userprofimg,s_lnw_usertoken,s_lnw_getcompany,s_basic_image,
     s_fromadp_getuser_plantype_id,s_fromadp_getuser_plantype;
     Boolean s_ln_tab1,s_ln_tab2,s_ln_tab3;
@@ -135,7 +135,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
         ET_vcomplete_percentage=findViewById(R.id.et_vcomplete_percentage);
         ET_vcomplete_disctitle=findViewById(R.id.et_vcomplete_disctitle);
         ET_vcomplete_discdesc=findViewById(R.id.et_vcomplete_discdesc);
-
+ET_vrpof_company=findViewById(R.id.vendor_professional_companyname);
         scrollView_personal=findViewById(R.id.scrollview_personal);
         scrollView_professional=findViewById(R.id.scrollview_professional);
         scrollview_vendor_professional=findViewById(R.id.scrollview_vendorprofessional);
@@ -484,16 +484,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1002 && resultCode == RESULT_OK && data != null) {
-//
-//            Uri imageUri = data.getData();
-//            try {
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-//                IV_bas.setImageBitmap(bitmap);
-//                basic_image(bitmap);
-//            }
-//            catch (IOException e) {
-//                e.printStackTrace();
-//            }
+
 
             Uri imageUri = data.getData();
 
@@ -518,16 +509,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             final Throwable cropError = UCrop.getError(data);
         }
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
-//
-//            Uri imageUri = data.getData();
-//            try {
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-//                IV_prof_uploadfile.setImageBitmap(bitmap);
-//                upload_user_profimage(bitmap);
-//            }
-//            catch (IOException e) {
-//                e.printStackTrace();
-//            }
+
             Uri imageUri = data.getData();
 
             assert imageUri != null;
@@ -641,9 +623,8 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     private void basic_image(final Bitmap bitmap) {
 
 
-        Bitmap immagex=bitmap;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos);
         byte[] b = baos.toByteArray();
         String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
         try {
@@ -714,7 +695,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
 
         Bitmap immagex=bitmap;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        immagex.compress(Bitmap.CompressFormat.PNG, 50, baos);
         byte[] b = baos.toByteArray();
         String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
         try {
@@ -783,7 +764,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     {
         Bitmap immagex=bitmap;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        immagex.compress(Bitmap.CompressFormat.PNG, 50, baos);
         byte[] b = baos.toByteArray();
         String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
         try {
@@ -849,7 +830,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     private void upload_vendor_complete_image(final Bitmap bitmap)
     { Bitmap immagex=bitmap;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        immagex.compress(Bitmap.CompressFormat.PNG, 50, baos);
         byte[] b = baos.toByteArray();
         String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
         try {
@@ -1473,6 +1454,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                     String  SemailPattern = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
                     svendor_busimail = ET_vprof_businesemail.getText().toString().trim();
+                    svendor_comapny = ET_vrpof_company.getText().toString().trim();
                     if (svendor_busimail.matches(SemailPattern)) {
 //                        if (ET_vprof_websitel.getText().toString().equals(""))
 //                        {
@@ -1510,7 +1492,8 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                             IV_complete.setImageResource(R.drawable.profile_complete_two);
                             but_complete.setVisibility(View.INVISIBLE);
                             scrollView_vendor_complete.setVisibility(View.VISIBLE);
-                            callmetouploadprofessionalurl_vendor(s_vprof_buscontact, s_vprof_busemail, s_lnw_getcompany, s_lnw_userid, s_vprof_category);
+                            callmetouploadprofessionalurl_vendor(s_vprof_buscontact, s_vprof_busemail, s_lnw_getcompany,
+                                    s_lnw_userid, s_vprof_category,svendor_comapny);
                             getUserCompletesubscription();
                             IV_personal.setImageResource(R.drawable.profile_basic_three);
                             IV_professional.setImageResource(R.drawable.profile_professional_three);
@@ -1539,7 +1522,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
 
     }
 
-    public void callmetouploadprofessionalurl_vendor(String buscontact,String busemail,String vpro_logo,String vpro_userid,String v_procateg)
+    public void callmetouploadprofessionalurl_vendor(String buscontact,String busemail,String vpro_logo,String vpro_userid,String v_procateg,String companyname)
     {
         try {
 
@@ -1551,14 +1534,14 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             jsonBody.put("BusinessEmail", busemail);
             jsonBody.put("Logo", vpro_logo);
             jsonBody.put("UserId", vpro_userid);
-
+            jsonBody.put("CompanyName", companyname);
             JSONArray array2=new JSONArray(subjectnameid);
             jsonBody.put("Categories",array2);
 
 
 
             final String requestBody = jsonBody.toString();
-
+Log.i("requsitingcompany",requestBody);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_insertprofessionalinfo, new Response.Listener<String>() {
 
                 public void onResponse(String response) {
@@ -1920,12 +1903,13 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus)
                 {
-                    // et_mail.setBackgroundResource( R.drawable.sel_bg_edit);
                     ET_fname.setTextColor((getResources().getColor(R.color.colorPrimary)));
+
                 }
                 else
                 {
-                    ET_fname.setTextColor((getResources().getColor(R.color.colorBlack)));
+                    ET_fname.setTextColor((getResources().getColor(R.color.colorPrimary)));
+
                 }
             }
         });
@@ -1935,6 +1919,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 if (hasFocus)
                 {
                     ET_mname.setTextColor((getResources().getColor(R.color.colorPrimary)));
+
                 }
                 else
                 {
@@ -1948,6 +1933,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 if (hasFocus)
                 {
                     ET_lname.setTextColor((getResources().getColor(R.color.colorPrimary)));
+
                 }
                 else
                 {
@@ -1961,10 +1947,25 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 if (hasFocus)
                 {
                     ET_mobile.setTextColor((getResources().getColor(R.color.colorPrimary)));
+
                 }
                 else
                 {
                     ET_mobile.setTextColor((getResources().getColor(R.color.colorBlack)));
+                }
+            }
+        });
+        ET_emailid.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                {
+                    ET_emailid.setTextColor((getResources().getColor(R.color.colorPrimary)));
+
+                }
+                else
+                {
+                    ET_emailid.setTextColor((getResources().getColor(R.color.colorBlack)));
                 }
             }
         });
@@ -1981,19 +1982,7 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 }
             }
         });
-        ET_emailid.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
-                {
-                    ET_emailid.setTextColor((getResources().getColor(R.color.colorPrimary)));
-                }
-                else
-                {
-                    ET_emailid.setTextColor((getResources().getColor(R.color.colorBlack)));
-                }
-            }
-        });
+
 
         ET_Prof_cidno.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -2031,6 +2020,19 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
                 else
                 {
                     ET_Prof_valid.setTextColor((getResources().getColor(R.color.colorBlack)));
+                }
+            }
+        });
+        ET_vrpof_company.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                {
+                    ET_vrpof_company.setTextColor((getResources().getColor(R.color.colorPrimary)));
+                }
+                else
+                {
+                    ET_vrpof_company.setTextColor((getResources().getColor(R.color.colorBlack)));
                 }
             }
         });
