@@ -494,20 +494,22 @@ ET_vrpof_company=findViewById(R.id.vendor_professional_companyname);
                     .start(ProfileInfo.this);
             check_image_id=1002;
         }
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1002) {
-            final Uri resultUri = UCrop.getOutput(data);
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
-                IV_bas.setImageBitmap(bitmap);
-                basic_image(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1002) {
+                    final Uri resultUri = UCrop.getOutput(data);
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                        IV_bas.setImageBitmap(bitmap);
+                        basic_image(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            final Throwable cropError = UCrop.getError(data);
-        }
+                } else if (resultCode == UCrop.RESULT_ERROR) {
+                    final Throwable cropError = UCrop.getError(data);
+                }
+
+
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
 
             Uri imageUri = data.getData();
@@ -518,45 +520,45 @@ ET_vrpof_company=findViewById(R.id.vendor_professional_companyname);
                     .start(ProfileInfo.this);
             check_image_id=100;
         }
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==100) {
-            final Uri resultUri = UCrop.getOutput(data);
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
-                IV_prof_uploadfile.setImageBitmap(bitmap);
-           upload_user_profimage(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==100) {
+                    final Uri resultUri = UCrop.getOutput(data);
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                        IV_prof_uploadfile.setImageBitmap(bitmap);
+                   upload_user_profimage(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            final Throwable cropError = UCrop.getError(data);
-        }
+                } else if (resultCode == UCrop.RESULT_ERROR) {
+                    final Throwable cropError = UCrop.getError(data);
+                }
         if (requestCode == 1001 && resultCode == RESULT_OK && data != null) {
 
             Uri imageUri = data.getData();
 
             assert imageUri != null;
             UCrop.of( imageUri,  Uri.fromFile(new File(getCacheDir(), ".png")))
-                    .withAspectRatio(1 , 1)
+                    .withAspectRatio(3 , 2)
                     .start(ProfileInfo.this);
             check_image_id=1001;
 
         }
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1001) {
-            final Uri resultUri = UCrop.getOutput(data);
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
-                IV_vendor_professional_companylogo.setImageBitmap(bitmap);
-                upload_vendor_companylogo(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1001) {
+                    final Uri resultUri = UCrop.getOutput(data);
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                        IV_vendor_professional_companylogo.setImageBitmap(bitmap);
+                        upload_vendor_companylogo(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            final Throwable cropError = UCrop.getError(data);
-        }
+                } else if (resultCode == UCrop.RESULT_ERROR) {
+                    final Throwable cropError = UCrop.getError(data);
+                }
         if (requestCode == 1005 && resultCode == RESULT_OK && data != null) {
 //            Uri imageUri = data.getData();
 //
@@ -576,20 +578,20 @@ ET_vrpof_company=findViewById(R.id.vendor_professional_companyname);
                     .start(ProfileInfo.this);
             check_image_id=1005;
         }
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1005) {
-            final Uri resultUri = UCrop.getOutput(data);
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
-                IV_vcomplete_imageupload.setImageBitmap(bitmap);
-                upload_vendor_complete_image(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP && check_image_id==1005) {
+                    final Uri resultUri = UCrop.getOutput(data);
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                        IV_vcomplete_imageupload.setImageBitmap(bitmap);
+                        upload_vendor_complete_image(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            final Throwable cropError = UCrop.getError(data);
-        }
+                } else if (resultCode == UCrop.RESULT_ERROR) {
+                    final Throwable cropError = UCrop.getError(data);
+                }
         if (requestCode == SECOND_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 TinyDB tinydb = new TinyDB(context);

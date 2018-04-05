@@ -53,7 +53,8 @@ public class Settings_ProfileActivity_User extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings__profile);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);        if (isConnectedToNetwork()) {
+        setSupportActionBar(toolbar);
+        if (isConnectedToNetwork()) {
 
 
             IV_profile_account_back = findViewById(R.id.account_setting_back);

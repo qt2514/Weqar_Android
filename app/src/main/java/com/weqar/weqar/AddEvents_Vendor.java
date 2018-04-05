@@ -195,25 +195,34 @@ int check_image_id;
             final Throwable cropError = UCrop.getError(data);
         }
     }
-    private void upload_vendor_complete_image_s(final Bitmap bitmap) {
-        Bitmap immagex = bitmap;
+    private void upload_vendor_complete_image_s(final Bitmap bitmap)
+    {
+
+        Bitmap immagex=bitmap;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         immagex.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
+
+
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
+
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("extension", "JPG");
             jsonBody.put("content", imageEncoded);
             final String requestBody = jsonBody.toString();
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.User_uploadprofessionalimage, new Response.Listener<String>() {
                 public void onResponse(String response) {
-                    try {
+                    try
+                    {
                         JSONObject jObj = new JSONObject(response);
-                        s_image = jObj.getString("Response");
-                        Log.i("user_vendor_complete_image_response", response);
-                    } catch (JSONException e) {
+                        s_image=jObj.getString("Response");
+                        Log.i("user_vendor_complete_image_response",response);
+
+
+                    }
+                    catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
@@ -225,6 +234,7 @@ int check_image_id;
             }) {
                 @Override
                 public String getBodyContentType() {
+
                     return "application/json; charset=utf-8";
                 }
                 @Override
@@ -232,13 +242,14 @@ int check_image_id;
                     HashMap<String, String> headers = new HashMap<String, String>();
                     headers.put("x-api-type", "Android");
                     //  headers.put("content-Type", "application/json");
-                    headers.put("x-api-key", s_lnw_usertoken);
+                    headers.put("x-api-key",s_lnw_usertoken);
                     return headers;
                 }
                 @Override
                 public byte[] getBody() throws AuthFailureError {
                     try {
                         return requestBody == null ? null : requestBody.getBytes("utf-8");
+
                     } catch (UnsupportedEncodingException uee) {
                         VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
                         return null;
@@ -334,30 +345,40 @@ int check_image_id;
         }
     }
 
-    public void callmetouploadvendorcomplete_url(String s_lnw_userid, String start, String end,
-                                                 String name, String title,
-                                                 String desc,String image, String amount)
+    public void callmetouploadvendorcomplete_url(final String s_lnw_userid,final String start,
+                                                  final String end,final String contact,
+                                                  final String title,final String desc,
+                                                  final String img,final String amount)
     {
         try {
+
             RequestQueue requestQueue = Volley.newRequestQueue(this);
 
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("UserId", s_lnw_userid);
             jsonBody.put("EventStart", start);
             jsonBody.put("EventEnd", end);
-            jsonBody.put("Name", name);
+            jsonBody.put("Name", contact);
             jsonBody.put("Title", title);
             jsonBody.put("Description", desc);
-            jsonBody.put("Image", image);
-            jsonBody.put("Amount", amount);
+            jsonBody.put("Image", s_image);
+
+
+
+
+
+
             final String requestBody = jsonBody.toString();
+            Log.i("checkandro",requestBody);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_add_event, new Response.Listener<String>() {
+
                 public void onResponse(String response) {
-                    Log.i("vendor_complete_response",response);
+                    // startActivity(new Intent(ProfileInfo.this, LoginActivity.class));
+
+                    Log.i("vendor_professional_response",response);
 
                 }
             }, new Response.ErrorListener() {
-
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.i("VOLLEY", error.toString());
@@ -368,17 +389,19 @@ int check_image_id;
 
                     return "application/json; charset=utf-8";
                 }
+
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
-                    headers.put("X-API-TYPE", "Android");
+                    headers.put("x-api-type", "Android");
+                    //headers.put("content-Type", "application/json");
                     headers.put("x-api-key",s_lnw_usertoken);
-
+                    Log.i("checkandroheader",headers.toString());
 
                     return headers;
 
-
                 }
+
                 @Override
                 public byte[] getBody() throws AuthFailureError {
                     try {
@@ -389,7 +412,10 @@ int check_image_id;
                         return null;
                     }
                 }
+
+
             };
+
             requestQueue.add(stringRequest);
         }catch (JSONException e){
 

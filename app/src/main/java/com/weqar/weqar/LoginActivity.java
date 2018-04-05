@@ -1,5 +1,6 @@
 package com.weqar.weqar;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.weqar.weqar.DBHandlers.SessionManager;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
+import com.weqar.weqar.JavaClasses.AbsRuntimePermission;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,11 +39,12 @@ import java.util.Map;
 import at.markushi.ui.CircleButton;
 import cn.refactor.lib.colordialog.PromptDialog;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AbsRuntimePermission {
     EditText ET_username,ET_password;
     Button But_newaxccount;
     CircleButton But_login;
     String S_username,S_password;
+    private static final int REQUEST_PERMISSION = 10;
 
     String s_ln_userid,s_ln_username,s_ln_usermail,s_ln_usertype,s_ln_usertoken,s_username,s_image;
     Boolean s_ln_tab1,s_ln_tab2,s_ln_tab3;
@@ -58,7 +61,13 @@ public class LoginActivity extends AppCompatActivity {
         But_newaxccount = findViewById(R.id.but_newaccount);
         But_login = findViewById(R.id.login_but);
         login_loading = findViewById(R.id.loading_login);
+        requestAppPermissions(new String[]{
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
 
+                },
+
+                R.string.msg,REQUEST_PERMISSION);
 
         session = new SessionManager(getApplicationContext());
         Shared_user_details = getSharedPreferences("user_detail_mode", 0);
@@ -157,6 +166,12 @@ public class LoginActivity extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    public void onPermissionsGranted(int requestCode) {
+
+    }
+
     private boolean isConnectedToNetwork() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
