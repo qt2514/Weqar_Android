@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.weqar.weqar.DBJavaClasses.dashboard_list;
 import com.weqar.weqar.Events_Display;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.JobDetails_User;
+import com.weqar.weqar.News_Display;
 import com.weqar.weqar.R;
 
 import org.json.JSONArray;
@@ -58,11 +60,10 @@ public class BotNav_EventsFragment extends Fragment {
    ImageView IV_event;
     SharedPreferences Shared_user_details;
     String s_vendor_token,s_vendor_disc;
-    Button But_dash_u_events,But_dash_u_news;
+    FloatingActionButton But_dash_u_events,But_dash_u_news;
     private com.github.clans.fab.FloatingActionButton fab1;
     private com.github.clans.fab.FloatingActionButton fab2;
     private com.github.clans.fab.FloatingActionButton fab3;
-    private com.github.clans.fab.FloatingActionButton fab4;
 
     public static BotNav_EventsFragment newInstance() {
         BotNav_EventsFragment fragment= new BotNav_EventsFragment();
@@ -84,20 +85,27 @@ public class BotNav_EventsFragment extends Fragment {
         fab1 = view.findViewById(R.id.fab1);
         fab2 = view.findViewById(R.id.fab2);
         fab3 = view.findViewById(R.id.fab3);
-        fab4 = view.findViewById(R.id.fab4);
         But_dash_u_events=view.findViewById(R.id.dashboard_button_u_events);
         But_dash_u_news=view.findViewById(R.id.dashboard_button_u_news);
 
         fab1.setOnClickListener(clickListener);
         fab2.setOnClickListener(clickListener);
         fab3.setOnClickListener(clickListener);
-        fab4.setOnClickListener(clickListener);
         But_dash_u_events.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),Events_Display.class));
             }
         });
+        But_dash_u_news.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),News_Display.class));
+            }
+        });
+//        View headerview = ((LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.fragment_bot_nav__events, null, false);
+//        LV_listview.addHeaderView(headerview);
+      //  LV_listview.addHeaderView(But_dash_u_events);
         String URLLL = Global_URL.user_show_dashboard;
         new kilomilo().execute(URLLL);
 
@@ -118,9 +126,7 @@ public class BotNav_EventsFragment extends Fragment {
                 case R.id.fab3:
                     Toast.makeText(getActivity(), "Discount", Toast.LENGTH_SHORT).show();
                     break;
-                case R.id.fab4:
-                    Toast.makeText(getActivity(), "Job", Toast.LENGTH_SHORT).show();
-                    break;
+
             }
         }
     };

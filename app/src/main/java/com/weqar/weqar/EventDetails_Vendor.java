@@ -40,7 +40,7 @@ public class EventDetails_Vendor extends AppCompatActivity {
     ImageView event_vdet_back,event_vdet_image;
     String get_event_id,s_vendor_disc,s_vendor_token;
     String event_id,user_id,event_title,event_name,event_image,event_desc,event_location,event_lati,event_longi,
-    event_start;
+    event_start,event_end,event_duration,event_amount;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
     TextView TV_title,TV_startdate,TV_place,TV_desc;
@@ -68,130 +68,158 @@ public class EventDetails_Vendor extends AppCompatActivity {
         Shared_user_details = getSharedPreferences("user_detail_mode", 0);
         s_vendor_disc = Shared_user_details.getString("weqar_uid", null);
         s_vendor_token = Shared_user_details.getString("weqar_token", null);
+try
+{
+
 
         Intent intent=getIntent();
         get_event_id=intent.getStringExtra("event_v_id");
-        getallmyeventdetails(get_event_id);
 
-    }
-    public void getallmyeventdetails(String susername)
+        user_id=intent.getStringExtra("event_v_userid");
+        event_title=intent.getStringExtra("event_v_title");
+        event_name= intent.getStringExtra("event_v_name");
+        event_image=intent.getStringExtra("event_v_image");
+        event_desc=intent.getStringExtra("event_v_desc");
+        event_location=intent.getStringExtra("event_v_location");
+        event_lati=intent.getStringExtra("event_v_latitude");
+        event_longi=intent.getStringExtra("event_v_longitude");
+        event_start=intent.getStringExtra("event_v_startdate");
+        event_end=intent.getStringExtra("event_v_enddate");
+        event_duration=intent.getStringExtra("event_v_duration");
+        event_amount=intent.getStringExtra("event_v_amount");
+    TV_title.setText(event_title);
+    TV_startdate.setText("Start Date : "+event_start);
+
+    // TV_place.setText(city+state);
+    TV_desc.setText(event_desc);
+    TV_title.setText(event_title);
+    Picasso.with(EventDetails_Vendor.this).load(Global_URL.Image_url_load+event_image).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(event_vdet_image);
+    TV_place.setText(event_location);
+    }catch(Exception e)
     {
-
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("Id", susername);
-
-
-
-            final String requestBody = jsonBody.toString();
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_show_event_onid, new Response.Listener<String>() {
-
-                public void onResponse(String response) {
-                    try {
-
-                        JSONObject jObj = new JSONObject(response);
-
-                        String status = jObj.getString("Status");
-                        if(status.equals("Success"))
-                        {
-                        try
-                        {
-
-
-                            JSONObject verification = jObj.getJSONObject("Response");
-                            event_id=verification.getString("Id");
-                            user_id=verification.getString("UserId");
-                            event_title=verification.getString("Title");
-                            event_name=verification.getString("Name");
-                            event_image=verification.getString("Image");
-                            event_desc=verification.getString("Description");
-                            event_location=verification.getString("Location");
-                            event_lati=verification.getString("Latitude");
-                            event_longi=verification.getString("Longitude");
-                            event_start=verification.getString("EventStart");
-                            Geocoder geocoder = new Geocoder(EventDetails_Vendor.this, Locale.getDefault());
-                            double latitude = Double.parseDouble(event_lati);
-                            double longitude = Double.parseDouble(event_longi);
-                            List<Address> addresses  = geocoder.getFromLocation(latitude,longitude, 1);
-
-                            String city = addresses.get(0).getLocality();
-                            String state = addresses.get(0).getAdminArea();
-                            String zip = addresses.get(0).getPostalCode();
-                            String country = addresses.get(0).getCountryName();
-
-                            TV_title.setText(event_title);
-                            TV_startdate.setText(event_start);
-                            TV_place.setText(city+state);
-                            TV_desc.setText(event_desc);
-                            TV_title.setText(event_title);
-                            Picasso.with(EventDetails_Vendor.this).load(Global_URL.Image_url_load+event_image).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(event_vdet_image);
-
-                        }catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                        }
-                        else
-                        {
-
-
-                        }
-
-
-                        //finish();
-                    }
-                    catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-
-                }
-            }) {
-                @Override
-                public String getBodyContentType() {
-
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<String, String>();
-                    headers.put("x-api-type", "Android");
-                    //headers.put("content-Type", "application/json");
-                    headers.put("x-api-key",s_vendor_token);
-                    return headers;
-
-                }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return requestBody == null ? null : requestBody.getBytes("utf-8");
-
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                        return null;
-                    }
-                }
-
-
-
-
-            };
-
-            requestQueue.add(stringRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        e.printStackTrace();
+    }
+        //   getallmyeventdetails(get_event_id);
 
     }
+//    public void getallmyeventdetails(String susername)
+//    {
+//
+//        try {
+//            RequestQueue requestQueue = Volley.newRequestQueue(this);
+//
+//            JSONObject jsonBody = new JSONObject();
+//            jsonBody.put("Id", susername);
+//
+//
+//
+//            final String requestBody = jsonBody.toString();
+//
+//            StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_show_event_onid, new Response.Listener<String>() {
+//
+//                public void onResponse(String response) {
+//                    try {
+//
+//                        JSONObject jObj = new JSONObject(response);
+//
+//                        String status = jObj.getString("Status");
+//                        if(status.equals("Success"))
+//                        {
+//                        try
+//                        {
+//
+//
+//                            JSONObject verification = jObj.getJSONObject("Response");
+//                            event_id=verification.getString("Id");
+//                            user_id=verification.getString("UserId");
+//                            event_title=verification.getString("Title");
+//                            event_name=verification.getString("Name");
+//                            event_image=verification.getString("Image");
+//                            event_desc=verification.getString("Description");
+//                            event_location=verification.getString("Location");
+//                            event_lati=verification.getString("Latitude");
+//                            event_longi=verification.getString("Longitude");
+//                            event_start=verification.getString("EventStart");
+//                            Geocoder geocoder = new Geocoder(EventDetails_Vendor.this, Locale.getDefault());
+//                            double latitude = Double.parseDouble(event_lati);
+//                            double longitude = Double.parseDouble(event_longi);
+//                            List<Address> addresses  = geocoder.getFromLocation(latitude,longitude, 1);
+//
+//                            String city = addresses.get(0).getLocality();
+//                            String state = addresses.get(0).getAdminArea();
+//                            String zip = addresses.get(0).getPostalCode();
+//                            String country = addresses.get(0).getCountryName();
+//
+//                            TV_title.setText(event_title);
+//                            TV_startdate.setText(event_start);
+//                            TV_place.setText(city+state);
+//                            TV_desc.setText(event_desc);
+//                            TV_title.setText(event_title);
+//                            Picasso.with(EventDetails_Vendor.this).load(Global_URL.Image_url_load+event_image).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(event_vdet_image);
+//
+//                        }catch (Exception e)
+//                        {
+//                            e.printStackTrace();
+//                        }
+//                        }
+//                        else
+//                        {
+//
+//
+//                        }
+//
+//
+//                        //finish();
+//                    }
+//                    catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//
+//
+//                }
+//            }) {
+//                @Override
+//                public String getBodyContentType() {
+//
+//                    return "application/json; charset=utf-8";
+//                }
+//
+//                @Override
+//                public Map<String, String> getHeaders() throws AuthFailureError {
+//                    HashMap<String, String> headers = new HashMap<String, String>();
+//                    headers.put("x-api-type", "Android");
+//                    //headers.put("content-Type", "application/json");
+//                    headers.put("x-api-key",s_vendor_token);
+//                    return headers;
+//
+//                }
+//
+//                @Override
+//                public byte[] getBody() throws AuthFailureError {
+//                    try {
+//                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+//
+//                    } catch (UnsupportedEncodingException uee) {
+//                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+//                        return null;
+//                    }
+//                }
+//
+//
+//
+//
+//            };
+//
+//            requestQueue.add(stringRequest);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
 }

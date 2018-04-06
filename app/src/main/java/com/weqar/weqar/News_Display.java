@@ -9,18 +9,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -36,10 +35,8 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-import com.weqar.weqar.DBJavaClasses.dashboard_list;
-import com.weqar.weqar.DBJavaClasses.discountcard_list_vendor;
 import com.weqar.weqar.DBJavaClasses.events_list_vendor;
-import com.weqar.weqar.Fragments.BotNav_DiscountsFragment_Vendor;
+import com.weqar.weqar.DBJavaClasses.news_list;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 
 import org.json.JSONArray;
@@ -61,52 +58,51 @@ import java.util.List;
 import java.util.Map;
 
 import cn.refactor.lib.colordialog.PromptDialog;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class Events_Display_Vendor extends AppCompatActivity {
+public class News_Display extends AppCompatActivity {
     String s_vendor_disc,s_vendor_token;
-    SwipeMenuListView GV_vendor_view;
+    SwipeMenuListView SL_news_user_view;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
-    ImageView IV_addevent_vendor,events_v_back;
-    List<events_list_vendor> milokilo;
-
+    ImageView IV_addews_user,news_u_back;
+    List<news_list> milokilo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_events__display__vendor);
+        setContentView(R.layout.activity_news__display);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         Shared_user_details = getSharedPreferences("user_detail_mode", 0);
         s_vendor_disc = Shared_user_details.getString("weqar_uid", null);
         s_vendor_token = Shared_user_details.getString("weqar_token", null);
-        GV_vendor_view = findViewById(R.id.events_vendor_list);
-        events_v_back = findViewById(R.id.events_v_back);
-        events_v_back.setOnClickListener(new View.OnClickListener() {
+
+        SL_news_user_view = findViewById(R.id.news_user_list);
+        IV_addews_user = findViewById(R.id.news_u_addnews);
+        news_u_back = findViewById(R.id.news_u_back);
+        news_u_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              startActivity(new Intent(Events_Display_Vendor.this,HomeScreen_vendor.class));
+                startActivity(new Intent(News_Display.this,HomeScreen.class));
+                finish();
             }
         });
-//        IV_addevent_vendor =findViewById(R.id.event_addevent_vendor);
-//        IV_addevent_vendor.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(getApplicationContext(), AddEvents_Vendor.class));
-//            }
-//        });
-        new kilomilo().execute(Global_URL.Vendor_show_allevents);
+        IV_addews_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(News_Display.this, AddEvents_User.class));
+            }
+        });
 
+        new kilomilo().execute(Global_URL.user_show_news);
     }
     public class MovieAdap extends ArrayAdapter
     {
-        private List<events_list_vendor> movieModelList;
+        private List<news_list> movieModelList;
         private int resource;
         Context context;
         private LayoutInflater inflater;
-        MovieAdap(Context context, int resource, List<events_list_vendor> objects)
+        MovieAdap(Context context, int resource, List<news_list> objects)
         {
             super(context, resource, objects);
             movieModelList = objects;
@@ -130,9 +126,9 @@ public class Events_Display_Vendor extends AppCompatActivity {
             {
                 convertView = inflater.inflate(resource, null);
                 holder = new MovieAdap.ViewHolder();
-                holder.textone = (TextView) convertView.findViewById(R.id.events_vendor_title);
-                holder.texttwo_desc = (TextView) convertView.findViewById(R.id.events_vendor_desc);
-                holder.menuimage = convertView.findViewById(R.id.events_vendor_image);
+                holder.textone = (TextView) convertView.findViewById(R.id.news_user_title);
+                holder.texttwo_desc = (TextView) convertView.findViewById(R.id.news_user_desc);
+                holder.menuimage = convertView.findViewById(R.id.news_user_image);
 
                 convertView.setTag(holder);
             }
@@ -140,13 +136,17 @@ public class Events_Display_Vendor extends AppCompatActivity {
             {
                 holder = (MovieAdap.ViewHolder) convertView.getTag();
             }
-            final events_list_vendor ccitacc = movieModelList.get(position);
+            final news_list ccitacc = movieModelList.get(position);
 
 
             try
             {
                 holder.textone.setText(ccitacc.getTitle());
-                holder.texttwo_desc.setText(ccitacc.getDescription());
+                String hh=ccitacc.getContent();
+                Spanned htmlAsSpanned = Html.fromHtml(hh);
+                holder.texttwo_desc.setText(htmlAsSpanned);
+
+
                 Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getImage()).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(holder.menuimage);
             }catch (Exception e){
                 e.printStackTrace();
@@ -176,12 +176,12 @@ public class Events_Display_Vendor extends AppCompatActivity {
                     menu.addMenuItem(review_sched);
                 }
             };
-            GV_vendor_view.setMenuCreator(creator);
-            GV_vendor_view.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener()
+            SL_news_user_view.setMenuCreator(creator);
+            SL_news_user_view.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener()
             {
                 @Override
                 public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                     events_list_vendor schedule_history_list = milokilo.get(position);
+                    news_list schedule_history_list = milokilo.get(position);
 
                     switch (index) {
                         case 0:
@@ -192,8 +192,8 @@ public class Events_Display_Vendor extends AppCompatActivity {
                             break;
                         case 1:
                             String ed=schedule_history_list.getId();
-                          // Toast.makeText(getApplicationContext(),ed, Toast.LENGTH_SHORT).show();
-                           callmetodeleteiscount(ed);
+                            // Toast.makeText(getApplicationContext(),ed, Toast.LENGTH_SHORT).show();
+                            //callmetodeleteiscount(ed);
                             break;
                     }
                     return false;
@@ -208,13 +208,13 @@ public class Events_Display_Vendor extends AppCompatActivity {
         }
     }
     @SuppressLint("StaticFieldLeak")
-    public class kilomilo extends AsyncTask<String, String, List<events_list_vendor>> {
+    public class kilomilo extends AsyncTask<String, String, List<news_list>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
         @Override
-        protected List<events_list_vendor> doInBackground(String... params) {
+        protected List<news_list> doInBackground(String... params) {
             HttpURLConnection connection = null;
             BufferedReader reader = null;
             try {
@@ -231,10 +231,10 @@ public class Events_Display_Vendor extends AppCompatActivity {
                 connection.setRequestMethod("POST");
                 connection.connect();
                 JSONObject auth=new JSONObject();
-                auth.put("QueryFor","Vendor");
+                auth.put("QueryFor","User");
                 auth.put("UserId",s_vendor_disc);
                 auth.put("PageNumber", "1");
-                auth.put("RowsPerPage", "50");
+                auth.put("RowsPerPage", "5");
                 printout = new DataOutputStream(connection.getOutputStream ());
                 printout.writeBytes(auth.toString());
                 printout.flush ();
@@ -255,7 +255,7 @@ public class Events_Display_Vendor extends AppCompatActivity {
                 Gson gson = new Gson();
                 for (int i = 0; i < parentArray.length(); i++) {
                     JSONObject finalObject = parentArray.getJSONObject(i);
-                    events_list_vendor catego = gson.fromJson(finalObject.toString(), events_list_vendor.class);
+                    news_list catego = gson.fromJson(finalObject.toString(), news_list.class);
                     milokilo.add(catego);
                 }
                 return milokilo;
@@ -276,30 +276,26 @@ public class Events_Display_Vendor extends AppCompatActivity {
             return null;
         }
         @Override
-        protected void onPostExecute(final List<events_list_vendor> movieMode) {
+        protected void onPostExecute(final List<news_list> movieMode) {
             super.onPostExecute(movieMode);
             if((movieMode != null) && (movieMode.size()>0)){
-                GV_vendor_view.setVisibility(View.VISIBLE);
-            MovieAdap adapter = new MovieAdap(getApplicationContext(), R.layout.content_event_list_vendor, movieMode);
-                GV_vendor_view.setAdapter(adapter);
-                GV_vendor_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                SL_news_user_view.setVisibility(View.VISIBLE);
+               MovieAdap adapter = new MovieAdap(getApplicationContext(), R.layout.content_news__display, movieMode);
+                SL_news_user_view.setAdapter(adapter);
+                SL_news_user_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        events_list_vendor item = movieMode.get(position);
-                        Intent intent = new Intent(getApplicationContext(),EventDetails_Vendor.class);
-                        intent.putExtra("event_v_id",item.getId());
-                        intent.putExtra("event_v_userid",item.getUserId());
-                        intent.putExtra("event_v_title",item.getTitle());
-                        intent.putExtra("event_v_name",item.getName());
-                        intent.putExtra("event_v_image",item.getImage());
-                        intent.putExtra("event_v_desc",item.getDescription());
-                        intent.putExtra("event_v_location",item.getLocation());
-                        intent.putExtra("event_v_latitude",item.getLatitude());
-                        intent.putExtra("event_v_longitude",item.getLongitude());
-                        intent.putExtra("event_v_startdate",item.getEventStart());
-                        intent.putExtra("event_v_enddate",item.getEventEnd());
-                        intent.putExtra("event_v_duration",item.getDuration());
-                        intent.putExtra("event_v_amount",item.getAmount());
+                        news_list item = movieMode.get(position);
+                        Intent intent = new Intent(getApplicationContext(),NewsDetails_User.class);
+                        intent.putExtra("news_v_id",item.getId());
+                        intent.putExtra("news_v_userid",item.getUserId());
+                        intent.putExtra("news_v_title",item.getTitle());
+                        intent.putExtra("news_v_name",item.getName());
+                        intent.putExtra("news_v_image",item.getImage());
+                        intent.putExtra("news_v_typeid",item.getNewsTypeId());
+                        intent.putExtra("news_v_url",item.getURL());
+                        intent.putExtra("news_v_content",item.getContent());
+
 
 
                         startActivity(intent);
@@ -310,58 +306,58 @@ public class Events_Display_Vendor extends AppCompatActivity {
 
         }
     }
-    public void callmetodeleteiscount(String id)
-    {
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("Id", id);
-            final String requestBody = jsonBody.toString();
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_delete_events, new Response.Listener<String>() {
-                public void onResponse(String response) {
-                    new PromptDialog(Events_Display_Vendor.this)
-                            .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
-                            .setAnimationEnable(true)
-                            .setTitleText("Your Event Deleted Successfully")
-                            .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                                @Override
-                                public void onClick(PromptDialog dialog) {
-                                   startActivity(new Intent(Events_Display_Vendor.this,Events_Display_Vendor.class));
-                                }
-                            }).show();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                }
-            }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<String, String>();
-                    //// headers.put("Content-Type", "application/json");
-                    // headers.put("x-tutor-app-id", "tutor-app-android");
-                    headers.put("x-api-type","Android");
-                    headers.put("x-api-key",s_vendor_token);
-                    return headers;
-                }
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return requestBody == null ? null : requestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                        return null;
-                    }
-                }
-            };
-
-            requestQueue.add(stringRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void callmetodeleteiscount(String id)
+//    {
+//        try {
+//            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+//            JSONObject jsonBody = new JSONObject();
+//            jsonBody.put("Id", id);
+//            final String requestBody = jsonBody.toString();
+//            StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_delete_events, new Response.Listener<String>() {
+//                public void onResponse(String response) {
+//                    new PromptDialog(News_Display.this)
+//                            .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+//                            .setAnimationEnable(true)
+//                            .setTitleText("Your Event Deleted Successfully")
+//                            .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+//                                @Override
+//                                public void onClick(PromptDialog dialog) {
+//                                    startActivity(new Intent(Events_Display.this,Events_Display.class));
+//                                }
+//                            }).show();
+//                }
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                }
+//            }) {
+//                @Override
+//                public String getBodyContentType() {
+//                    return "application/json; charset=utf-8";
+//                }
+//                @Override
+//                public Map<String, String> getHeaders() throws AuthFailureError {
+//                    HashMap<String, String> headers = new HashMap<String, String>();
+//                    //// headers.put("Content-Type", "application/json");
+//                    // headers.put("x-tutor-app-id", "tutor-app-android");
+//                    headers.put("x-api-type","Android");
+//                    headers.put("x-api-key",s_vendor_token);
+//                    return headers;
+//                }
+//                @Override
+//                public byte[] getBody() throws AuthFailureError {
+//                    try {
+//                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+//                    } catch (UnsupportedEncodingException uee) {
+//                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+//                        return null;
+//                    }
+//                }
+//            };
+//
+//            requestQueue.add(stringRequest);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

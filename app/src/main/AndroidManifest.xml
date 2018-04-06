@@ -168,6 +168,36 @@
         <activity
             android:name=".EventDetails_Vendor"
             android:label="@string/title_activity_event_details__vendor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EventDetails_User"
+            android:label="@string/title_activity_event_details__user"
+            android:parentActivityName=".Events_Display"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.weqar.weqar.Events_Display" />
+        </activity>
+        <activity
+            android:name=".AddEvents_User"
+            android:label="@string/title_activity_add_events__user"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".News_Display"
+            android:label="@string/title_activity_news__display"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NewsDetails_User"
+            android:label="@string/title_activity_news_details__user"
+            android:parentActivityName=".News_Display"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.weqar.weqar.News_Display" />
+        </activity>
+        <activity
+            android:name=".DashboardDetails"
+            android:label="@string/title_activity_dashboard_details"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

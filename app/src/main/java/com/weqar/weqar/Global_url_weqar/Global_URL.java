@@ -23,6 +23,7 @@ public class Global_URL {
     public static String user_show_discount=Base_url+"api/Discounts/viewall";
     public static String user_show_jobs=Base_url+"api/job/viewall";
     public static String user_show_dashboard=Base_url+"api/Dashboard/view";
+    public  static  String user_show_news=Base_url+"api/News/get";
 
 
 
@@ -44,9 +45,8 @@ public class Global_URL {
     public  static  String Vendor_job_delete=Base_url+"api/job/delete";
     public  static  String Vendor_job_edit=Base_url+"api/job/update";
     public  static  String Vendor_add_event=Base_url+"api/Event/add";
-    public  static  String Vendor_show_allevents=Base_url+"api/Event/viewall";
+    public  static  String Vendor_show_allevents=Base_url+"api/event/get";
     public  static  String Vendor_delete_events=Base_url+"api/Event/delete";
-    public  static  String Vendor_show_event_onid=Base_url+"api/Event/view";
 
 
     public static String getDetails=Base_url+"api/user/get";
