@@ -1,5 +1,6 @@
 package com.weqar.weqar;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +42,7 @@ public class SignupActivity extends AppCompatActivity {
     String S_username,S_emailid,S_password,S_confirmpassword,SemailPattern,SemailInput,S_user_type;
     Button B_signup,B_sel_user,B_sel_vendor;
     Context context;
+    ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,11 @@ public class SignupActivity extends AppCompatActivity {
         B_sel_vendor=findViewById(R.id.Signup_But_vendor);
         context=this;
         S_user_type="user";
+        dialog = new ProgressDialog(this);
+        dialog = new ProgressDialog(this);
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.setMessage("Loading. Please wait...");
 
         ET_username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -220,7 +227,7 @@ public class SignupActivity extends AppCompatActivity {
                                             new PromptDialog(SignupActivity.this)
                                                     .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
                                                     .setAnimationEnable(true)
-                                                    .setTitleText("Password Mismatc")
+                                                    .setTitleText("Password Mismatch")
                                                     .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
                                                         @Override
                                                         public void onClick(PromptDialog dialog) {

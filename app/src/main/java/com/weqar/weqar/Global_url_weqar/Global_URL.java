@@ -1,9 +1,5 @@
 package com.weqar.weqar.Global_url_weqar;
 
-import android.bluetooth.BluetoothAssignedNumbers;
-
-import java.security.PublicKey;
-
 /**
  * Created by andriod on 20/2/18.
  */
@@ -12,6 +8,9 @@ public class Global_URL {
     public static  String Base_url ="http://dev.weqar.co/webapi/";
     public static String Image_URL="http://dev.weqar.co/webAPI/api/";
 
+//    public static  String Base_url ="https://weqar.co/webapi/";
+//    public static String Image_URL="https://weqar.co/webAPI/api/";
+//
 
     public static  String User_signup= Base_url + "api/user/register";
     public static  String User_signin= Base_url + "api/user/mobilelogin";
@@ -24,6 +23,14 @@ public class Global_URL {
     public static String user_show_jobs=Base_url+"api/job/viewall";
     public static String user_show_dashboard=Base_url+"api/Dashboard/view";
     public  static  String user_show_news=Base_url+"api/News/get";
+    public  static  String user_dashboard_discount_det=Base_url+"api/discounts/getbyid";
+    public  static  String user_dashboard_event_det=Base_url+"api/Event/view";
+    public  static  String user_dashboard_news_det=Base_url+"api/News/viewNews";
+    public  static  String user_event_edit=Base_url+"api/Event/update";
+    public  static  String user_getnews_type=Base_url+"api/system/newstypes";
+    public  static  String user_addnews=Base_url+"api/News/add";
+    public  static  String user_delete_news=Base_url+"api/News/delete";
+    public  static  String user_edit_news=Base_url+"api/News/update";
 
 
 

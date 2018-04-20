@@ -74,6 +74,6 @@
         android:layout_height="wrap_content"
         android:visibility="invisible"
        android:layout_centerInParent="true"
-        android:src="@drawable/discount_noitems_image"
+        android:background="@drawable/discount_noitems_image"
    />
 </RelativeLayout>

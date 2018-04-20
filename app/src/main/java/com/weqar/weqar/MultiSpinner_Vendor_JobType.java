@@ -55,6 +55,7 @@ public class MultiSpinner_Vendor_JobType extends AppCompatActivity {
    String subjectnameid;
     Context context;
     ImageView IV_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +74,9 @@ public class MultiSpinner_Vendor_JobType extends AppCompatActivity {
                 finish();
             }
         });
+        Intent intent = getIntent();
+
+
         listViewWithCheckBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -134,6 +138,7 @@ public class MultiSpinner_Vendor_JobType extends AppCompatActivity {
             final MultispinnerList supl = ScheduleModeList.get(position);
             holder.subjectname.setText(supl.getMulsubject());
             holder.subjectid.setText(supl.getMulsubjectid());
+
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

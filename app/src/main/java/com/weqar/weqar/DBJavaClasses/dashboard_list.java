@@ -13,6 +13,9 @@ public class dashboard_list implements Parcelable{
     String Title;
     String  Logo;
     String  Image;
+    String Description;
+    String StartDate;
+    String EndDate;
 
     protected dashboard_list(Parcel in) {
         Type = in.readString();
@@ -20,19 +23,10 @@ public class dashboard_list implements Parcelable{
         Title = in.readString();
         Logo = in.readString();
         Image = in.readString();
+        Description = in.readString();
+        StartDate = in.readString();
+        EndDate = in.readString();
     }
-
-    public static final Creator<dashboard_list> CREATOR = new Creator<dashboard_list>() {
-        @Override
-        public dashboard_list createFromParcel(Parcel in) {
-            return new dashboard_list(in);
-        }
-
-        @Override
-        public dashboard_list[] newArray(int size) {
-            return new dashboard_list[size];
-        }
-    };
 
     public String getType() {
         return Type;
@@ -74,9 +68,32 @@ public class dashboard_list implements Parcelable{
         Image = image;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
+
+    public String getStartDate() {
+        return StartDate;
+    }
+
+    public void setStartDate(String startDate) {
+        StartDate = startDate;
+    }
+
+    public String getEndDate() {
+        return EndDate;
+    }
+
+    public void setEndDate(String endDate) {
+        EndDate = endDate;
+    }
+
+    public static Creator<dashboard_list> getCREATOR() {
+        return CREATOR;
     }
 
     @Override
@@ -86,5 +103,25 @@ public class dashboard_list implements Parcelable{
         dest.writeString(Title);
         dest.writeString(Logo);
         dest.writeString(Image);
+        dest.writeString(Description);
+        dest.writeString(StartDate);
+        dest.writeString(EndDate);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<dashboard_list> CREATOR = new Creator<dashboard_list>() {
+        @Override
+        public dashboard_list createFromParcel(Parcel in) {
+            return new dashboard_list(in);
+        }
+
+        @Override
+        public dashboard_list[] newArray(int size) {
+            return new dashboard_list[size];
+        }
+    };
 }

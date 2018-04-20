@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -73,7 +75,9 @@ public class News_Display extends AppCompatActivity {
         setContentView(R.layout.activity_news__display);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Shared_user_details = getSharedPreferences("user_detail_mode", 0);
+        if (isConnectedToNetwork()) {
+
+            Shared_user_details = getSharedPreferences("user_detail_mode", 0);
         s_vendor_disc = Shared_user_details.getString("weqar_uid", null);
         s_vendor_token = Shared_user_details.getString("weqar_token", null);
 
@@ -90,11 +94,25 @@ public class News_Display extends AppCompatActivity {
         IV_addews_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(News_Display.this, AddEvents_User.class));
+                startActivity(new Intent(News_Display.this, AddNews_User.class));
             }
         });
 
         new kilomilo().execute(Global_URL.user_show_news);
+        }
+        else
+        {
+            setContentView(R.layout.content_if_nointernet);
+            ImageView but_retry = findViewById(R.id.nointernet_retry);
+            but_retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(News_Display.this, News_Display.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
     }
     public class MovieAdap extends ArrayAdapter
     {
@@ -185,15 +203,21 @@ public class News_Display extends AppCompatActivity {
 
                     switch (index) {
                         case 0:
-                            Intent intent=new Intent(getApplicationContext(),Discount_Edit_Vendor.class);
-                            intent.putExtra("put_discountid_fordisc_edit",schedule_history_list.getId());
+                             Intent intent=new Intent(getApplicationContext(),News_Edit_User.class);
+                            intent.putExtra("putu_userid_fornews_edit",schedule_history_list.getUserId());
+                            intent.putExtra("putu_newsid_fornews_edit",schedule_history_list.getId());
+                            intent.putExtra("putu_url_fornews_edit",schedule_history_list.getURL());
+                            intent.putExtra("putu_title_fornews_edit",schedule_history_list.getTitle());
+                            intent.putExtra("putu_type_fornews_edit",schedule_history_list.getNewsTypeId());
+                            intent.putExtra("putu_image_fornews_edit",schedule_history_list.getImage());
+                            intent.putExtra("putu_content_fornews_edit",schedule_history_list.getContent());
 
                             startActivity(intent);
                             break;
                         case 1:
                             String ed=schedule_history_list.getId();
                             // Toast.makeText(getApplicationContext(),ed, Toast.LENGTH_SHORT).show();
-                            //callmetodeleteiscount(ed);
+                          callmetodeletenews(ed);
                             break;
                     }
                     return false;
@@ -306,58 +330,64 @@ public class News_Display extends AppCompatActivity {
 
         }
     }
-//    public void callmetodeleteiscount(String id)
-//    {
-//        try {
-//            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-//            JSONObject jsonBody = new JSONObject();
-//            jsonBody.put("Id", id);
-//            final String requestBody = jsonBody.toString();
-//            StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_delete_events, new Response.Listener<String>() {
-//                public void onResponse(String response) {
-//                    new PromptDialog(News_Display.this)
-//                            .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
-//                            .setAnimationEnable(true)
-//                            .setTitleText("Your Event Deleted Successfully")
-//                            .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-//                                @Override
-//                                public void onClick(PromptDialog dialog) {
-//                                    startActivity(new Intent(Events_Display.this,Events_Display.class));
-//                                }
-//                            }).show();
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                }
-//            }) {
-//                @Override
-//                public String getBodyContentType() {
-//                    return "application/json; charset=utf-8";
-//                }
-//                @Override
-//                public Map<String, String> getHeaders() throws AuthFailureError {
-//                    HashMap<String, String> headers = new HashMap<String, String>();
-//                    //// headers.put("Content-Type", "application/json");
-//                    // headers.put("x-tutor-app-id", "tutor-app-android");
-//                    headers.put("x-api-type","Android");
-//                    headers.put("x-api-key",s_vendor_token);
-//                    return headers;
-//                }
-//                @Override
-//                public byte[] getBody() throws AuthFailureError {
-//                    try {
-//                        return requestBody == null ? null : requestBody.getBytes("utf-8");
-//                    } catch (UnsupportedEncodingException uee) {
-//                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-//                        return null;
-//                    }
-//                }
-//            };
-//
-//            requestQueue.add(stringRequest);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void callmetodeletenews(String id)
+    {
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("Id", id);
+            final String requestBody = jsonBody.toString();
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.user_delete_news, new Response.Listener<String>() {
+                public void onResponse(String response) {
+                    new PromptDialog(News_Display.this)
+                            .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+                            .setAnimationEnable(true)
+                            .setTitleText("Your News Deleted Successfully")
+                            .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+                                @Override
+                                public void onClick(PromptDialog dialog) {
+                                    startActivity(new Intent(News_Display.this,News_Display.class));
+                                }
+                            }).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    //// headers.put("Content-Type", "application/json");
+                    // headers.put("x-tutor-app-id", "tutor-app-android");
+                    headers.put("x-api-type","Android");
+                    headers.put("x-api-key",s_vendor_token);
+                    return headers;
+                }
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+            };
+
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
 }

@@ -3,9 +3,6 @@ package com.weqar.weqar.Fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -18,10 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -32,17 +27,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.weqar.weqar.DBJavaClasses.discountcard_list;
-import com.weqar.weqar.DBJavaClasses.discountcard_list_vendor;
 import com.weqar.weqar.DiscountDetails_User;
-import com.weqar.weqar.DiscountDetails_Vendor;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
-import com.weqar.weqar.HomeScreen;
-import com.weqar.weqar.JavaClasses.ImageConverter;
 import com.weqar.weqar.JavaClasses.RecyclerViewAdapter_Category;
-import com.weqar.weqar.LoginActivity;
 import com.weqar.weqar.R;
 
 import org.json.JSONArray;
@@ -135,9 +124,10 @@ Context c;
                 holder = new ViewHolder();
                 holder.textone = (TextView) convertView.findViewById(R.id.TV_disc_percentage);
                 holder.TV_enddate = (TextView) convertView.findViewById(R.id.text_enddate);
+                holder.TVstartdate = (TextView) convertView.findViewById(R.id.text_startdate);
                 holder.menuimage = convertView.findViewById(R.id.roundimg_one);
                 holder.RIV_logo = convertView.findViewById(R.id.roundedImageView);
-                holder.ratingbar=convertView.findViewById(R.id.RB_vendr_rating);
+                //holder.ratingbar=convertView.findViewById(R.id.RB_vendr_rating);
                 convertView.setTag(holder);
             }//ino
             else {
@@ -145,23 +135,18 @@ Context c;
             }
             discountcard_list ccitacc = movieModelList.get(position);
             String getdiscount_type= ccitacc.getDiscountType();
-            if(getdiscount_type.equals("1"))
-            {
-                holder.textone.setText(ccitacc.getPercentage()+"% "+ccitacc.getTitle());
 
-            }
-            else
-            {
                 holder.textone.setText(ccitacc.getTitle());
 
-            }
+
             String gg=ccitacc.getPercentage();
             Integer k=Integer.parseInt(gg);
             Integer kk=k/20;
             Float g=(float) kk;
-            holder.ratingbar.setRating(g);
-            String second=ccitacc.getEndDate().substring(0,10);
-            holder.TV_enddate.setText("End Date: "+second);
+          //  holder.ratingbar.setRating(g);
+
+            holder.TV_enddate.setText("Start Date: "+ccitacc.getStartDate());
+            holder.TVstartdate.setText("End Date: "+ccitacc.getEndDate());
             String ing=ccitacc.getImage().trim();
             String ings=ccitacc.getLogo().trim();
             try
@@ -172,10 +157,10 @@ Context c;
             return convertView;
         }
         class ViewHolder {
-            public TextView textone,TV_enddate;
+            public TextView textone,TVstartdate,TV_enddate;
             private ImageView menuimage;
             private CircleImageView RIV_logo;
-            RatingBar ratingbar;
+           // RatingBar ratingbar;
         }
     }
     @SuppressLint("StaticFieldLeak")

@@ -99,6 +99,6 @@ android:scrollbars="none"
         android:layout_below="@+id/home_hoizontal_scroll"
 android:visibility="invisible"
 
-        android:src="@drawable/discount_noitems_image"
+        android:background="@drawable/discount_noitems_image"
         />
 </RelativeLayout>

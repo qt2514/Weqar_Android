@@ -50,4 +50,28 @@
     <string name="title_activity_news__display">News_Display</string>
     <string name="title_activity_news_details__user">NewsDetails_User</string>
     <string name="title_activity_dashboard_details">DashboardDetails</string>
+    <string name="title_activity_events__edit__user">Events_Edit_User</string>
+    <string name="title_activity_dashboard_details__vendor">DashboardDetails_Vendor</string>
+    <string name="title_activity_news__display__vendor">News_Display_Vendor</string>
+    <string name="title_activity_news_details__vendor">NewsDetails_Vendor</string>
+    <string name="title_activity_events__edit__vendor">Events_Edit_Vendor</string>
+    <string name="title_activity_add_news__user">AddNews_User</string>
+    <string name="title_activity_news__edit__user">News_Edit_User</string>
+    <string name="title_activity_home_screen__guest">HomeScreen_Guest</string>
+    <string name="title_activity_discount_details__guest">DiscountDetails_Guest</string>
+    <string name="title_activity_job_details__guest">JobDetails_Guest</string>
+    <string name="title_activity_dashboard_details__guest">DashboardDetails_Guest</string>
+    <string name="title_activity_news_display__guest">NewsDisplay_Guest</string>
+    <string name="title_activity_news_details__guest">NewsDetails_Guest</string>
+    <string name="title_activity_events_display__guest">EventsDisplay_Guest</string>
+    <string name="title_activity_event_details__guest">EventDetails_Guest</string>
+    <string name="title_activity_settings__profile__edit__user">Settings_Profile_Edit_User</string>
+    <string name="title_activity_settings__profile__edit__vendor">Settings_Profile_Edit_Vendor
+    </string>
+    <string name="title_activity_settings__profesional__edit__vendor">
+        Settings_Profesional_Edit_Vendor
+    </string>
+    <string name="title_activity_news__edit__vendor">News_Edit_Vendor</string>
+    <string name="title_activity_add_news__vendor">AddNews_Vendor</string>
+    <string name="title_activity_select_location">Map</string>
 </resources>

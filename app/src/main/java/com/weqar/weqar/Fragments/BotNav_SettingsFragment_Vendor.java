@@ -24,9 +24,7 @@ import com.weqar.weqar.DBHandlers.SessionManager;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.LoginActivity;
 import com.weqar.weqar.R;
-import com.weqar.weqar.Settings_AccountActivity;
 import com.weqar.weqar.Settings_HelpActivity;
-import com.weqar.weqar.Settings_ProfileActivity_User;
 import com.weqar.weqar.Settings_ProfileActivity_Vendor;
 
 import org.json.JSONException;
@@ -57,8 +55,8 @@ public class BotNav_SettingsFragment_Vendor extends Fragment {
         View view = inflater.inflate(R.layout.fragment_bot_nav__settings_fragment__vendor, container, false);
         IV_set_profile = view.findViewById(R.id.WIV_set_profile);
         TV_set_profile = view.findViewById(R.id.WTV_set_profile);
-        IV_set_account = view.findViewById(R.id.WIV_set_account);
-        TV_set_account = view.findViewById(R.id.WTV_set_account);
+//        IV_set_account = view.findViewById(R.id.WIV_set_account);
+//        TV_set_account = view.findViewById(R.id.WTV_set_account);
 
         IV_setv_share= view.findViewById(R.id.settings_vendor_share_IV);
         TV_setv_share = view.findViewById(R.id.settings_vendor_share_TV);
@@ -116,18 +114,18 @@ public class BotNav_SettingsFragment_Vendor extends Fragment {
                 startActivity(Intent.createChooser(sharingIntent, " This is about service"));            }
         });
 
-        IV_set_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), Settings_AccountActivity.class));
-            }
-        });
-        TV_set_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), Settings_AccountActivity.class));
-            }
-        });
+//        IV_set_account.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getActivity(), Settings_AccountActivity.class));
+//            }
+//        });
+//        TV_set_account.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getActivity(), Settings_AccountActivity.class));
+//            }
+//        });
         IV_set_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

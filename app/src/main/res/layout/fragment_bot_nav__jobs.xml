@@ -92,11 +92,10 @@
         android:layout_marginBottom="70dp" />
     <ImageView
         android:id="@+id/IV_noitem_jobs"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_below="@+id/RV_jobs_user"
-android:visibility="invisible"
-        android:src="@drawable/job_noitems_image"
+        android:visibility="invisible"
+        android:background="@drawable/job_noitems_image"
         />
 </RelativeLayout>

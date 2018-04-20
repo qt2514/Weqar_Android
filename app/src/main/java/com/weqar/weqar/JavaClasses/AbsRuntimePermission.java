@@ -53,6 +53,9 @@ public abstract class AbsRuntimePermission extends Activity
         else
             {
                 cont=1;
+
+
+
                 onPermissionsGranted(requestCode);
             }
     }

@@ -2,7 +2,6 @@ package com.weqar.weqar.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -29,11 +28,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.weqar.weqar.DBJavaClasses.jobscard_list;
-import com.weqar.weqar.DBJavaClasses.jobscard_list_vendor;
-import com.weqar.weqar.DiscountDetails_Vendor;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
-import com.weqar.weqar.HomeScreen;
-import com.weqar.weqar.JavaClasses.RecyclerViewAdapter_Category;
 import com.weqar.weqar.JavaClasses.RecyclerViewAdapter_JobField;
 import com.weqar.weqar.JobDetails_User;
 import com.weqar.weqar.R;
@@ -134,12 +129,11 @@ public class BotNav_JobsFragment extends Fragment {
                 holder = (MovieAdap.ViewHolder) convertView.getTag();
             }
             jobscard_list ccitacc = movieModelList.get(position);
-            holder.text_jobtype.setText(ccitacc.getJobType());
-            holder.textjobfield.setText(ccitacc.getJobField());
+            holder.text_jobtype.setText(ccitacc.getName());
+            holder.textjobfield.setText(ccitacc.getJobType());
             holder.textdesc.setText(ccitacc.getDescription());
             String first=ccitacc.getClosingDate();
-            String second=first.substring(0,10);
-            holder.textdeadline.setText("Deadline "+second);
+            holder.textdeadline.setText("Deadline "+first);
             try {
                 Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getLogo()).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(holder.IV_logo);
             } catch (Exception e) {
@@ -148,7 +142,7 @@ public class BotNav_JobsFragment extends Fragment {
             return convertView;
         }
         class ViewHolder {
-            public TextView text_jobtype,textjobfield,textdesc,textdeadline;
+            public TextView text_jobtype,textjobfield,textdesc,textdeadline,textdeadlines;
             public CircleImageView IV_logo;
         }
     }

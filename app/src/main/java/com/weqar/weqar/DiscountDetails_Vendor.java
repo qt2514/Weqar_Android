@@ -5,13 +5,12 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -21,9 +20,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class DiscountDetails_Vendor extends AppCompatActivity {
-TextView TV_disc_desc_titlet,TV_disc_desc_title,TV_disc_desc_desc;
-RatingBar disc_desc_rating;
-String s_disc_desc_title,s_disc_desc_desc,s_disc_desc_rating,s_disc_image,s_disc_logo,s_disc_enddate,s_type;
+TextView TV_disc_desc_titlet,TV_disc_desc_title,TV_disc_desc_desc,disc_desc_titlestartdate;
+///RatingBar disc_desc_rating;
+String s_disc_desc_title,s_disc_desc_desc,s_disc_desc_rating,s_disc_image,s_disc_logo,s_disc_enddate,s_type,s_disc_startdate;
 ImageView IV_disc_back_vendor,IV_discdet_image;
 CircleImageView CV_discdet_logo;
 
@@ -39,7 +38,8 @@ CircleImageView CV_discdet_logo;
             TV_disc_desc_title = findViewById(R.id.disc_desc_title);
             TV_disc_desc_titlet = findViewById(R.id.disc_desc_titlet);
             TV_disc_desc_desc = findViewById(R.id.disc_dec_det);
-            disc_desc_rating = findViewById(R.id.disc_desc_rating);
+            disc_desc_titlestartdate = findViewById(R.id.disc_desc_titlestartdate);
+         //   disc_desc_rating = findViewById(R.id.disc_desc_rating);
             IV_disc_back_vendor = findViewById(R.id.disc_back_vendor);
             IV_discdet_image = findViewById(R.id.v_disc_det_image);
             CV_discdet_logo = findViewById(R.id.v_disc_det_det_logo);
@@ -57,11 +57,9 @@ CircleImageView CV_discdet_logo;
             s_disc_desc_rating = intent.getStringExtra("put_per");
             s_disc_desc_desc = intent.getStringExtra("put_desc");
             s_disc_enddate = intent.getStringExtra("put_enddate");
+            s_disc_startdate = intent.getStringExtra("put_startdate");
             Integer k = Integer.parseInt(s_disc_desc_rating);
-            Integer kk = k / 10;
-            Float g = (float) kk;
-            disc_desc_rating.setRating(g);
-
+//           .
             if(s_type.equals("1"))
             {
                 TV_disc_desc_title.setText(s_disc_desc_rating + "% " + s_disc_desc_title);
@@ -72,10 +70,12 @@ CircleImageView CV_discdet_logo;
                 TV_disc_desc_title.setText(s_disc_desc_title);
 
             }
+            Spanned htmlAsSpanned = Html.fromHtml(s_disc_desc_desc);
+            TV_disc_desc_desc.setText(htmlAsSpanned);
 
-            String second=s_disc_enddate.substring(0,10);
-            TV_disc_desc_desc.setText(s_disc_desc_desc);
-            TV_disc_desc_titlet.setText("End Date: "+second);
+           // TV_disc_desc_desc.setText(s_disc_desc_desc);
+            disc_desc_titlestartdate.setText("Start Date: "+s_disc_startdate);
+            TV_disc_desc_titlet.setText("End Date: "+s_disc_enddate);
             try {
                 Picasso.with(this).load(Global_URL.Image_url_load + s_disc_image).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(IV_discdet_image);
 

@@ -1,6 +1,7 @@
 package com.weqar.weqar;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,7 +42,7 @@ import cn.refactor.lib.colordialog.PromptDialog;
 
 public class LoginActivity extends AbsRuntimePermission {
     EditText ET_username,ET_password;
-    Button But_newaxccount;
+    Button But_newaxccount,but_guest;
     CircleButton But_login;
     String S_username,S_password;
     private static final int REQUEST_PERMISSION = 10;
@@ -51,7 +52,8 @@ public class LoginActivity extends AbsRuntimePermission {
     private SessionManager session;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
-    AVLoadingIndicatorView login_loading;
+
+    ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +61,8 @@ public class LoginActivity extends AbsRuntimePermission {
         ET_username = findViewById(R.id.login_username);
         ET_password = findViewById(R.id.login_password);
         But_newaxccount = findViewById(R.id.but_newaccount);
+        but_guest = findViewById(R.id.but_guest);
         But_login = findViewById(R.id.login_but);
-        login_loading = findViewById(R.id.loading_login);
         requestAppPermissions(new String[]{
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.READ_EXTERNAL_STORAGE
@@ -68,7 +70,11 @@ public class LoginActivity extends AbsRuntimePermission {
                 },
 
                 R.string.msg,REQUEST_PERMISSION);
-
+        dialog = new ProgressDialog(this);
+        dialog = new ProgressDialog(this);
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.setMessage("Loading. Please wait...");
         session = new SessionManager(getApplicationContext());
         Shared_user_details = getSharedPreferences("user_detail_mode", 0);
         if (session.isLoggedIn()) {
@@ -109,6 +115,12 @@ public class LoginActivity extends AbsRuntimePermission {
                 startActivity(new Intent(LoginActivity.this, SignupActivity.class));
             }
         });
+            but_guest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(LoginActivity.this,HomeScreen_Guest.class));
+                }
+            });
         But_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,9 +152,7 @@ public class LoginActivity extends AbsRuntimePermission {
                             S_username = ET_username.getText().toString();
                             S_password = ET_password.getText().toString();
                             signin_verif(S_username, S_password);
-                            login_loading.setVisibility(View.VISIBLE);
-                            login_loading.show();
-//                            startActivity(new Intent(LoginActivity.this,ProfileInfo.class));
+dialog.show();//                            startActivity(new Intent(LoginActivity.this,ProfileInfo.class));
 
                         }
                     }
@@ -214,8 +224,7 @@ public class LoginActivity extends AbsRuntimePermission {
                             s_ln_tab3=verification.getBoolean("Tab3");
                             s_username=verification.getString("UserName");
                             s_image=verification.getString("Image");
-                            login_loading.hide();
-                            login_loading.setVisibility(View.INVISIBLE);
+                        dialog.dismiss();
                             new PromptDialog(LoginActivity.this)
                                     .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
                                     .setAnimationEnable(true)
@@ -261,8 +270,7 @@ public class LoginActivity extends AbsRuntimePermission {
                         else
                         {
                             String verification = jObj.getString("Response");
-                        login_loading.hide();
-                            login_loading.setVisibility(View.INVISIBLE);
+                       dialog.dismiss();
 
                             new PromptDialog(LoginActivity.this)
                                 .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)

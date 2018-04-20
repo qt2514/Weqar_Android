@@ -21,6 +21,9 @@ public class events_list_vendor implements Parcelable{
     String EventEnd;
     String Duration;
     String  Amount;
+    String RegistrationRequired;
+    String IsPaid;
+    String Requirements;
 
     protected events_list_vendor(Parcel in) {
         Id = in.readString();
@@ -36,6 +39,9 @@ public class events_list_vendor implements Parcelable{
         EventEnd = in.readString();
         Duration = in.readString();
         Amount = in.readString();
+        RegistrationRequired = in.readString();
+        IsPaid = in.readString();
+        Requirements = in.readString();
     }
 
     @Override
@@ -53,6 +59,9 @@ public class events_list_vendor implements Parcelable{
         dest.writeString(EventEnd);
         dest.writeString(Duration);
         dest.writeString(Amount);
+        dest.writeString(RegistrationRequired);
+        dest.writeString(IsPaid);
+        dest.writeString(Requirements);
     }
 
     @Override
@@ -174,5 +183,29 @@ public class events_list_vendor implements Parcelable{
 
     public void setAmount(String amount) {
         Amount = amount;
+    }
+
+    public String getRegistrationRequired() {
+        return RegistrationRequired;
+    }
+
+    public void setRegistrationRequired(String registrationRequired) {
+        RegistrationRequired = registrationRequired;
+    }
+
+    public String getIsPaid() {
+        return IsPaid;
+    }
+
+    public void setIsPaid(String isPaid) {
+        IsPaid = isPaid;
+    }
+
+    public String getRequirements() {
+        return Requirements;
+    }
+
+    public void setRequirements(String requirements) {
+        Requirements = requirements;
     }
 }

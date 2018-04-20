@@ -50,9 +50,10 @@ public class DiscountDetails_User extends AppCompatActivity {
     List<String> L_disc_edt_percentage;
     List<String> L_disc_det_title;
     List<String> L_det_det_logo;
+    List<String> L_det_det_startdate;
     List<String> L_det_det_enddate;
     List<String> L_det_det_type;
-    String s_disc_det_id,s_disc_det_desc,s_disc_det_image,s_disc_edt_percentage,s_disc_det_title,s_disc_det_type,s_det_det_logo,s_disc_det_enddate;
+    String s_disc_det_id,s_disc_det_desc,s_disc_det_startdate,s_disc_det_image,s_disc_edt_percentage,s_disc_det_title,s_disc_det_type,s_det_det_logo,s_disc_det_enddate;
     String s_lnw_usermailid,s_lnw_discount_id;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
@@ -78,6 +79,7 @@ public class DiscountDetails_User extends AppCompatActivity {
             L_disc_edt_percentage = new ArrayList<String>();
             L_disc_det_title = new ArrayList<String>();
             L_det_det_logo = new ArrayList<String>();
+            L_det_det_startdate = new ArrayList<String>();
             L_det_det_enddate = new ArrayList<String>();
             L_det_det_type = new ArrayList<String>();
             Shared_user_details = getSharedPreferences("user_detail_mode", 0);
@@ -87,7 +89,7 @@ public class DiscountDetails_User extends AppCompatActivity {
             RecyclerViewLayoutManager = new LinearLayoutManager(getApplicationContext());
             RV_discdet_user.setLayoutManager(RecyclerViewLayoutManager);
             RecyclerViewHorizontalAdapter = new RecyclerViewAdapter_DiscountDetails_User(L_disc_det_id, L_disc_det_desc, L_disc_det_image,
-                    L_disc_edt_percentage, L_disc_det_title, L_det_det_logo,L_det_det_enddate, L_det_det_type,this);
+                    L_disc_edt_percentage, L_disc_det_title, L_det_det_logo,L_det_det_startdate,L_det_det_enddate, L_det_det_type,this);
             HorizontalLayout = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
             RV_discdet_user.setLayoutManager(HorizontalLayout);
             RV_discdet_user.setHorizontalScrollBarEnabled(false);
@@ -121,6 +123,7 @@ public class DiscountDetails_User extends AppCompatActivity {
                         s_disc_det_id= object.getString("Id");
                         s_disc_det_desc= object.getString("Description");
                         s_disc_det_image= object.getString("Image");
+                        s_disc_det_startdate= object.getString("StartDate");
                         s_disc_det_enddate= object.getString("EndDate");
                         s_disc_edt_percentage= object.getString("Percentage");
                         s_disc_det_title= object.getString("Title");
@@ -134,6 +137,7 @@ public class DiscountDetails_User extends AppCompatActivity {
                             L_disc_edt_percentage.add(String.valueOf(s_disc_edt_percentage));
                             L_disc_det_title.add(String.valueOf(s_disc_det_title));
                             L_det_det_logo.add(String.valueOf(s_det_det_logo));
+                            L_det_det_startdate.add(String.valueOf(s_disc_det_startdate));
                             L_det_det_enddate.add(String.valueOf(s_disc_det_enddate));
                             L_det_det_type.add(String.valueOf(s_disc_det_type));
                         }catch (Exception e)

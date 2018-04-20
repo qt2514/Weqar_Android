@@ -38,8 +38,6 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import com.tsongkha.spinnerdatepicker.DatePickerDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
-import com.weqar.weqar.JavaClasses.ImageUtil;
-import com.whiteelephant.monthpicker.MonthPickerDialog;
 import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONArray;
@@ -58,8 +56,6 @@ import java.util.Map;
 
 import cn.refactor.lib.colordialog.PromptDialog;
 
-import static com.thefinestartist.utils.service.ServiceUtil.getSystemService;
-
 
 public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     public Boolean s_check_discount;
@@ -75,7 +71,6 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
     ImageView IV_vcomplete_imageupload;
     Button B_vcomplete_complete;
     TextView TV_vcomplete_skip;
-    //second
     TextView et_adddiscount_startdate,et_adddiscount_enddate;
     SearchableSpinner SP_vcomplete_offertype_s;
     EditText et_vcomplete_percentage_s,et_vcomplete_disctitle_s,et_vcomplete_discdesc_s;
@@ -87,8 +82,9 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
     ImageView IV_set_account_back;
-    int check_image_id;
-    int one;
+    int check_image_id,one,v_years,v_months,v_days;
+    Calendar calendar;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +120,7 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
             IV_set_account_back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    startActivity(new Intent(AddDiscount_Vendor.this,HomeScreen_vendor.class));
                     finish();
                 }
             });
@@ -295,18 +292,25 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
 
     @VisibleForTesting
     void showDate(int year, int monthOfYear, int dayOfMonth, int spinnerTheme) {
+        calendar = Calendar.getInstance();
+        v_years = calendar.get(Calendar.YEAR);
+
+        v_months = calendar.get(Calendar.MONTH);
+        v_days = calendar.get(Calendar.DAY_OF_MONTH);
+
         new SpinnerDatePickerDialogBuilder()
                 .context(this)
-                .callback((DatePickerDialog.OnDateSetListener)this)
+                .callback((DatePickerDialog.OnDateSetListener) this)
                 .spinnerTheme(spinnerTheme)
-                .defaultDate(year, monthOfYear, dayOfMonth)
+                .defaultDate(v_years, v_months, v_days)
+                .minDate(v_years, v_months, v_days)
                 .build()
                 .show();
     }
     @Override
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-        String date = (monthOfYear+1)+"/"+dayOfMonth+"/"+year;
+        String date =dayOfMonth +"-"+(monthOfYear+1)+"-"+year;
 
         if(one==1)
         {
@@ -445,8 +449,6 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
                                 TinyDB tinydb = new TinyDB(this);
                                 tinydb.putBoolean("hgffh", true);
                                 startActivity(intent);
-
-
                         }
                     }
                 }
@@ -472,7 +474,6 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
             final String requestBody = jsonBody.toString();
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.vendor_insert_completedetails, new Response.Listener<String>() {
                 public void onResponse(String response) {
-                    Log.i("vendor_complete_response",response);
 
                 }
             }, new Response.ErrorListener() {
@@ -492,11 +493,7 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
                     HashMap<String, String> headers = new HashMap<String, String>();
                     headers.put("X-API-TYPE", "Android");
                     headers.put("x-api-key",s_lnw_usertoken);
-
-
                     return headers;
-
-
                 }
                 @Override
                 public byte[] getBody() throws AuthFailureError {
@@ -519,15 +516,6 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
 
         if (requestCode == 1005 && resultCode == RESULT_OK && data != null) {
 
-//            Uri imageUri = data.getData();
-//            try {
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-//                IV_vcomplete_imageupload.setImageBitmap(bitmap);
-//                upload_vendor_complete_image(bitmap);
-//            }
-//            catch (IOException e) {
-//                e.printStackTrace();
-//            }
             Uri imageUri = data.getData();
 
             assert imageUri != null;
@@ -552,15 +540,6 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
         }
        else if (requestCode == 1006 && resultCode == RESULT_OK && data != null) {
 
-//            Uri imageUri = data.getData();
-//            try {
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-//                IV_vcomplefileupload_s.setImageBitmap(bitmap);
-//                upload_vendor_complete_image_s(bitmap);
-//            }
-//            catch (IOException e) {
-//                e.printStackTrace();
-//            }
             Uri imageUri = data.getData();
 
             assert imageUri != null;
@@ -612,9 +591,6 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
                     {
                         JSONObject jObj = new JSONObject(response);
                         s_images=jObj.getString("Response");
-                        Log.i("user_vendor_complete_image_response",response);
-
-
                     }
                     catch (JSONException e) {
                         e.printStackTrace();
@@ -677,7 +653,6 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
                     {
                         JSONObject jObj = new JSONObject(response);
                         s_image=jObj.getString("Response");
-                        Log.i("user_vendor_complete_image_response",response);
 
 
                     }
@@ -861,19 +836,12 @@ public class AddDiscount_Vendor extends AppCompatActivity implements DatePickerD
             jsonBody.put("Percentage", s_disc_percentage);
             jsonBody.put("DiscountType", s_disc_offertype);
 
-
-
-
-
             final String requestBody = jsonBody.toString();
             Log.i("checkandro",requestBody);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Global_URL.Vendor_insert_second_Discount, new Response.Listener<String>() {
 
                 public void onResponse(String response) {
                     // startActivity(new Intent(ProfileInfo.this, LoginActivity.class));
-
-                    Log.i("vendor_professional_response",response);
-
                 }
             }, new Response.ErrorListener() {
                 @Override

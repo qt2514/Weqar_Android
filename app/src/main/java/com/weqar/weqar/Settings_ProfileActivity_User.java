@@ -48,6 +48,7 @@ public class Settings_ProfileActivity_User extends AppCompatActivity {
         SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
     View v_one,v_two;
+    TextView T_set_prof_user_edit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,11 @@ public class Settings_ProfileActivity_User extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (isConnectedToNetwork()) {
+            Shared_user_details = getSharedPreferences("user_detail_mode", 0);
 
+            s_user_id = Shared_user_details.getString("sp_w_userid", null);
+            s_user_token = Shared_user_details.getString("sp_w_apikey", null);
+            getmydet(s_user_id);
 
             IV_profile_account_back = findViewById(R.id.account_setting_back);
             CV_user_profileimage = findViewById(R.id.CV_user_profileimage);
@@ -65,6 +70,23 @@ public class Settings_ProfileActivity_User extends AppCompatActivity {
             TV_user_profilemname = findViewById(R.id.TV_user_profilemname);
             TV_user_profiletlname = findViewById(R.id.TV_user_profiletlname);
             TV_user_profilelname = findViewById(R.id.TV_user_profilelname);
+            T_set_prof_user_edit=findViewById(R.id.T_set_prof_user_edit);
+            T_set_prof_user_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(Settings_ProfileActivity_User.this,Settings_Profile_Edit_User.class);
+                    intent.putExtra("put_s_userid",s_user_id);
+                    intent.putExtra("put_s_address",s_user_p_address);
+                    intent.putExtra("put_s_image",s_user_p_image);
+                    intent.putExtra("put_s_fname",s_user_p_fname);
+                    intent.putExtra("put_s_mname",s_user_p_mname);
+                    intent.putExtra("put_s_lname",s_user_p_lname);
+                    intent.putExtra("put_s_email",s_user_p_email);
+                    intent.putExtra("put_s_mobile",s_user_p_mobile);
+                    intent.putExtra("put_s_country",s_user_p_country);
+                    startActivity(intent);
+                }
+            });
             v_one = findViewById(R.id.view_one);
             v_two = findViewById(R.id.view_two);
             TV_user_profile_name = findViewById(R.id.TV_user_profilename);
@@ -75,14 +97,10 @@ public class Settings_ProfileActivity_User extends AppCompatActivity {
             IV_profile_account_back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finish();
+                   startActivity(new Intent(Settings_ProfileActivity_User.this,HomeScreen.class));
                 }
             });
-            Shared_user_details = getSharedPreferences("user_detail_mode", 0);
 
-            s_user_id = Shared_user_details.getString("sp_w_userid", null);
-            s_user_token = Shared_user_details.getString("sp_w_apikey", null);
-            getmydet(s_user_id);
         }
 
         else

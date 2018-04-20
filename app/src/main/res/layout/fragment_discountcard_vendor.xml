@@ -61,7 +61,8 @@
             android:layout_alignStart="@+id/TV_disc_percentage_vendor"
             android:layout_alignTop="@+id/IV_vdisc_image_vendor"
 
-            android:layout_marginTop="19dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
 
             android:clickable="false"
             android:background="@drawable/rounded"
@@ -77,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/RIV_vendor_logo_vendor"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:maxLines="1"
@@ -90,14 +91,29 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             />
-
+                <TextView
+                    android:id="@+id/text_vendor_discount_startdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/TV_disc_percentage_vendor"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Percide January 7 2018 Dont miss it"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="11sp"
+                    android:maxLength="27"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"/>
         <TextView
             android:id="@+id/text_vendor_discount_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/TV_disc_percentage_vendor"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="2dp"
+            android:layout_below="@+id/text_vendor_discount_startdate"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="Percide January 7 2018 Dont miss it"
@@ -108,26 +124,26 @@ android:maxLength="27"
             android:focusable="false"
             android:focusableInTouchMode="false"/>
 
-        <RatingBar
-            android:id="@+id/RB_vendr_rating_vendor"
-            style="?android:attr/ratingBarStyleIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_vendor_discount_desc"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="3dp"
+        <!--<RatingBar-->
+            <!--android:id="@+id/RB_vendr_rating_vendor"-->
+            <!--style="?android:attr/ratingBarStyleIndicator"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/text_vendor_discount_desc"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_marginTop="3dp"-->
 
-            android:max="5"
-            android:progressBackgroundTint="@color/coloryellows"
-            android:progressTint="@color/coloryellow"
-            android:rating="5"
-            android:scaleX=".5"
-            android:scaleY=".5"
-            android:transformPivotX="0dp"
-            android:transformPivotY="0dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"/>
+            <!--android:max="5"-->
+            <!--android:progressBackgroundTint="@color/coloryellows"-->
+            <!--android:progressTint="@color/coloryellow"-->
+            <!--android:rating="5"-->
+            <!--android:scaleX=".5"-->
+            <!--android:scaleY=".5"-->
+            <!--android:transformPivotX="0dp"-->
+            <!--android:transformPivotY="0dp"-->
+            <!--android:clickable="false"-->
+            <!--android:focusable="false"-->
+            <!--android:focusableInTouchMode="false"/>-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

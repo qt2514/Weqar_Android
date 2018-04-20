@@ -66,60 +66,60 @@ android:paddingRight="20dp"
                 android:background="@drawable/selector_bg_edit"
                 android:paddingBottom="5dp" />
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:scrollbars="vertical"
-                android:layout_height="wrap_content">
-                <android.support.design.widget.TextInputLayout
+            <!--<ScrollView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:scrollbars="vertical"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<android.support.design.widget.TextInputLayout-->
 
-                    android:textColorHint="@color/colorBlack"
-                    android:theme="@style/TextLabel"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <EditText
-                        android:id="@+id/et_vaddjobs_companyinfo"
-                        android:textSize="16sp"
-                        android:hint="Company Info"
-                        android:gravity="start"
-                        android:padding="10dp"
-                        android:textColor="#000"
-                        android:lines="6"
-                        android:editable="true"
-                        android:enabled="true"
-                        android:minLines="6"
-                        android:maxLines="6"
-                        android:isScrollContainer="true"
-                        android:focusable="true"
+                    <!--android:textColorHint="@color/colorBlack"-->
+                    <!--android:theme="@style/TextLabel"-->
+                    <!--android:layout_marginTop="20dp"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+                    <!--<EditText-->
+                        <!--android:id="@+id/et_vaddjobs_companyinfo"-->
+                        <!--android:textSize="16sp"-->
+                        <!--android:hint="Company Info"-->
+                        <!--android:gravity="start"-->
+                        <!--android:padding="10dp"-->
+                        <!--android:textColor="#000"-->
+                        <!--android:lines="6"-->
+                        <!--android:editable="true"-->
+                        <!--android:enabled="true"-->
+                        <!--android:minLines="6"-->
+                        <!--android:maxLines="6"-->
+                        <!--android:isScrollContainer="true"-->
+                        <!--android:focusable="true"-->
 
-                        android:overScrollMode="always"
-                        android:scrollbarStyle="insideInset"
-                        android:scrollbars="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="text|textMultiLine|textCapSentences"
-                        android:background="@drawable/selector_bg_edit"
-                        android:textCursorDrawable="@drawable/bg_input_cursor"
-                        android:paddingBottom="2dp" />
+                        <!--android:overScrollMode="always"-->
+                        <!--android:scrollbarStyle="insideInset"-->
+                        <!--android:scrollbars="vertical"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:inputType="text|textMultiLine|textCapSentences"-->
+                        <!--android:background="@drawable/selector_bg_edit"-->
+                        <!--android:textCursorDrawable="@drawable/bg_input_cursor"-->
+                        <!--android:paddingBottom="2dp" />-->
 
 
-                </android.support.design.widget.TextInputLayout>
-            </ScrollView>
+                <!--</android.support.design.widget.TextInputLayout>-->
+            <!--</ScrollView>-->
+            <!--<TextView-->
+                <!--android:textSize="16sp"-->
+                <!--android:hint="Opening Date"-->
+                <!--android:layout_marginTop="35dp"-->
+                <!--android:textColorHint="#000"-->
+
+                <!--android:textColor="#000"-->
+                <!--android:id="@+id/tv_vaddjobs_openingdate"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@drawable/selector_bg_edit"-->
+                <!--android:paddingBottom="7dp" />-->
             <TextView
                 android:textSize="16sp"
-                android:hint="Opening Date"
-                android:layout_marginTop="35dp"
-                android:textColorHint="#000"
-
-                android:textColor="#000"
-                android:id="@+id/tv_vaddjobs_openingdate"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/selector_bg_edit"
-                android:paddingBottom="7dp" />
-            <TextView
-                android:textSize="16sp"
-                android:hint="Closing Date"
+                android:hint="Deadline"
                 android:layout_marginTop="35dp"
                 android:textColorHint="#000"
                 android:textColor="#000"
@@ -175,6 +175,7 @@ android:paddingRight="20dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:text="Add"
+                android:layout_marginBottom="30dp"
                 android:textAllCaps="false"
                 android:textSize="20sp"
                 android:padding="5dp"

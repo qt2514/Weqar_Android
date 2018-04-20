@@ -9,7 +9,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -36,14 +34,8 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.weqar.weqar.AddJobs_Vendor;
-import com.weqar.weqar.DBJavaClasses.discountcard_list_vendor;
-import com.weqar.weqar.DBJavaClasses.jobscard_list;
 import com.weqar.weqar.DBJavaClasses.jobscard_list_vendor;
-import com.weqar.weqar.Discount_Edit_Vendor;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
-import com.weqar.weqar.HomeScreen;
-import com.weqar.weqar.HomeScreen_vendor;
-import com.weqar.weqar.JobDetails_User;
 import com.weqar.weqar.JobDetails_Vendor;
 import com.weqar.weqar.Job_Edit_Vendor;
 import com.weqar.weqar.R;
@@ -151,12 +143,12 @@ public class BotNav_JobsFragment_Vendor extends Fragment {
                 holder = (MovieAdap.ViewHolder) convertView.getTag();
             }
              ccitacc = movieModelList.get(position);
-            holder.text_jobtype.setText(ccitacc.getJobType());
-            holder.text_jobfield.setText(ccitacc.getJobField());
+
+            holder.text_jobtype.setText(ccitacc.getName());
+            holder.text_jobfield.setText(ccitacc.getJobType());
             holder.text_jobdesc.setText(ccitacc.getDescription());
             String first=ccitacc.getClosingDate();
-            String second=first.substring(0,10);
-            holder.text_jobdeadline.setText("Deadline "+second);
+            holder.text_jobdeadline.setText("Deadline "+first);
             try
             {
                 Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getLogo()).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(holder.RIV_logo);

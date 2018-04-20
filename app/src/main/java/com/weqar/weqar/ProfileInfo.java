@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.android.datetimepicker.time.TimePickerDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,6 +39,8 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
+import com.tsongkha.spinnerdatepicker.DatePickerDialog;
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.weqar.weqar.DBHandlers.SessionManager;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.JavaClasses.ImageUtil;
@@ -53,6 +57,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +69,7 @@ import cn.refactor.lib.colordialog.PromptDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class ProfileInfo extends AppCompatActivity implements com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener{
+public class ProfileInfo extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     EditText ET_fname,ET_mname,ET_lname,ET_emailid,ET_mobile,ET_address,ET_country,
     ET_Prof_cidno,ET_Prof_memno,ET_vprof_businescontect,ET_vprof_businesemail,ET_vprof_websitel,ET_vcomplete_percentage,
     ET_vcomplete_disctitle,ET_vcomplete_discdesc,ET_vrpof_company;
@@ -98,8 +103,8 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     s_vcomplete_description,s_vcomplete_image_response;
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
     Context context;
-    List<String> subjectnamelist;
-    List<String> subjectnameid;
+    ArrayList<String> subjectnamelist;
+    ArrayList<String> subjectnameid;
     String Ssubjectkind;
     private JSONArray result;
     ArrayList<String> vendor_plan = new ArrayList<String>();
@@ -109,6 +114,9 @@ public class ProfileInfo extends AppCompatActivity implements com.wdullaer.mater
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
     int check_image_id;
+    private Calendar calendar;
+    int v_years,v_months,v_days;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,7 +153,6 @@ ET_vrpof_company=findViewById(R.id.vendor_professional_companyname);
         B_professional_next=findViewById(R.id.professional_but_next);
         B_vendorprofessional_next=findViewById(R.id.vendorprofessional_but_next);
         B_vcomplete_complete=findViewById(R.id.B_vcomplete_complete);
-
         IV_basic_image=findViewById(R.id.profile_edit);
         IV_bas=findViewById(R.id.basic_profile_img);
         IV_personal=findViewById(R.id.IV_personaL);
@@ -168,6 +175,8 @@ ET_vrpof_company=findViewById(R.id.vendor_professional_companyname);
         L_user_plantype= new ArrayList<String>();
         L_user_planamount= new ArrayList<String>();
         L_user_desc= new ArrayList<String>();
+        calendar = Calendar.getInstance();
+
 
         ET_country.setText("Kuwait");
         ET_country.setFocusable(false);
@@ -254,8 +263,13 @@ ET_vrpof_company=findViewById(R.id.vendor_professional_companyname);
                         if (s_ln_tab2) {
                             if (s_ln_tab3) {
 
-                                startActivity(new Intent(ProfileInfo.this, HomeScreen.class));
-
+                                Intent intent = new Intent(ProfileInfo.this, HomeScreen.class);
+                                editor = Shared_user_details.edit();
+                                editor.putString("weqar_uid", s_lnw_userid);
+                                editor.putString("weqar_token", s_lnw_usertoken);
+                                editor.apply();
+                                editor.commit();
+                                startActivity(intent);
                             } else {
                                 toolbar.setTitle("Subscription");
                                 getUserCompletesubscription();
@@ -322,29 +336,26 @@ ET_vrpof_company=findViewById(R.id.vendor_professional_companyname);
                     }
                 }
             }
-            Calendar now = Calendar.getInstance();
-            dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
-                    ProfileInfo.this,
-                    now.get(Calendar.YEAR),
-                    now.get(Calendar.MONTH),
-                    now.get(Calendar.DAY_OF_MONTH)
-            );
+//            Calendar now = Calendar.getInstance();
+//            dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(
+//                    ProfileInfo.this,
+//                    now.get(Calendar.YEAR),
+//                    now.get(Calendar.MONTH),
+//                    now.get(Calendar.DAY_OF_MONTH)
+//            );
             focuschange();
             ET_Prof_valid.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Random r = new Random();
+                    showDate(2018, 0, 1, R.style.DatePickerSpinner);
 
-                    int randomNumber = r.nextInt(5);
-
-                    dpd.show(getFragmentManager(), String.valueOf(randomNumber));
-                    dpd.setTitle("Valid Date");
                 }
             });
             ET_vprof_category.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(ProfileInfo.this, MultiSpinner_Vendor_Category.class);
+
                     startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
                 }
             });
@@ -613,6 +624,7 @@ ET_vrpof_company=findViewById(R.id.vendor_professional_companyname);
                     }
 
                     ET_vprof_category.setText(builder);
+
                 }
 
 
@@ -783,7 +795,7 @@ ET_vrpof_company=findViewById(R.id.vendor_professional_companyname);
                     {
                         JSONObject jObj = new JSONObject(response);
                         s_lnw_getcompany=jObj.getString("Response");
-                        Log.i("user_vendor_companylogo_response",response);
+                      //  Log.i("user_vendor_companylogo_response",response);
 
                     }
                     catch (JSONException e) {
@@ -848,7 +860,7 @@ ET_vrpof_company=findViewById(R.id.vendor_professional_companyname);
                     {
                         JSONObject jObj = new JSONObject(response);
                         s_vcomplete_image_response=jObj.getString("Response");
-                        Log.i("user_vendor_complete_image_response",response);
+                        //Log.i("user_vendor_complete_image_response",response);
 
 
                     }
@@ -1321,8 +1333,14 @@ ET_vrpof_company=findViewById(R.id.vendor_professional_companyname);
             IV_complete.setImageResource(R.drawable.profile_complete_three);
             view4.setBackgroundResource(R.color.colorAccent);
             callmetouploadusercomplete_url(s_fromadp_getuser_plantype,s_fromadp_getuser_plantype_id,s_lnw_userid);
-            startActivity(new Intent(ProfileInfo.this,HomeScreen.class));
-        }
+
+            Intent intent = new Intent(ProfileInfo.this, HomeScreen.class);
+            editor = Shared_user_details.edit();
+            editor.putString("weqar_uid", s_lnw_userid);
+            editor.putString("weqar_token", s_lnw_usertoken);
+            editor.apply();
+            editor.commit();
+            startActivity(intent);        }
 
     }
     public void callmetouploadusercomplete_url(String user_comple_plantype,String user_comple_plantype_id,String user_compl_userid)
@@ -1476,6 +1494,7 @@ ET_vrpof_company=findViewById(R.id.vendor_professional_companyname);
 
 
                             s_vprof_category = ET_vprof_category.getText().toString();
+
                             if (ET_vprof_websitel.getText().toString().isEmpty())
                             {
                                 s_vprof_websitelink="sdasda";
@@ -1565,7 +1584,7 @@ Log.i("requsitingcompany",requestBody);
                         e.printStackTrace();
                     }
 
-                    Log.i("vendor_professional_response",response);
+                 //   Log.i("vendor_professional_response",response);
 
                 }
             }, new Response.ErrorListener() {
@@ -1608,10 +1627,28 @@ Log.i("requsitingcompany",requestBody);
 
         }
     }
+    @VisibleForTesting
+    void showDate(int year, int monthOfYear, int dayOfMonth, int spinnerTheme) {
+        calendar = Calendar.getInstance();
+        v_years = calendar.get(Calendar.YEAR);
+
+        v_months = calendar.get(Calendar.MONTH);
+        v_days = calendar.get(Calendar.DAY_OF_MONTH);
+
+        new SpinnerDatePickerDialogBuilder()
+                .context(this)
+                .callback((DatePickerDialog.OnDateSetListener) this)
+                .spinnerTheme(spinnerTheme)
+                .defaultDate(v_years, v_months, v_days)
+                .minDate(v_years, v_months, v_days)
+                .build()
+                .show();
+    }
     @Override
-    public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String date = (monthOfYear+1)+"/"+dayOfMonth+"/"+year;
-        ET_Prof_valid.setText(date);
+    public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+       String  event_startdate_one = dayOfMonth+ "-" +(monthOfYear + 1)   + "-" + year;
+        ET_Prof_valid.setText(event_startdate_one);
     }
     public void getUserCompletesubscription()
     {

@@ -98,17 +98,17 @@
                         android:textStyle="bold"
                         android:textColor="@color/colorHintss"
                         android:textSize="19sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="start"
-                        android:id="@+id/text_jobfield_vendor_jobdet"
-                        android:text="Producer"
-                        android:layout_marginBottom="5dp"
-                        android:textColor="@color/colorHintss"
-                        android:textSize="17sp" />
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="start"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:gravity="start"-->
+                        <!--android:id="@+id/text_jobfield_vendor_jobdet"-->
+                        <!--android:text="Producer"-->
+                        <!--android:layout_marginBottom="5dp"-->
+                        <!--android:textColor="@color/colorHintss"-->
+                        <!--android:textSize="17sp" />-->
                 </LinearLayout>
 
 
@@ -118,6 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:gravity="start"
+                    android:layout_marginStart="3dp"
                     android:layout_marginTop="5dp"
                     android:text="Leeds,York,Harrogate,Bradford"
                     android:textColor="@color/colorHintss"
@@ -158,20 +159,20 @@
 </ScrollView>
 
     </LinearLayout>
-    <Button
-        android:id="@+id/job_vendor_edit"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center|bottom"
-        android:layout_margin="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/but_selected"
-        android:text="Edit"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-        android:textSize="18sp" />
+    <!--<Button-->
+        <!--android:id="@+id/job_vendor_edit"-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_gravity="center|bottom"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:layout_marginBottom="20dp"-->
+        <!--android:background="@drawable/but_selected"-->
+        <!--android:text="Edit"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:textColor="@color/colorWhite"-->
+        <!--android:textSize="18sp" />-->
 
 
 

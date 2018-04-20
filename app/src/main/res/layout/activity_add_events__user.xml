@@ -15,7 +15,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="50dp"
             android:background="@color/colorWhite"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
             <RelativeLayout
@@ -122,6 +122,52 @@
                 android:layout_height="50dp">
                 <EditText
                     android:textSize="16sp"
+                    android:hint="Pre Requirements"
+                    android:textColor="#000"
+                    android:id="@+id/et_addevent_prerequirements"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:background="@drawable/selector_bg_edit"
+                    android:textCursorDrawable="@drawable/bg_input_cursor"
+                    android:paddingBottom="2dp" />
+            </android.support.design.widget.TextInputLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:weightSum="2"
+                android:orientation="horizontal">
+                <CheckBox
+                    android:id="@+id/addevent_registrationrequired"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/checkBox1"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorBlack"
+                    android:text="Required Registration" />
+                <CheckBox
+                android:id="@+id/addevent_amountrequired"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/checkBox1"
+                android:textColor="@color/colorBlack"
+                android:layout_weight="1"
+                android:text="Payment Needed" />
+            </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:textColorHint="@color/colorBlack"
+                android:theme="@style/TextLabel"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1.4"
+                android:id="@+id/tet_addevent_amount"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <EditText
+                    android:textSize="16sp"
                     android:hint="Amount"
                     android:textColor="#000"
                     android:id="@+id/et_addevent_amount"
@@ -147,7 +193,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
-                        android:id="@+id/et_addevent_desc"
+                        android:id="@+id/et_addevent_desc_user"
                         android:textSize="16sp"
                         android:hint="Description"
                         android:gravity="start"

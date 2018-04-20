@@ -92,49 +92,41 @@
                 android:focusableInTouchMode="false"
                 />
             <TextView
-                android:id="@+id/TV_event_textenddate"
+                android:id="@+id/TV_disc_textstartdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="2dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Percide January 7 2018 Dont miss it"
                 android:textColor="@color/colorWhite"
                 android:textSize="11sp"
                 android:maxLength="27"
                 android:clickable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"/>
+        <TextView
+            android:id="@+id/TV_disc_textenddate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/colorWhite"
+            android:textSize="11sp"
+            android:maxLength="27"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
 
 
-
-
-            <RatingBar
-                android:id="@+id/RB_event_rating"
-                style="?android:attr/ratingBarStyleIndicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="3dp"
-
-                android:max="5"
-                android:progressBackgroundTint="@color/coloryellows"
-                android:progressTint="@color/coloryellow"
-                android:rating="5"
-                android:scaleX=".5"
-                android:scaleY=".5"
-                android:transformPivotX="0dp"
-                android:transformPivotY="0dp"
-                android:clickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"/>
     </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
 
 
                     android:id="@+id/event_event_layout"
@@ -146,7 +138,7 @@
                         android:layout_marginLeft="20dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:id="@+id/TV_event_etitle"
                         android:maxLength="20"
                         android:text="75% Discount in KFC"
@@ -163,17 +155,48 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="2dp"
                         android:ellipsize="end"
-                        android:maxLines="2"
+                        android:maxLines="1"
                         android:id="@+id/TV_event_edesc"
-                        android:text="Percide January 7 2018 Dont miss  January 7 2018 Dont miss  January 7 2018 Dont miss  January 7 2018 Dont miss it"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="11sp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="20dp"
+
+                        android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:id="@+id/TV_event_start"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="11sp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:layout_weight="1"
+                        android:focusableInTouchMode="false"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:layout_weight="1"
+                        android:id="@+id/TV_event_end"
                         android:textColor="@color/colorWhite"
                         android:textSize="11sp"
                         android:clickable="false"
                         android:focusable="false"
                         android:focusableInTouchMode="false"/>
 
-
-
+                    </LinearLayout>
 
                 </LinearLayout>
                 <LinearLayout

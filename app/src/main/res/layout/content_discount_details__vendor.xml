@@ -25,7 +25,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="6dp"
+                    android:background="@color/colorBlacks"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
                     android:id="@+id/linearLayout">
@@ -37,10 +37,12 @@
                         android:src="@drawable/rounded"
                         android:background="@drawable/rounded"
                         app:civ_border_width="2dp"
+                        android:layout_gravity="center"
                         app:civ_border_color="@color/colorPrimary"/>
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:orientation="vertical">
                         <TextView
                             android:id="@+id/disc_desc_title"
@@ -53,6 +55,14 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/disc_desc_titlestartdate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Percide January 7 2018 Dont miss it"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="12sp"
+                            />  <TextView
                             android:id="@+id/disc_desc_titlet"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -61,22 +71,22 @@
                             android:textColor="@color/colorWhite"
                             android:textSize="12sp"
                             />
-                        <RatingBar
-                            android:id="@+id/disc_desc_rating"
-                            style="?android:attr/ratingBarStyleIndicator"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:progressBackgroundTint="@color/coloryellows"
-                            android:progressTint="@color/coloryellow"
-                            android:layout_marginTop="3dp"
-                            android:max="5"
-                            android:rating="4"
-                            android:scaleX=".5"
-                            android:scaleY=".5"
-                            android:transformPivotX="0dp"
-                            android:transformPivotY="0dp" />
+                        <!--<RatingBar-->
+                            <!--android:id="@+id/disc_desc_rating"-->
+                            <!--style="?android:attr/ratingBarStyleIndicator"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:clickable="false"-->
+                            <!--android:focusable="false"-->
+                            <!--android:progressBackgroundTint="@color/coloryellows"-->
+                            <!--android:progressTint="@color/coloryellow"-->
+                            <!--android:layout_marginTop="3dp"-->
+                            <!--android:max="5"-->
+                            <!--android:rating="4"-->
+                            <!--android:scaleX=".5"-->
+                            <!--android:scaleY=".5"-->
+                            <!--android:transformPivotX="0dp"-->
+                            <!--android:transformPivotY="0dp" />-->
 
 
                     </LinearLayout>
@@ -105,29 +115,14 @@
 
 
         </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/but_selected"
-            android:text="Edit"
-            android:textColor="@color/colorWhite" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/but_unselected"
-            android:text="Follow"
-            android:textColor="@color/colorWhite" />
-    </LinearLayout>
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:background="@drawable/but_selected"-->
+        <!--android:text="Edit"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:textColor="@color/colorWhite" />-->
     </RelativeLayout>

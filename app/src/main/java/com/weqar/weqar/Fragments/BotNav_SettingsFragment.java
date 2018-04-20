@@ -14,10 +14,9 @@ import com.squareup.picasso.Picasso;
 import com.weqar.weqar.DBHandlers.SessionManager;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 import com.weqar.weqar.LoginActivity;
-import com.weqar.weqar.Settings_AccountActivity;
+import com.weqar.weqar.R;
 import com.weqar.weqar.Settings_HelpActivity;
 import com.weqar.weqar.Settings_ProfileActivity_User;
-import com.weqar.weqar.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -41,8 +40,8 @@ public class BotNav_SettingsFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_bot_nav__settings_fragment, container, false);
         IV_set_profile=view.findViewById(R.id.WIV_set_profile);
         TV_set_profile=view.findViewById(R.id.WTV_set_profile);
-        IV_set_account=view.findViewById(R.id.WIV_set_account);
-        TV_set_account=view.findViewById(R.id.WTV_set_account);
+//        IV_set_account=view.findViewById(R.id.WIV_set_account);
+//        TV_set_account=view.findViewById(R.id.WTV_set_account);
         IV_set_logout = view.findViewById(R.id.IV_set_u_logout);
         TV_set_logout = view.findViewById(R.id.TV_set_u_logout);
 
@@ -82,18 +81,18 @@ public class BotNav_SettingsFragment extends Fragment {
                 startActivity(new Intent(getActivity(),Settings_ProfileActivity_User.class));
             }
         });
-        IV_set_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(),Settings_AccountActivity.class));
-            }
-        });
-        TV_set_account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(),Settings_AccountActivity.class));
-            }
-        });
+//        IV_set_account.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getActivity(),Settings_AccountActivity.class));
+//            }
+//        });
+//        TV_set_account.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getActivity(),Settings_AccountActivity.class));
+//            }
+//        });
         WTV_set_help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

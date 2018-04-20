@@ -15,7 +15,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="50dp"
             android:background="@color/colorWhite"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
             <RelativeLayout
@@ -102,17 +102,17 @@
             android:textStyle="bold"
             android:textColor="@color/colorHintss"
             android:textSize="18sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginLeft="10dp"
-                android:gravity="start"
-                android:id="@+id/text_jobfield_user_jobdet"
-                android:text="Producer"
-                android:layout_marginBottom="5dp"
-                android:textColor="@color/colorHintss"
-                android:textSize="17sp" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="start"-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:gravity="start"-->
+                <!--android:id="@+id/text_jobfield_user_jobdet"-->
+                <!--android:text="Producer"-->
+                <!--android:layout_marginBottom="5dp"-->
+                <!--android:textColor="@color/colorHintss"-->
+                <!--android:textSize="17sp" />-->
         </LinearLayout>
 
         <TextView
@@ -123,18 +123,17 @@
             android:layout_marginLeft="10dp"
             android:gravity="start"
             android:layout_marginTop="5dp"
-            android:text=" Leeds,York,Harrogate,Bradford"
             android:textColor="@color/colorHintss"
             android:textSize="13sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Deadline 27-03-2017"
             android:layout_gravity="start"
             android:id="@+id/text_deadline_user_jobdet"
             android:textSize="13sp"
             android:layout_marginTop="10dp"
+            android:layout_marginStart="9dp"
 
 
             android:drawableLeft="@drawable/ic_access_alarm_black_24dp"

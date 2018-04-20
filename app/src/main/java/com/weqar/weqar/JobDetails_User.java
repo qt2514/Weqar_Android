@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -17,16 +15,14 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 
-import java.lang.reflect.InvocationTargetException;
-
-import cn.refactor.lib.colordialog.PromptDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class JobDetails_User extends AppCompatActivity {
     ImageView IV_jobdetails_back;
     CircleImageView CIV_Ujobdet_logo;
-    TextView TV_ujobdet_jobtype,TV_ujobdet_jobfield,TV_ujob_jobdeadline,TV_ujob_desc,TV_job_name;
+    TextView TV_ujobdet_jobtype,TV_ujob_jobdeadline,TV_ujob_desc,TV_job_name;
+           // TV_ujobdet_jobfield,
     String s_jobdet_logo,s_jobdet_jobtype,s_jobdet_jobfield,s_jobdet_jobdeadline,s_jobdet_desc,s_jobdet_name;
     Button But_apply_job_user;
     @Override
@@ -47,7 +43,7 @@ public class JobDetails_User extends AppCompatActivity {
             CIV_Ujobdet_logo = findViewById(R.id.logo_user_jobdet);
             TV_ujobdet_jobtype = findViewById(R.id.text_jobtype_user_jobdet);
             TV_job_name = findViewById(R.id.title_jobdesc_user);
-            TV_ujobdet_jobfield = findViewById(R.id.text_jobfield_user_jobdet);
+           // TV_ujobdet_jobfield = findViewById(R.id.text_jobfield_user_jobdet);
             TV_ujob_jobdeadline = findViewById(R.id.text_deadline_user_jobdet);
             TV_ujob_desc = findViewById(R.id.text_desc_user_jobdet);
             But_apply_job_user = findViewById(R.id.apply_job_user);
@@ -76,11 +72,11 @@ public class JobDetails_User extends AppCompatActivity {
             try {
 
                 Picasso.with(this).load(Global_URL.Image_url_load + s_jobdet_logo).error(getResources().getDrawable(R.drawable.rounded)).fit().centerCrop().into(CIV_Ujobdet_logo);
-                TV_ujobdet_jobtype.setText(s_jobdet_jobfield + " -");
-                TV_ujobdet_jobfield.setText(s_jobdet_jobtype);
-                TV_ujob_jobdeadline.setText(s_jobdet_jobdeadline);
+                TV_ujobdet_jobtype.setText(s_jobdet_name);
+                //TV_ujobdet_jobfield.setText(s_jobdet_jobtype);
+                TV_ujob_jobdeadline.setText("Deadline : "+s_jobdet_jobdeadline);
                 TV_ujob_desc.setText(s_jobdet_desc);
-                TV_job_name.setText("Title - "+s_jobdet_name);
+                TV_job_name.setText(s_jobdet_jobtype);
 
             } catch (Exception e) {
             }

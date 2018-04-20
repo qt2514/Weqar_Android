@@ -16,7 +16,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="50dp"
             android:background="@color/colorWhite"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
             <RelativeLayout
@@ -41,15 +41,15 @@
                     android:textColor="@color/colorHint"
                     android:textSize="22sp" />
 
-                <!--<ImageView-->
-                    <!--android:id="@+id/event_addevent_vendor"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="30dp"-->
-
-                    <!--android:layout_alignParentTop="true"-->
-                    <!--android:layout_marginEnd="11dp"-->
-                    <!--android:layout_toStartOf="@+id/homescreen_notification"-->
-                    <!--android:background="@drawable/ic_add_black_24dp" />-->
+                <ImageView
+                    android:id="@+id/event_addevent_vendor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="11dp"
+                    android:layout_toStartOf="@+id/homescreen_notification"
+                    android:background="@drawable/ic_add_black_24dp" />
 
 
                 <ImageView
@@ -74,6 +74,5 @@
         android:layout_marginRight="6dp"
         android:layout_marginLeft="6dp"
         android:divider="@android:color/transparent"
-android:paddingBottom="30dp"
         />
 </RelativeLayout>

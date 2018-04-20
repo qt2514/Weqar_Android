@@ -48,7 +48,7 @@ import java.util.Map;
 
 public class MultiSpinner_Vendor_Category extends AppCompatActivity {
     List<MultispinnerList> listViewItems;
-    String Stoken;
+
     ListView listViewWithCheckBox;
     EditText serach_text;
     TextView textViewadd;
@@ -58,7 +58,6 @@ public class MultiSpinner_Vendor_Category extends AppCompatActivity {
     List<String> subjectnameid;
     Context context;
     ImageView IV_back;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +72,7 @@ public class MultiSpinner_Vendor_Category extends AppCompatActivity {
         subjectnameid=new ArrayList<>();
         listViewItems = new ArrayList<MultispinnerList>();
         IV_back=findViewById(R.id.back_ima_scedule);
+
         IV_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +91,7 @@ public class MultiSpinner_Vendor_Category extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TinyDB tinydb = new TinyDB(context);
+
                 tinydb.putListString("subjectnamelist", (ArrayList<String>) subjectnamelist);
                 tinydb.putListString("subjectnameid", (ArrayList<String>) subjectnameid);
                 tinydb.putString("subjecttype", "Subject");
@@ -151,6 +152,16 @@ public class MultiSpinner_Vendor_Category extends AppCompatActivity {
             final MultispinnerList supl = ScheduleModeList.get(position);
             holder.subjectname.setText(supl.getMulsubject());
             holder.subjectid.setText(supl.getMulsubjectid());
+//            TinyDB tinydb = new TinyDB(context);
+//            subjectnamelist = tinydb.getListString("subjectnamelistnewofindia");
+//            for (int o=0;o<subjectnamelist.size();o++)
+//            {
+//                if (supl.getMulsubject().equals(subjectnamelist.get(o)))
+//                {
+//                    holder.checkBox.setEnabled(true);
+//                }
+//            }
+
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -186,7 +197,7 @@ public class MultiSpinner_Vendor_Category extends AppCompatActivity {
                             String id = jsonobject.getString("Id");
                             listViewItems.add(new MultispinnerList(name,id));
                     }
-                    CustomListView adapter = new CustomListView(getBaseContext(), R.layout.time_slot_list_view, listViewItems);
+                    CustomListView adapter = new CustomListView(getBaseContext(), R.layout.time_slot_list_multi, listViewItems);
                     listViewWithCheckBox.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -196,6 +207,7 @@ public class MultiSpinner_Vendor_Category extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
             }
         }) {
             @Override

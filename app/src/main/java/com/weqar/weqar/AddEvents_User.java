@@ -10,8 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.VisibleForTesting;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -19,10 +18,14 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.datetimepicker.time.RadialPickerLayout;
+import com.android.datetimepicker.time.TimePickerDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,30 +46,41 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import cn.refactor.lib.colordialog.PromptDialog;
 
 
-public class AddEvents_User extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class AddEvents_User extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener {
     TextView TV_eventstart, TV_evenetend;
-    EditText ET_contactname, ET_title, ET_amount, ET_descrition;
+    EditText ET_contactname, ET_title, ET_amount, ET_descrition,et_addevent_prerequirements;
     ImageView IV_imageupload;
     Button But_upolad;
-    String s_eventstart, s_eventend, s_contactname, s_title, s_amount, s_descrition, s_image;
-    int one;
+    String s_eventstart, s_eventend, s_contactname, s_title, s_amount, s_descrition, s_image,s_prerequiremet;
+    Boolean is_reg_Req,is_amount_req;
+    int one,two;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
     String s_lnw_userid, s_lnw_usertoken;
     ImageView IV_back;
     int check_image_id;
+    private Calendar calendar;
+    private SimpleDateFormat timeFormat;
+    private static final String TIME_PATTERN = "HH:mm";
+    String event_startdate_one;
+
+    private CheckBox addevent_registrationrequired,addevent_amountrequired;
+    TextInputLayout tet_addevent_amount;
+    int v_years,v_months,v_days,v_hours,v_minutes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_events__user);
+        setContentView(R.layout.activity_add_events__vendor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (isConnectedToNetwork()) {
@@ -79,17 +93,61 @@ public class AddEvents_User extends AppCompatActivity implements DatePickerDialo
             ET_descrition = findViewById(R.id.et_addevent_desc);
             IV_imageupload = findViewById(R.id.iv_addevent_image);
             But_upolad = findViewById(R.id.but_addevent_add);
+            calendar = Calendar.getInstance();
+            timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+            et_addevent_prerequirements=findViewById(R.id.et_addevent_prerequirements);
+            addevent_registrationrequired=findViewById(R.id.addevent_registrationrequired);
+            addevent_amountrequired=findViewById(R.id.addevent_amountrequired);
+            tet_addevent_amount=findViewById(R.id.tet_addevent_amount);
+
             Shared_user_details = getSharedPreferences("user_detail_mode", 0);
             IV_back = findViewById(R.id.iv_vaddjobs_back);
             IV_back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    startActivity(new Intent(AddEvents_User.this, Events_Display.class));
                     finish();
                 }
             });
             s_lnw_userid = Shared_user_details.getString("sp_w_userid", null);
             s_lnw_usertoken = Shared_user_details.getString("sp_w_apikey", null);
+            ET_amount.setVisibility(View.GONE);//TO HIDE THE BUTTON
+            tet_addevent_amount.setVisibility(View.GONE);//TO HIDE THE BUTTON
+            is_amount_req=false;
+            is_reg_Req=false;
+            addevent_amountrequired.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked)
+                    {
+                        ET_amount.setVisibility(View.VISIBLE);//TO HIDE THE BUTTON
+                        tet_addevent_amount.setVisibility(View.VISIBLE);//TO HIDE THE BUTTON
+                        is_amount_req=true;
 
+                    }
+                    else
+                    {
+                        ET_amount.setVisibility(View.GONE);//TO HIDE THE BUTTON
+                        tet_addevent_amount.setVisibility(View.GONE);//TO HIDE THE BUTTON
+                        is_amount_req=false;
+
+                    }
+                }
+            });  addevent_registrationrequired.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked)
+                    {
+                        is_reg_Req=true;
+
+                    }
+                    else
+                    {
+                        is_reg_Req=false;
+
+                    }
+                }
+            });
             ET_descrition.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -148,23 +206,51 @@ public class AddEvents_User extends AppCompatActivity implements DatePickerDialo
 
     @VisibleForTesting
     void showDate(int year, int monthOfYear, int dayOfMonth, int spinnerTheme) {
+        calendar = Calendar.getInstance();
+        v_years = calendar.get(Calendar.YEAR);
+
+       v_months = calendar.get(Calendar.MONTH);
+        v_days = calendar.get(Calendar.DAY_OF_MONTH);
+        v_hours=calendar.get(Calendar.HOUR_OF_DAY);
+        v_minutes=calendar.get(Calendar.MINUTE);
+
         new SpinnerDatePickerDialogBuilder()
                 .context(this)
                 .callback((DatePickerDialog.OnDateSetListener) this)
                 .spinnerTheme(spinnerTheme)
-                .defaultDate(year, monthOfYear, dayOfMonth)
+                .defaultDate(v_years, v_months, v_days)
+.minDate(v_years, v_months, v_days)
                 .build()
                 .show();
     }
     @Override
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-        String date = (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
+        event_startdate_one = dayOfMonth+ "-" +(monthOfYear + 1)   + "-" + year;
         if (one == 1) {
-            TV_eventstart.setText(date);
+            two=1;
+           // Toast.makeText(this, Integer.toString(v_hours), Toast.LENGTH_SHORT).show();
+            TimePickerDialog.newInstance((TimePickerDialog.OnTimeSetListener) this,v_hours,
+                v_minutes, true).show(getFragmentManager(), "timePicker");
+    }
+ else if (one == 2) {
+            two=2;
+            TimePickerDialog.newInstance((TimePickerDialog.OnTimeSetListener) this,v_hours,
+                    v_minutes, true).show(getFragmentManager(), "timePicker");
+        }
+    }
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
+        if(two==1)
+        {
+            TV_eventstart.setText(event_startdate_one+" "+timeFormat.format(calendar.getTime()));
 
-        } else if (one == 2) {
-            TV_evenetend.setText(date);
+        }
+        else
+        {
+            TV_evenetend.setText(event_startdate_one+" "+timeFormat.format(calendar.getTime()));
 
         }
     }
@@ -217,7 +303,6 @@ public class AddEvents_User extends AppCompatActivity implements DatePickerDialo
                     {
                         JSONObject jObj = new JSONObject(response);
                         s_image=jObj.getString("Response");
-                        Log.i("user_vendor_complete_image_response",response);
 
 
                     }
@@ -311,32 +396,20 @@ public class AddEvents_User extends AppCompatActivity implements DatePickerDialo
                                 }).show();
                     }
                     else {
-                        if(ET_amount.getText().toString().equals("")) {
-                            new PromptDialog(AddEvents_User.this)
-                                    .setDialogType(PromptDialog.DIALOG_TYPE_WRONG)
-                                    .setAnimationEnable(true)
-                                    .setTitleText("Please Enter Amount")
-                                    .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                                        @Override
-                                        public void onClick(PromptDialog dialog) {
-                                            dialog.dismiss();
-                                        }
-                                    }).show();
-                        }
 
-
-                        else{
                             s_eventstart = TV_eventstart.getText().toString();
                             s_eventend = TV_evenetend.getText().toString();
                             s_contactname = ET_contactname.getText().toString();
                             s_title = ET_title.getText().toString();
                             s_amount= ET_amount.getText().toString();
                             s_descrition= ET_descrition.getText().toString();
+                            s_prerequiremet= et_addevent_prerequirements.getText().toString();
+
                             callmetouploadvendorcomplete_url(s_lnw_userid, s_eventstart, s_eventend
-                                    ,s_contactname, s_title, s_descrition, s_image,s_amount);
+                                    ,s_contactname, s_title, s_descrition, s_image,s_amount,s_prerequiremet,is_reg_Req,is_amount_req);
                             Intent intent = new Intent(AddEvents_User.this, Events_Display.class);
                             startActivity(intent);
-                        }
+
                     }
 
                 }
@@ -347,7 +420,8 @@ public class AddEvents_User extends AppCompatActivity implements DatePickerDialo
     public void callmetouploadvendorcomplete_url(final String s_lnw_userid,final String start,
                                                  final String end,final String contact,
                                                  final String title,final String desc,
-                                                 final String img,final String amount)
+                                                 final String img,final String amount,
+                                                 final String prerequirement,final Boolean isregreq,final Boolean isamountreq)
     {
         try {
 
@@ -361,6 +435,10 @@ public class AddEvents_User extends AppCompatActivity implements DatePickerDialo
             jsonBody.put("Title", title);
             jsonBody.put("Description", desc);
             jsonBody.put("Image", s_image);
+            jsonBody.put("RegistrationRequired", isregreq);
+            jsonBody.put("IsPaid", isamountreq);
+            jsonBody.put("Requirements", prerequirement);
+            jsonBody.put("Amount", amount);
 
 
 
@@ -373,8 +451,8 @@ public class AddEvents_User extends AppCompatActivity implements DatePickerDialo
 
                 public void onResponse(String response) {
                     // startActivity(new Intent(ProfileInfo.this, LoginActivity.class));
+                    Log.i("add_event_user",response);
 
-                    Log.i("vendor_professional_response",response);
 
                 }
             }, new Response.ErrorListener() {
@@ -425,5 +503,4 @@ public class AddEvents_User extends AppCompatActivity implements DatePickerDialo
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
-
 }

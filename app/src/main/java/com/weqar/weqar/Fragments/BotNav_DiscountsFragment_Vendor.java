@@ -3,25 +3,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -36,21 +30,18 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 import com.weqar.weqar.AddDiscount_Vendor;
 import com.weqar.weqar.DBJavaClasses.discountcard_list_vendor;
 import com.weqar.weqar.DiscountDetails_Vendor;
 import com.weqar.weqar.Discount_Edit_Vendor;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
-import com.weqar.weqar.HomeScreen;
-import com.weqar.weqar.HomeScreen_vendor;
-import com.weqar.weqar.LoginActivity;
-import com.weqar.weqar.ProfileInfo;
 import com.weqar.weqar.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -140,8 +131,9 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                 holder = new ViewHolder();
                 holder.textone = (TextView) convertView.findViewById(R.id.TV_disc_percentage_vendor);
                 holder.texttwo_desc = (TextView) convertView.findViewById(R.id.text_vendor_discount_desc);
+                holder.text_vendor_discount_startdate = (TextView) convertView.findViewById(R.id.text_vendor_discount_startdate);
                 holder.menuimage = convertView.findViewById(R.id.roundimg_one);
-                holder.RB_vendor_rating = (RatingBar)convertView.findViewById(R.id.RB_vendr_rating_vendor);
+              //  holder.RB_vendor_rating = (RatingBar)convertView.findViewById(R.id.RB_vendr_rating_vendor);
                 holder.RIV_logo=convertView.findViewById(R.id.RIV_vendor_logo_vendor);
                 convertView.setTag(holder);
             }
@@ -151,23 +143,17 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
             }
             final discountcard_list_vendor ccitacc = movieModelList.get(position);
             String getdiscount_type= ccitacc.getDiscountType();
-            if(getdiscount_type.equals("1"))
-            {
-                holder.textone.setText(ccitacc.getPercentage()+"% "+ccitacc.getTitle());
 
-            }
-            else
-            {
                 holder.textone.setText(ccitacc.getTitle());
 
-            }
-            String gg=ccitacc.getPercentage();
-            Integer k=Integer.parseInt(gg);
-            Integer kk=k/20;
-            Float g=(float) kk;
-            holder.RB_vendor_rating.setRating(g);
-            String second=ccitacc.getEndDate().substring(0,10);
-            holder.texttwo_desc.setText("End Date: "+second);
+
+//            String gg=ccitacc.getPercentage();
+//            Integer k=Integer.parseInt(gg);
+//            Integer kk=k/20;
+//            Float g=(float) kk;
+//            holder.RB_vendor_rating.setRating(g);
+            holder.texttwo_desc.setText("End Date: "+ccitacc.getEndDate());
+            holder.text_vendor_discount_startdate.setText("Start Date: "+ccitacc.getStartDate());
             try
             {
                 Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getImage()).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(holder.menuimage);
@@ -232,10 +218,10 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
             return convertView;
         }
         class ViewHolder {
-            public TextView textone,texttwo_desc;
+            public TextView textone,texttwo_desc,text_vendor_discount_startdate;
             private ImageView menuimage;
            CircleImageView RIV_logo;
-            RatingBar RB_vendor_rating;
+          //  RatingBar RB_vendor_rating;
         }
     }
     public class kilomilo extends AsyncTask<String, String, List<discountcard_list_vendor>> {
@@ -323,6 +309,7 @@ public class BotNav_DiscountsFragment_Vendor  extends Fragment
                         intent.putExtra("put_per",item.getPercentage());
                         intent.putExtra("put_desc",item.getDescription());
                         intent.putExtra("put_enddate",item.getEndDate());
+                        intent.putExtra("put_startdate",item.getStartDate());
                         startActivity(intent);
                     }
                 });

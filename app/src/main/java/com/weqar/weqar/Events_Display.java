@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -31,6 +31,7 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.github.thunder413.datetimeutils.DateTimeUtils;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.weqar.weqar.DBJavaClasses.events_list_vendor;
@@ -70,27 +71,42 @@ public class Events_Display extends AppCompatActivity {
         setContentView(R.layout.activity_events__display);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Shared_user_details = getSharedPreferences("user_detail_mode", 0);
-        s_vendor_disc = Shared_user_details.getString("weqar_uid", null);
-        s_vendor_token = Shared_user_details.getString("weqar_token", null);
-        GV_user_view = findViewById(R.id.events_user_list);
-        IV_addevent_user = findViewById(R.id.events_u_addevent);
-        events_v_back = findViewById(R.id.events_u_back);
-        events_v_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Events_Display.this,HomeScreen.class));
-                finish();
-            }
-        });
-        IV_addevent_user.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Events_Display.this, AddEvents_User.class));
-            }
-        });
+        if (isConnectedToNetwork()) {
 
-        new kilomilo().execute(Global_URL.Vendor_show_allevents);
+            Shared_user_details = getSharedPreferences("user_detail_mode", 0);
+            s_vendor_disc = Shared_user_details.getString("weqar_uid", null);
+            s_vendor_token = Shared_user_details.getString("weqar_token", null);
+            GV_user_view = findViewById(R.id.events_user_list);
+            IV_addevent_user = findViewById(R.id.events_u_addevent);
+            events_v_back = findViewById(R.id.events_u_back);
+            events_v_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(Events_Display.this, HomeScreen.class));
+                    finish();
+                }
+            });
+            IV_addevent_user.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(Events_Display.this, AddEvents_User.class));
+                }
+            });
+
+            new kilomilo().execute(Global_URL.Vendor_show_allevents);
+        }
+        else
+        {
+            setContentView(R.layout.content_if_nointernet);
+            ImageView but_retry = findViewById(R.id.nointernet_retry);
+            but_retry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Events_Display.this, Events_Display.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
     }
     public class MovieAdap extends ArrayAdapter
@@ -125,6 +141,8 @@ public class Events_Display extends AppCompatActivity {
                 holder = new MovieAdap.ViewHolder();
                 holder.textone = (TextView) convertView.findViewById(R.id.events_vendor_title);
                 holder.texttwo_desc = (TextView) convertView.findViewById(R.id.events_vendor_desc);
+                holder.textstartd = (TextView) convertView.findViewById(R.id.event_startdate);
+                holder.textendd = (TextView) convertView.findViewById(R.id.event_enddate);
                 holder.menuimage = convertView.findViewById(R.id.events_vendor_image);
 
                 convertView.setTag(holder);
@@ -139,7 +157,16 @@ public class Events_Display extends AppCompatActivity {
             try
             {
                 holder.textone.setText(ccitacc.getTitle());
-                holder.texttwo_desc.setText(ccitacc.getDescription());
+                holder.texttwo_desc.setText("by "+ccitacc.getName());
+
+
+                String dash_event_start=DateTimeUtils.formatWithPattern(ccitacc.getEventStart(), "dd-MM-yyyy");
+                String dash_eventisc_end=DateTimeUtils.formatWithPattern(ccitacc.getEventEnd(), "dd-MM-yyyy");
+                String time_sched=ccitacc.getEventStart().substring(11,16);
+                String time_sched_end=ccitacc.getEventEnd().substring(11,16);
+                holder.textstartd.setText("Start Date : "+dash_event_start+" "+time_sched);
+                holder.textendd.setText("End Date : "+dash_eventisc_end+" "+time_sched_end);
+
                 Picasso.with(context).load(Global_URL.Image_url_load+ccitacc.getImage()).error(getResources().getDrawable(R.drawable.rounded_two)).fit().centerCrop().into(holder.menuimage);
             }catch (Exception e){
                 e.printStackTrace();
@@ -178,8 +205,16 @@ public class Events_Display extends AppCompatActivity {
 
                     switch (index) {
                         case 0:
-                            Intent intent=new Intent(getApplicationContext(),Discount_Edit_Vendor.class);
-                            intent.putExtra("put_discountid_fordisc_edit",schedule_history_list.getId());
+                            Intent intent=new Intent(getApplicationContext(),Events_Edit_User.class);
+                            intent.putExtra("put_event_uid_edit",schedule_history_list.getUserId());
+                            intent.putExtra("put_event_id_edit",schedule_history_list.getId());
+                            intent.putExtra("put_event_startdate_edit",schedule_history_list.getEventStart());
+                            intent.putExtra("put_event_enddate_edit",schedule_history_list.getEventEnd());
+                            intent.putExtra("put_event_contact_edit",schedule_history_list.getName());
+                            intent.putExtra("put_event_title_edit",schedule_history_list.getTitle());
+                            intent.putExtra("put_event_amount_edit",schedule_history_list.getAmount());
+                            intent.putExtra("put_event_desc_edit",schedule_history_list.getDescription());
+                            intent.putExtra("put_event_image_edit",schedule_history_list.getImage());
 
                             startActivity(intent);
                             break;
@@ -195,7 +230,7 @@ public class Events_Display extends AppCompatActivity {
             return convertView;
         }
         class ViewHolder {
-            public TextView textone,texttwo_desc;
+            public TextView textone,texttwo_desc,textstartd,textendd;
             private ImageView menuimage;
 
         }
@@ -293,6 +328,9 @@ public class Events_Display extends AppCompatActivity {
                         intent.putExtra("event_v_enddate",item.getEventEnd());
                         intent.putExtra("event_v_duration",item.getDuration());
                         intent.putExtra("event_v_amount",item.getAmount());
+                        intent.putExtra("event_v_regreq",item.getRegistrationRequired());
+                        intent.putExtra("event_v_amountpaid",item.getIsPaid());
+                        intent.putExtra("event_v_prereq",item.getRequirements());
 
 
                         startActivity(intent);
@@ -356,5 +394,12 @@ public class Events_Display extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
+    }
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

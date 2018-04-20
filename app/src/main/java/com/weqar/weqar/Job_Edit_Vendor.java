@@ -7,8 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -32,7 +30,6 @@ import com.tsongkha.spinnerdatepicker.DatePickerDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,7 +43,7 @@ import cn.refactor.lib.colordialog.PromptDialog;
 
 
 public class Job_Edit_Vendor extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
-EditText ET_editjobs_title,ET_editjobs_description,ET_editjobs_compnayinfo;
+EditText ET_editjobs_title,ET_editjobs_description;
 TextView TV_editjob_jobtype,TV_editjob_jobfield,TV_editjob_closingdate;
 Button BUT_edijob_update;
 String s_lnw_userid,s_lnw_usertoken,s_edijob_jobid,s_edijob_jobname,s_editjob_type,s_editjob_field,s_editjob_descritiio,s_editjob_compnayinfo,
@@ -61,6 +58,8 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
     ImageView IB_back;
+    int v_years,v_months,v_days;
+    Calendar calendar;
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
     private static final int SECOND_ACTIVITY_REQUEST_CODE_two = 1;
     @Override
@@ -73,7 +72,7 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
 
             ET_editjobs_title = findViewById(R.id.et_veditjobs_title);
             ET_editjobs_description = findViewById(R.id.et_veditjobs_description);
-            ET_editjobs_compnayinfo = findViewById(R.id.et_veditjobs_companyinfo);
+           // ET_editjobs_compnayinfo = findViewById(R.id.et_veditjobs_companyinfo);
             TV_editjob_jobtype = findViewById(R.id.tv_veditjobs_jobtype);
             TV_editjob_jobfield = findViewById(R.id.tv_veditjobs_jobfield);
             TV_editjob_closingdate = findViewById(R.id.tv_veditjobs_closingdate);
@@ -82,6 +81,8 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
             IB_back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    startActivity(new Intent(Job_Edit_Vendor.this,HomeScreen_vendor.class)
+                    );
                     finish();
                 }
             });
@@ -104,26 +105,26 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
 
             ET_editjobs_title.setText(s_edijob_jobname);
             ET_editjobs_description.setText(s_editjob_descritiio);
-            ET_editjobs_compnayinfo.setText(s_editjob_compnayinfo);
+         //   ET_editjobs_compnayinfo.setText(s_editjob_compnayinfo);
             TV_editjob_jobtype.setText(s_editjob_type);
             TV_editjob_jobfield.setText(s_editjob_field);
             TV_editjob_closingdate.setText(s_editjob_clpsingdate);
 
 
-            ET_editjobs_compnayinfo.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (v.getId() == R.id.et_veditjobs_companyinfo) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                            case MotionEvent.ACTION_UP:
-                                v.getParent().requestDisallowInterceptTouchEvent(false);
-                                break;
-                        }
-                    }
-                    return false;
-                }
-            });
+//            ET_editjobs_compnayinfo.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    if (v.getId() == R.id.et_veditjobs_companyinfo) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+//                            case MotionEvent.ACTION_UP:
+//                                v.getParent().requestDisallowInterceptTouchEvent(false);
+//                                break;
+//                        }
+//                    }
+//                    return false;
+//                }
+//            });
             ET_editjobs_description.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -164,6 +165,7 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
             TV_editjob_closingdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    
                     showDate(2018, 0, 1, R.style.DatePickerSpinner);
                 }
             });
@@ -197,10 +199,7 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
                     subjectnameid = tinydb.getString("vendoraddjobs_id");
                     StringBuilder builder = new StringBuilder();
 
-
-                    builder.append("").append(subjectnamelist).append(",");
-
-
+                    builder.append("").append(subjectnamelist).append("");
 
                     TV_editjob_jobtype.setText(builder);
                 }
@@ -217,12 +216,9 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
                     subjectnameids = tinydb.getString("vendoraddjobsfield_id");
                     StringBuilder builder = new StringBuilder();
 
+                    builder.append("").append(subjectnamelists).append("");
 
-                    builder.append("").append(subjectnamelists).append(",");
-
-
-
-                    TV_editjob_jobtype.setText(builder);
+                    TV_editjob_jobfield.setText(builder);
                 }
 
 
@@ -233,22 +229,29 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
             Toast.makeText(this, "Check me", Toast.LENGTH_SHORT).show();
         }
     }
+
     @VisibleForTesting
     void showDate(int year, int monthOfYear, int dayOfMonth, int spinnerTheme) {
+        calendar = Calendar.getInstance();
+        v_years = calendar.get(Calendar.YEAR);
+
+        v_months = calendar.get(Calendar.MONTH);
+        v_days = calendar.get(Calendar.DAY_OF_MONTH);
+
         new SpinnerDatePickerDialogBuilder()
-                .context(Job_Edit_Vendor.this)
-                .callback((DatePickerDialog.OnDateSetListener) Job_Edit_Vendor.this)
+                .context(this)
+                .callback((DatePickerDialog.OnDateSetListener) this)
                 .spinnerTheme(spinnerTheme)
-                .defaultDate(year, monthOfYear, dayOfMonth)
+                .defaultDate(v_years, v_months, v_days)
+                .minDate(v_years, v_months, v_days)
                 .build()
                 .show();
     }
 
-
     @Override
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-        String date = dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
+        String date =dayOfMonth +"-"+(monthOfYear+1)+"-"+year;
 
         TV_editjob_closingdate.setText(date);
 
@@ -304,22 +307,22 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
                }
                else
                {
-                   if(ET_editjobs_compnayinfo.getText().toString().equals(""))
-                   {
-
-                       new PromptDialog(Job_Edit_Vendor.this)
-                               .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
-                               .setAnimationEnable(true)
-                               .setTitleText("Please Enter Company Info")
-                               .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                                   @Override
-                                   public void onClick(PromptDialog dialog) {
-                                       dialog.dismiss();
-                                   }
-                               }).show();
-                   }
-                   else
-                   {
+//                   if(ET_editjobs_compnayinfo.getText().toString().equals(""))
+//                   {
+//
+//                       new PromptDialog(Job_Edit_Vendor.this)
+//                               .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+//                               .setAnimationEnable(true)
+//                               .setTitleText("Please Enter Company Info")
+//                               .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+//                                   @Override
+//                                   public void onClick(PromptDialog dialog) {
+//                                       dialog.dismiss();
+//                                   }
+//                               }).show();
+//                   }
+//                   else
+//                   {
                        if(TV_editjob_closingdate.getText().toString().equals(""))
                        {
 
@@ -354,22 +357,22 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
                            {
                                ss_jobname=ET_editjobs_title.getText().toString();
                                ss_jobdesc=ET_editjobs_description.getText().toString();
-                               ss_compnayinfo=ET_editjobs_compnayinfo.getText().toString();
+                              // ss_compnayinfo=ET_editjobs_compnayinfo.getText().toString();
                                ss_jobclosingdate=TV_editjob_closingdate.getText().toString();
 
 
                                callmetouploadedijob_url(s_lnw_userid,s_edijob_jobid,ss_jobname,subjectnameid,subjectnameids,
-                                       ss_jobdesc,ss_compnayinfo,ss_jobclosingdate);
+                                       ss_jobdesc,ss_jobclosingdate);
                            }
                        }
-                   }
+                  // }
                }
 
            }
        }
    }
     public void callmetouploadedijob_url(String uid, String id, String name, String type, String field,
-                                          String desc, String info,String clodsingdate)
+                                          String desc,String clodsingdate)
     {
 
         try {
@@ -383,7 +386,7 @@ String ss_jobname,ss_jobtypeid,ss_jobtypename,ss_jobfieldname,ss_jobfieldid,ss_j
             jsonBody.put("JobTypeId", type);
             jsonBody.put("JobFieldId", field);
             jsonBody.put("Description",desc);
-            jsonBody.put("CompanyInfo", info);
+           // jsonBody.put("CompanyInfo", info);
             jsonBody.put("ClosingDate", clodsingdate);
 
 

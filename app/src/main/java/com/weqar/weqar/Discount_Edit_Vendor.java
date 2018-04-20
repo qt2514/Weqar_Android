@@ -75,8 +75,9 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
     String compl_vendor_offertype[] = {"Discount","Offer"};
     Button But_update;
     ImageView IB_back;
-    int one,check_image_id;
-    @SuppressLint("ClickableViewAccessibility")
+    int check_image_id,one,v_years,v_months,v_days;
+    Calendar calendar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +100,8 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
             IB_back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    startActivity(new Intent(Discount_Edit_Vendor.this,HomeScreen_vendor.class));
+
                     finish();
                 }
             });
@@ -112,8 +115,7 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
             s_percentage = intent.getStringExtra("put_discountper_fordisc_edit");
             s_sdate = intent.getStringExtra("put_discountsdate_fordisc_edit");
             s_edate = intent.getStringExtra("put_discountedate_fordisc_edit");
-
-
+            SP_offertype_discedit.setTitle("dasda");
 
             Shared_user_details = getSharedPreferences("user_detail_mode", 0);
             s_lnw_userid = Shared_user_details.getString("sp_w_userid", null);
@@ -121,14 +123,13 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
             getVendorplan();
 
             if (s_offdertype.equals("1")) {
-                SP_offertype_discedit.setTitle("Discount");
-
+              //  SP_offertype_discedit.setTitle("njah");
                 TIV_user_disc_edit.setVisibility(View.VISIBLE);
                 ET_perc_discedit.setVisibility(View.VISIBLE);
 
 
             } else {
-                SP_offertype_discedit.setTitle("Offer");
+              //  SP_offertype_discedit.setTitle("Offer");
                 TIV_user_disc_edit.setVisibility(View.INVISIBLE);
                 ET_perc_discedit.setVisibility(View.INVISIBLE);
             }
@@ -218,9 +219,7 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
                     callmetoupload_seconddiscount();
                 }
             });
-        }
-        else
-        {
+        } else {
 
 
             setContentView(R.layout.content_if_nointernet);
@@ -235,6 +234,7 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
 
 
         }
+
         }
 
     private void getvendor_plannameid(int position){
@@ -242,7 +242,7 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
         try {
             JSONObject json = result.getJSONObject(position);
             s_plantype = json.getString("Id");
-            Toast.makeText(Discount_Edit_Vendor.this,s_plantype , Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(Discount_Edit_Vendor.this,s_plantype , Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -296,18 +296,25 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
     }
     @VisibleForTesting
     void showDate(int year, int monthOfYear, int dayOfMonth, int spinnerTheme) {
+        calendar = Calendar.getInstance();
+        v_years = calendar.get(Calendar.YEAR);
+
+        v_months = calendar.get(Calendar.MONTH);
+        v_days = calendar.get(Calendar.DAY_OF_MONTH);
+
         new SpinnerDatePickerDialogBuilder()
                 .context(this)
-                .callback(this)
+                .callback((DatePickerDialog.OnDateSetListener) this)
                 .spinnerTheme(spinnerTheme)
-                .defaultDate(year, monthOfYear, dayOfMonth)
+                .defaultDate(v_years, v_months, v_days)
+                .minDate(v_years, v_months, v_days)
                 .build()
                 .show();
     }
     @Override
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-        String date = (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
+        String date =dayOfMonth +"-"+(monthOfYear+1)+"-"+year;
         if (one == 1) {
             TV_startdate_discedit.setText(date);
         } else if (one == 2) {
@@ -365,7 +372,7 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
                     {
                         JSONObject jObj = new JSONObject(response);
                         s_image=jObj.getString("Response");
-                        Log.i("user_vendor_complete_image_response",response);
+                        //Log.i("user_vendor_complete_image_response",response);
 
 
                     }
@@ -541,7 +548,7 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
                 public void onResponse(String response) {
                     // startActivity(new Intent(ProfileInfo.this, LoginActivity.class));
 
-                    Log.i("vendor_professional_response",response);
+                  //  Log.i("vendor_professional_response",response);
                     new PromptDialog(Discount_Edit_Vendor.this)
                             .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
                             .setAnimationEnable(true)
@@ -594,5 +601,6 @@ public class Discount_Edit_Vendor extends AppCompatActivity implements DatePicke
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
+
 }
 

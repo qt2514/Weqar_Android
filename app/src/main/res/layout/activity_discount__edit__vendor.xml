@@ -15,7 +15,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="50dp"
             android:background="@color/colorWhite"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
             <RelativeLayout
@@ -64,7 +64,7 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/spiner_border"
-                app:hintText="Choose Your Plan"/>
+              />
             <TextView
                 android:textSize="16sp"
                 android:hint="Start Date"
@@ -102,7 +102,7 @@
                     android:layout_height="50dp"
                    android:layout_marginRight="10dp"
                     android:background="@drawable/spiner_border"
-                    app:hintText="Offer Type"/>
+                    />
                 <android.support.design.widget.TextInputLayout
                     android:textColorHint="@color/colorBlack"
                     android:theme="@style/TextLabel"

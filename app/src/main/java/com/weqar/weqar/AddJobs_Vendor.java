@@ -3,13 +3,9 @@ package com.weqar.weqar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +13,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,7 +26,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import com.tsongkha.spinnerdatepicker.DatePickerDialog;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import com.weqar.weqar.Global_url_weqar.Global_URL;
@@ -40,13 +34,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -55,8 +47,8 @@ import cn.refactor.lib.colordialog.PromptDialog;
 
 public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     ImageView IV_vaddjobs_back;
-    EditText ET_vaddjobs_title,ET_vaddjobs_desc,ET_vaddjobs_companyinfo;
-    TextView TV_vaddjobs_openingdate,TV_vaddjobs_closingdate,TV_vaddjobs_jobtype,TV_vaddjobs_jobfield;
+    EditText ET_vaddjobs_title,ET_vaddjobs_desc;
+    TextView TV_vaddjobs_closingdate,TV_vaddjobs_jobtype,TV_vaddjobs_jobfield;
     Button But_add;
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
     private static final int SECOND_ACTIVITY_REQUEST_CODE_two = 1;
@@ -66,10 +58,11 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
   String subjectnamelists;
     String subjectnameids;
     SimpleDateFormat simpleDateFormat;
-    int one;
-    String s_jobtitle,s_jobtype,s_jobfield,s_jobstartingdate,s_closingdate,s_desc,S_compnayinfo;
+    int one,v_years,v_months,v_days;
+    String s_jobtitle,s_jobtype,s_jobfield,s_jobstartingdate,s_closingdate,s_desc;
     SharedPreferences Shared_user_details;
     SharedPreferences.Editor editor;
+    Calendar calendar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,10 +74,10 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
             IV_vaddjobs_back = findViewById(R.id.iv_vaddjobs_back);
             ET_vaddjobs_title = findViewById(R.id.et_vaddjobs_title);
             ET_vaddjobs_desc = findViewById(R.id.et_vaddjobs_desc);
-            ET_vaddjobs_companyinfo = findViewById(R.id.et_vaddjobs_companyinfo);
+        //    ET_vaddjobs_companyinfo = findViewById(R.id.et_vaddjobs_companyinfo);
             TV_vaddjobs_jobtype = findViewById(R.id.tv_vaddjobs_jobtype);
             TV_vaddjobs_jobfield = findViewById(R.id.tv_vaddjobs_jobfield);
-            TV_vaddjobs_openingdate = findViewById(R.id.tv_vaddjobs_openingdate);
+           // TV_vaddjobs_openingdate = findViewById(R.id.tv_vaddjobs_openingdate);
             TV_vaddjobs_closingdate = findViewById(R.id.tv_vaddjobs_closingdate);
             But_add = findViewById(R.id.but_vaddjobs_add);
             simpleDateFormat = new SimpleDateFormat("dd MM yyyy", Locale.US);
@@ -93,22 +86,22 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
             s_lnw_userid = Shared_user_details.getString("sp_w_userid", null);
             s_lnw_usertoken = Shared_user_details.getString("sp_w_apikey", null);
 
-
-
-            ET_vaddjobs_companyinfo.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (v.getId() == R.id.et_vaddjobs_companyinfo) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                            case MotionEvent.ACTION_UP:
-                                v.getParent().requestDisallowInterceptTouchEvent(false);
-                                break;
-                        }
-                    }
-                    return false;
-                }
-            });
+//
+//
+//            ET_vaddjobs_companyinfo.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    if (v.getId() == R.id.et_vaddjobs_companyinfo) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+//                            case MotionEvent.ACTION_UP:
+//                                v.getParent().requestDisallowInterceptTouchEvent(false);
+//                                break;
+//                        }
+//                    }
+//                    return false;
+//                }
+//            });
             ET_vaddjobs_desc.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -127,6 +120,8 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
             IV_vaddjobs_back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    startActivity(new Intent(AddJobs_Vendor.this,HomeScreen_vendor.class)
+                    );
                     finish();
                 }
             });
@@ -145,17 +140,17 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
                     startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE_two);
                 }
             });
-            TV_vaddjobs_openingdate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    one = 1;
-                    showDate(2018, 0, 1, R.style.DatePickerSpinner);
-                }
-            });
+//            TV_vaddjobs_openingdate.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    one = 1;
+//                    showDate(2018, 0, 1, R.style.DatePickerSpinner);
+//                }
+//            });
             TV_vaddjobs_closingdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    one = 2;
+                 //   one = 2;
                     showDate(2018, 0, 1, R.style.DatePickerSpinner);
                 }
             });
@@ -192,7 +187,7 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
                     StringBuilder builder = new StringBuilder();
 
 
-                        builder.append("").append(subjectnamelist).append(",");
+                        builder.append("").append(subjectnamelist);
 
 
 
@@ -212,7 +207,7 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
                     StringBuilder builder = new StringBuilder();
 
 
-                        builder.append("").append(subjectnamelists).append(",");
+                        builder.append("").append(subjectnamelists);
 
 
 
@@ -229,11 +224,18 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
     }
     @VisibleForTesting
     void showDate(int year, int monthOfYear, int dayOfMonth, int spinnerTheme) {
+        calendar = Calendar.getInstance();
+        v_years = calendar.get(Calendar.YEAR);
+
+        v_months = calendar.get(Calendar.MONTH);
+        v_days = calendar.get(Calendar.DAY_OF_MONTH);
+
         new SpinnerDatePickerDialogBuilder()
-                .context(AddJobs_Vendor.this)
-                .callback((DatePickerDialog.OnDateSetListener) AddJobs_Vendor.this)
+                .context(this)
+                .callback((DatePickerDialog.OnDateSetListener) this)
                 .spinnerTheme(spinnerTheme)
-                .defaultDate(year, monthOfYear, dayOfMonth)
+                .defaultDate(v_years, v_months, v_days)
+                .minDate(v_years, v_months, v_days)
                 .build()
                 .show();
     }
@@ -242,18 +244,10 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
     @Override
     public void onDateSet(com.tsongkha.spinnerdatepicker.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-        String date = dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
+        String date =dayOfMonth +"-"+(monthOfYear+1)+"-"+year;
 
-        if(one==1)
-        {
-            TV_vaddjobs_openingdate.setText(date);
-
-        }
-        else  if(one==2)
-        {
             TV_vaddjobs_closingdate.setText(date);
 
-        }
     }
     public void callmetoupload_addjob()
     {
@@ -305,22 +299,22 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
                 }
                 else
                 {
-                    if(TV_vaddjobs_openingdate.getText().toString().equals(""))
-                    {
-
-                        new PromptDialog(AddJobs_Vendor.this)
-                                .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
-                                .setAnimationEnable(true)
-                                .setTitleText("Please Select Opening Date")
-                                .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
-                                    @Override
-                                    public void onClick(PromptDialog dialog) {
-                                        dialog.dismiss();
-                                    }
-                                }).show();
-                    }
-                    else
-                    {
+//                    if(TV_vaddjobs_openingdate.getText().toString().equals(""))
+//                    {
+//
+//                        new PromptDialog(AddJobs_Vendor.this)
+//                                .setDialogType(PromptDialog.DIALOG_TYPE_SUCCESS)
+//                                .setAnimationEnable(true)
+//                                .setTitleText("Please Select Opening Date")
+//                                .setPositiveListener(("ok"), new PromptDialog.OnPositiveListener() {
+//                                    @Override
+//                                    public void onClick(PromptDialog dialog) {
+//                                        dialog.dismiss();
+//                                    }
+//                                }).show();
+//                    }
+//                    else
+//                    {
                         if(TV_vaddjobs_closingdate.getText().toString().equals(""))
                         {
 
@@ -356,21 +350,19 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
                                 s_jobtitle=ET_vaddjobs_title.getText().toString();
                                 s_jobtype=TV_vaddjobs_jobtype.getText().toString();
                                 s_jobfield=TV_vaddjobs_jobfield.toString();
-                                s_jobstartingdate=TV_vaddjobs_openingdate.getText().toString();
+                              //  s_jobstartingdate=TV_vaddjobs_openingdate.getText().toString();
                                 s_closingdate=TV_vaddjobs_closingdate.getText().toString();
                                 s_desc=ET_vaddjobs_desc.getText().toString();
-                                S_compnayinfo=ET_vaddjobs_companyinfo.getText().toString();
+                                //S_compnayinfo=ET_vaddjobs_companyinfo.getText().toString();
                                callmetoupload_addjob_url(s_lnw_userid,s_jobtitle,subjectnameid,subjectnameids,
-                                       s_desc,S_compnayinfo,s_closingdate);
+                                       s_desc,s_closingdate);
                             }
                         }
-                    }
                 }
             }
         }
     }
- public void callmetoupload_addjob_url(String id, String title, String jobtype, String jobfield, String description,
-                                       String companyinfo, String closingdate)
+ public void callmetoupload_addjob_url(String id, String title, String jobtype, String jobfield, String description, String closingdate)
  {
 
      try {
@@ -384,7 +376,6 @@ public class AddJobs_Vendor extends AppCompatActivity implements DatePickerDialo
          jsonBody.put("JobTypeId", jobtype);
          jsonBody.put("JobFieldId", jobfield);
          jsonBody.put("Description", description);
-         jsonBody.put("CompanyInfo",companyinfo);
          jsonBody.put("ClosingDate", closingdate);
 
 
